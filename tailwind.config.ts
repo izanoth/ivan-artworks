@@ -16,5 +16,9 @@ const config: Config = {
     },
   },
   plugins: [],
+  safelist: [
+    'play-button',
+    'track',
+  ],
 };
 export default config;

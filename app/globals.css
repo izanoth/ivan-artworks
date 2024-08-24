@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -30,4 +32,62 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.navbar-brand img {
+  margin-left: 0px;
+  align-self: left;
+  position: relative;
+  left: 0px;
+}
+
+/* Player */
+#album-cover {
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+  border-radius: 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1.1);
+}
+
+#track-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 0px;
+  border: 0px solid #ddd;
+  border-radius: 0px;
+}
+
+.play-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #111;
+}
+
+
+/* Customizações Carousel */
+.custom-carousel {
+  max-width: 400px; /* Largura máxima do carrossel */
+  margin: auto; /* Centralizar o carrossel */
+}
+
+.custom-slide img {
+  width: 100px; /* Largura das imagens dos slides */
+  height: 100px; /* Altura das imagens dos slides */
+  object-fit: cover; /* Manter proporções da imagem */
 }
