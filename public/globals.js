@@ -6,6 +6,7 @@ if (typeof window !== 'undefined') {
     let currentTrackButton = null;
 
     function playTrack(trackSrc, playIcon, button) {
+        console.log(audioPlayer);
         audioPlayer.src = trackSrc;
         audioPlayer.play();
         button.innerHTML = `<span class="bi bi-pause-circle"></span>`;

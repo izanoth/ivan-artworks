@@ -20,12 +20,9 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
@@ -67,7 +64,7 @@ body {
   justify-content: space-between;
   margin: 10px;
   padding: 0px;
-  border: 0px solid #ddd;
+  /*border: 0px solid #ddd;*/
   border-radius: 0px;
 }
 
@@ -82,12 +79,17 @@ body {
 
 /* Customizações Carousel */
 .custom-carousel {
-  max-width: 400px; /* Largura máxima do carrossel */
-  margin: auto; /* Centralizar o carrossel */
+  max-width: 400px;
+  /* Largura máxima do carrossel */
+  margin: auto;
+  /* Centralizar o carrossel */
 }
 
 .custom-slide img {
-  width: 100px; /* Largura das imagens dos slides */
-  height: 100px; /* Altura das imagens dos slides */
-  object-fit: cover; /* Manter proporções da imagem */
+  width: 100px;
+  /* Largura das imagens dos slides */
+  height: 100px;
+  /* Altura das imagens dos slides */
+  object-fit: cover;
+  /* Manter proporções da imagem */
 }

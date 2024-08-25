@@ -28,14 +28,19 @@ export default function RootLayout({
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <Script src="globals.js" strategy="beforeInteractive" />
-
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
+          />
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <nav className="bg-dark text-white">
           <div className="container mx-auto flex items-center justify-between p-4">
-            <div className="text-white text-left text-xl font-bold">Zanoth <br /> <small>Independent Artworks</small></div>
+            <div className="text-white text-left text-xl font-bold">Zanoth <br /><small style={{fontSize: '12px'}}>Independent Artworks</small></div>
             <Link href="/guestbook">
-            <i className="bi bi-book" style={{fontSize: '32px'}}></i>
+            <i className="bi bi-book" style={{fontSize: '36px', color: 'white'}}></i>
             </Link>
           </div>
         </nav>
@@ -47,14 +52,14 @@ export default function RootLayout({
 
         <footer className="bg-light py-4">
           <div className="container mx-auto flex flex-wrap justify-between items-center">
-            <div className="text-center text-lg-start my-auto">
-              <ul className="flex list-none mb-2">
-                <li className="mr-2">
+            <div className="text-left ml-0">
+              <ul className="list-none mb-2 ml-0 p-0">
+                <li className="inline mr-2">
                   <Link href="" className="text-gray-700 hover:text-gray-900">Who Am I</Link>
                 </li>
-                <li className="mx-2 text-gray-500">⋅</li> 
-                <li>
-                  <a href="/contact" className="text-gray-700 hover:text-gray-900">Contact</a>
+                <li className="inline mx-2 text-gray-500">⋅</li> 
+                <li className="inline">
+                  <Link href="/contact" className="text-gray-700 hover:text-gray-900">Contact</Link>
                 </li>
               </ul>
               <p className="text-gray-600 text-sm mb-0">Zanoth &copy; Independent Artworks 2023. All Rights Reserved.</p>
