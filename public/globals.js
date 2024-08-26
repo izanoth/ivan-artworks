@@ -44,10 +44,8 @@ if (typeof window !== 'undefined') {
     }
 
     function init() {
-        trackList.forEach(track => {
-            console.log(track);
-            console.log(track.innerHTML);
-
+        console.log('ok');
+        trackList.forEach(track => { 
             const playButton = track.querySelector('.play-button');
             playButton.addEventListener('click', handlePlayButtonClick);
         });

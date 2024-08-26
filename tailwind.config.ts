@@ -21,4 +21,5 @@ const config: Config = {
     'track',
   ],
 };
+
 export default config;

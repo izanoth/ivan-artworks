@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <nav className="bg-dark text-white">
           <div className="container mx-auto flex items-center justify-between p-4">
-            <div className="text-white text-left text-xl font-bold">Zanoth <br /><small style={{fontSize: '12px'}}>Independent Artworks</small></div>
+            <div><p className="text-white text-left text-xl font-bold">Zanoth </p><p style={{fontSize: '12px'}} className="text-white text-left font-bold">Independent Artworks</p></div>
             <Link href="/guestbook">
             <i className="bi bi-book" style={{fontSize: '36px', color: 'white'}}></i>
             </Link>
@@ -55,7 +55,7 @@ export default function RootLayout({
             <div className="text-left ml-0">
               <ul className="list-none mb-2 ml-0 p-0">
                 <li className="inline mr-2">
-                  <Link href="" className="text-gray-700 hover:text-gray-900">Who Am I</Link>
+                  <Link href="/whoami" className="text-gray-700 hover:text-gray-900">Who Am I</Link>
                 </li>
                 <li className="inline mx-2 text-gray-500">⋅</li> 
                 <li className="inline">

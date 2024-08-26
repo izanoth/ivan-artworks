@@ -1,19 +1,9 @@
-// File: src/app/api/guest/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
 
-export async function GET() {
-    try {
-        const guests = await prisma.guest.findMany();
-        return NextResponse.json(guests);
-    } catch (error) {
-        console.error('Error fetching guests:', error);
-        return NextResponse.error();
-    }
-}
-
-export async function POST(request: NextRequest) {
+// Manipulador para PUT
+export async function PUT(request: NextRequest) {
     try {
         const { name, email, comment } = await request.json();
         const newGuest = await prisma.guest.create({
@@ -23,10 +13,9 @@ export async function POST(request: NextRequest) {
                 comment,
             },
         });
-        console.log(newGuest);
         return NextResponse.json(newGuest);
     } catch (error) {
-        console.log('Error creating guest:', error);
+        console.error('Error creating guest:', error);
         return NextResponse.error();
     }
 }
