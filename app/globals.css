@@ -93,3 +93,120 @@ body {
   object-fit: cover;
   /* Manter proporções da imagem */
 }
+
+
+
+
+
+
+
+
+
+/*LOADER
+cssloaders.github.io
+********************/
+.loader {
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: #444;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  display: block;
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  animation: 1s spin linear infinite;
+}
+
+.loader:after {
+  color: #303D90;
+  transform: rotateY(70deg);
+  animation-delay: .4s;
+}
+
+@keyframes rotate {
+  0 % {
+    transform: translate(-50 %, -50 %) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotateZ(360deg);
+  }
+}
+
+@keyframes rotateccw {
+  0 % {
+    transform: translate(-50 %, -50 %) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes spin {
+
+  0 %,
+  100 % {
+    box-shadow: .2em 0px 0 0px currentcolor;
+  }
+
+  12% {
+    box-shadow: .2em .2em 0 0 currentcolor;
+  }
+
+  25% {
+    box-shadow: 0 .2em 0 0px currentcolor;
+  }
+
+  37% {
+    box-shadow: -.2em .2em 0 0 currentcolor;
+  }
+
+  50% {
+    box-shadow: -.2em 0 0 0 currentcolor;
+  }
+
+  62% {
+    box-shadow: -.2em -.2em 0 0 currentcolor;
+  }
+
+  75% {
+    box-shadow: 0px -.2em 0 0 currentcolor;
+  }
+
+  87% {
+    box-shadow: .2em -.2em 0 0 currentcolor;
+  }
+}
+
+.blinking-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 0; }
+  10% { opacity: 0.2; }
+  20% { opacity: 0.4; }
+  30% { opacity: 0.6; }
+  40% { opacity: 0.8; }
+  50% { opacity: 1; }
+  60% { opacity: 1; }
+  70% { opacity: 0.8; }
+  80% { opacity: 0.6; }
+  90% { opacity: 0.4; }
+  100% { opacity: 0.2; }
+}

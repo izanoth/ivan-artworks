@@ -8,6 +8,8 @@ interface Guest {
     name: string;
     email: string;
     comment?: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export default function Guestbook() {
@@ -17,6 +19,7 @@ export default function Guestbook() {
     const [guests, setGuests] = useState<Guest[]>([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
@@ -26,10 +29,14 @@ export default function Guestbook() {
                 if (res.ok) {
                     const data: Guest[] = await res.json();
                     console.log('response: ' + JSON.stringify(data));
-                    setGuests(data);
+                    const sortedGuests = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+                    setGuests(sortedGuests);
                 }
             } catch (error) {
                 console.error('Error fetching guests:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -63,6 +70,15 @@ export default function Guestbook() {
             console.error('Error:', error);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                {/* <p className="blinking-text block">LOADING</p> */}
+                <span className="loader"></span>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col md:flex-row justify-center m-4 space-y-4 md:space-y-0 md:space-x-4">
@@ -98,7 +114,7 @@ export default function Guestbook() {
                     />
                     <textarea
                         onChange={(e) => setComment(e.target.value)}
-                        placeholder="Comentário (opcional)"
+                        placeholder="Comentário"
                         rows={4}
                         value={comment}
                         className="border p-2 w-full mb-2"
@@ -119,18 +135,26 @@ export default function Guestbook() {
                     </button>
                 </form>
             </div>
-            <div className="flex-none w-full md:w-[300px] mt-0 p-4">
-                <h2 className="text-xl font-semibold">Guest List</h2>
-                <ul>
+            <div className="flex-none w-full md:w-[300px] mt-0 p-4 bg-white rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Guest List</h2>
+                <ul className="space-y-4">
                     {guests.length > 0 ? (
                         guests.map((guest) => (
-                            <li key={guest.id} className="border-b py-2">
-                                <strong>{guest.name}</strong> - {guest.email}
-                                <p>{guest.comment}</p>
+                            <li key={guest.id} className="border-b pb-4">
+                                <div className="text-lg font-semibold text-blue-600">
+                                    {guest.name}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                    {guest.email}
+                                </div>
+                                <p className="text-gray-700 mt-2">{guest.comment}</p>
+                                <div className="text-xs text-gray-400 mt-1">
+                                    {new Date(guest.createdAt).toLocaleDateString()}
+                                </div>
                             </li>
                         ))
                     ) : (
-                        <p>No guests available.</p>
+                        <p className="text-gray-600">No guests available.</p>
                     )}
                 </ul>
             </div>

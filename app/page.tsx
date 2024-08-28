@@ -48,7 +48,7 @@ export default function Home() {
           {albuns.map((album, albumIndex) => (
             <Carousel.Item key={albumIndex}>
               <div className="flex flex-col md:flex-row lg:space-x-4 lg:px-4 mb-4 lg:mb-0">
-                <div className="flex-1 md:p-6 lg:mb-0 w-full">
+                <div className="flex-1 md:p-6 lg:mb-0 bg-white w-full md:w-[400px]">
                   <div className="flex items-center justify-center">
                     <i className="bi bi-music-note-beamed text-primary text-2xl"></i>
                   </div>
