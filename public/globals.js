@@ -1,6 +1,4 @@
 if (typeof window !== 'undefined') {
-
-
     const audioPlayer = document.getElementById('audio-player');
     const trackList = document.querySelectorAll('.track');
     let currentTrackButton = null;
@@ -50,8 +48,7 @@ if (typeof window !== 'undefined') {
             playButton.addEventListener('click', handlePlayButtonClick);
         });
     }
-    
-    init();
-   
-    
+    console.log('ok');
+
+    init();    
 };

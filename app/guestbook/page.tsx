@@ -28,9 +28,7 @@ export default function Guestbook() {
                 const res = await fetch('/api/guest');
                 if (res.ok) {
                     const data: Guest[] = await res.json();
-                    console.log('response: ' + JSON.stringify(data));
                     const sortedGuests = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
                     setGuests(sortedGuests);
                 }
             } catch (error) {
@@ -73,8 +71,8 @@ export default function Guestbook() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                {/* <p className="blinking-text block">LOADING</p> */}
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                <p className="blinking-text block text-xs pb-4">LOADING</p>
                 <span className="loader"></span>
             </div>
         );

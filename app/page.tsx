@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from 'next/link';
 import { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Carousel } from 'react-bootstrap';
 import albuns from '../myalbuns.js';
 
@@ -71,7 +69,7 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-                <div className="flex flex-col items-center justify-center mb-4">
+                <div className="flex flex-col items-center mb-4">
                   <img
                     src={album.coverImage}
                     alt={album.title}

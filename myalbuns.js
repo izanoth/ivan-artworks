@@ -35,6 +35,7 @@ const albuns = [
         { title: "Synthesis", src: "media/Synthesis.mp3", isPrimary: true },
         { title: "Beyond the Sky", src: "media/Beyond the Sky.mp3", isPrimary: true },
         { title: "Vertigo" },
+        { title: "An Odd March" },
         { title: "Roads II" },
         { title: "Presto" },
         { title: "Caco Finale" },

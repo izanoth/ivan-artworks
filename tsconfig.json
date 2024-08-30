@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,9 +23,26 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/prisma": ["lib/prisma.ts"],
+      "@rootLayout": ["app/layout.tsx"],
+      "@/layout/*": ["app/_components/*"],
+      "@/blog/components/*": ["app/blog/_components/*"],
+      "@/blog/layout/*": ["app/blog/_components/layout/*"],
+
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/mydata.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "lib/mydata.js", 
+    "prisma/seed.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
