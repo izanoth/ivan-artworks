@@ -1,10 +1,7 @@
-/* "use client";
- */
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "@globals.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
-import { SessionProvider } from 'next-auth/react';
 import Header from '@/layout/Header';
 import Footer from '@/layout/Footer';
 
@@ -12,10 +9,8 @@ const inter = Inter({ subsets: ['latin'], display: 'optional' });
 
 export default function RootLayout({
   children,
-  header: CustomHeader = Header, // Permite definir um Header personalizado
 }: {
   children: React.ReactNode;
-  header?: React.ElementType; // Permite passar um componente de Header diferente
 }) {
   return (
     <html lang="en">
@@ -34,14 +29,15 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+       {/*  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="ivanzanothw" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script> */}
+
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-      {/* <SessionProvider> */}
-        <CustomHeader />
-       {/*  </SessionProvider> */}
+
+        <Header />
 
         <div className="flex-grow">
-            {children}
+          {children}
           <Analytics />
         </div>
 

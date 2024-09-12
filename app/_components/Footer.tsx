@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-
 const Footer: React.FC = () => {
     return (
         <footer className="py-4">
@@ -9,6 +8,10 @@ const Footer: React.FC = () => {
                     <ul className="list-none mb-2 ml-0 p-0">
                         <li className="inline mr-2">
                             <Link href="/whoami" className="text-gray-700 hover:text-gray-900">Who Am I</Link>
+                        </li>
+                        <li className="inline mx-2 text-gray-500">⋅</li>
+                        <li className="inline mr-2">
+                            <Link href="/guestbook" className="text-gray-700 hover:text-gray-900">Guestbook</Link>
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
                         <li className="inline">

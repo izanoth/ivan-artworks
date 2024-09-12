@@ -1,7 +1,9 @@
+
 "use client"; // Marcar o componente como Client Component
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { fetchGuestsResource } from './resource';
 
 interface Guest {
     id: string;
@@ -12,34 +14,13 @@ interface Guest {
     updatedAt: Date;
 }
 
-export default function Guestbook() {
+function GuestForm() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [comment, setComment] = useState('');
-    const [guests, setGuests] = useState<Guest[]>([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(true);
     const router = useRouter();
-
-    useEffect(() => {
-        const fetchGuests = async () => {
-            try {
-                const res = await fetch('/api/guest');
-                if (res.ok) {
-                    const data: Guest[] = await res.json();
-                    const sortedGuests = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-                    setGuests(sortedGuests);
-                }
-            } catch (error) {
-                console.error('Error fetching guests:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchGuests();
-    }, []);
 
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -54,7 +35,7 @@ export default function Guestbook() {
 
             if (response.ok) {
                 const newGuest = await response.json();
-                setGuests((prevGuests) => [...prevGuests, newGuest]);
+                //setGuests((prevGuests) => [...prevGuests, newGuest]);
                 setSuccessMessage('Signed successfully, thank you!');
                 setErrorMessage('');
                 router.refresh();
@@ -69,18 +50,9 @@ export default function Guestbook() {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen">
-                <p className="blinking-text block text-xs pb-4">LOADING</p>
-                <span className="loader"></span>
-            </div>
-        );
-    }
-
     return (
-        <div className="flex flex-col md:flex-row justify-center m-4 space-y-4 md:space-y-0 md:space-x-4">
-            <div className="flex-none w-full md:w-[300px] p-4">
+        <div className="flex-none w-full md:w-[300px] p-4">
+            <div>
                 {successMessage && (
                     <div className="mb-4 p-2 bg-green-200 text-green-800 border border-green-300 rounded">
                         {successMessage}
@@ -91,6 +63,8 @@ export default function Guestbook() {
                         {errorMessage}
                     </div>
                 )}
+            </div>
+            <div>
                 <div className="mb-4">
                     <h1 className="text-2xl font-bold">Guestbook</h1>
                 </div>
@@ -133,29 +107,81 @@ export default function Guestbook() {
                     </button>
                 </form>
             </div>
-            <div className="flex-none w-full md:w-[300px] mt-0 p-4 bg-white rounded-lg shadow-lg max-h-96 overflow-y-auto">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Guest List</h2>
-                <ul className="space-y-4">
-                    {guests.length > 0 ? (
-                        guests.map((guest) => (
-                            <li key={guest.id} className="border-b pb-4">
-                                <div className="text-lg font-semibold text-blue-600">
-                                    {guest.name}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                    {guest.email}
-                                </div>
-                                <p className="text-gray-700 mt-2">{guest.comment}</p>
-                                <div className="text-xs text-gray-400 mt-1">
-                                    {new Date(guest.createdAt).toLocaleDateString()}
-                                </div>
-                            </li>
-                        ))
-                    ) : (
-                        <p className="text-gray-600">No guests available.</p>
-                    )}
-                </ul>
-            </div>
         </div>
     );
 }
+
+
+function GuestsList() {
+    const [guests, setGuests] = useState<Guest[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadGuests = async () => {
+            try {
+                const guestsData = await fetchGuestsResource();
+                setGuests(guestsData);
+                setLoading(false);
+            } catch (error) {
+                setError('Failed to load guests');
+                setLoading(false);
+            }
+        };
+
+        loadGuests();
+    }, []);
+
+    if (loading) return (
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <p className="blinking-text block text-xs pb-4">LOADING</p>
+            <span className="loader"></span>
+        </div>
+    );
+    if (error) return <div>{error}</div>;
+
+    return (
+        <div className="flex-none w-full md:w-[300px] mt-0 p-4 bg-white rounded-lg shadow-lg max-h-96 overflow-y-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Guest List</h2>
+            <ul className="space-y-4">
+                {guests.length > 0 ? (
+                    guests.map((guest) => (
+                        <li key={guest.id} className="border-b pb-4">
+                            <div className="text-lg font-semibold text-blue-600">
+                                {guest.name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                                {guest.email}
+                            </div>
+                            <p className="text-gray-700 mt-2">{guest.comment}</p>
+                            <div className="text-xs text-gray-400 mt-1">
+                                {new Date(guest.createdAt).toLocaleDateString()}
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <p className="text-gray-600">No guests available.</p>
+                )}
+            </ul>
+        </div>
+    );
+}
+
+export default function Guestbook() {
+    return (
+        <div className="flex flex-col md:flex-row justify-center m-4 space-y-4 md:space-y-0 md:space-x-4">
+            <Suspense fallback={
+                <div className="flex flex-col items-center justify-center min-h-screen">
+                    <p className="blinking-text block text-xs pb-4">LOADING</p>
+                    <span className="loader"></span>
+                </div>
+            }>
+                <GuestForm />
+                <GuestsList />
+            </Suspense>
+        </div>
+    );
+}
+
+
+
