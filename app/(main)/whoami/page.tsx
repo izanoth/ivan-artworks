@@ -4,13 +4,13 @@ export default function Whoami() {
     return (
         <div className="flex items-center justify-center h-full flex-wrap">
             <div className="w-[600px] p-8 bg-white text-left" style={{ fontFamily: '"Courier Prime", monospace' }}>
-                <Image 
+                <Image
                     src="/images/me.png"
                     alt="Me"
                     className="float-right shadow-bottom-left rounded-md ml-4 mb-4"
-                    width={144} 
+                    width={144}
                     height={214}
-                    //style={{ boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.3), 8px -8px 8px rgba(0, 0, 0, 0)' }}
+                //style={{ boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.3), 8px -8px 8px rgba(0, 0, 0, 0)' }}
                 />
                 <h2 className="text-3xl font-bold mb-4">Who am I</h2>
                 <p>
@@ -25,11 +25,11 @@ export default function Whoami() {
                 <p>
                     I started studying programming and developing full-stack web systems around 2015, which now allows me to combine these two skills in this modest application, developed with Next.js, Node, React, and Tailwind.
                 </p>
-                
+
                 <p>
                     I&apos;ll be satisfied if I can make someone&apos;s day a little better.
                 </p>
-     
+
                 <hr className="my-8" />
 
                 <p>
@@ -46,7 +46,9 @@ export default function Whoami() {
                 </p>
                 <p>
                     Estarei satisfeito se puder fazer do dia de alguém um pouco melhor.
-                </p>                
+                </p>
+                <p className="mt-3">Itanhaém, 26 de agosto de 2024.
+                </p>
             </div>
         </div>
     );

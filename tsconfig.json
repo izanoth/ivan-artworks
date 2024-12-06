@@ -29,9 +29,9 @@
       "@globals.css": ["app/globals.css"],
       "@/prisma": ["lib/prisma.ts"],
       "@rootLayout": ["app/layout.tsx"],
-      "@blogLayout": ["app/blog/layout.tsx"],
-      "@/layout/*": ["app/_components/*"],
-      "@/blog/components/*": ["app/blog/_components/*"],
+      "@/layout/*": ["app/(main)/_components/*"],
+      "@/blog/components/*": ["app/(alternatives)/blog/_components/*"],
+      "@MyAlbuns" : ["myalbuns.js"],
     }
   },
   "include": [

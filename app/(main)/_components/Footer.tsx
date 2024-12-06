@@ -11,6 +11,10 @@ const Footer: React.FC = () => {
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
                         <li className="inline mr-2">
+                            <Link href="/blog" className="text-gray-700 hover:text-gray-900">Blog</Link>
+                        </li>
+                        <li className="inline mx-2 text-gray-500">⋅</li>
+                        <li className="inline mr-2">
                             <Link href="/guestbook" className="text-gray-700 hover:text-gray-900">Guestbook</Link>
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
@@ -23,9 +27,9 @@ const Footer: React.FC = () => {
                 <div className="text-center text-lg-end my-auto">
                     <ul className="list-none mb-0 flex justify-center lg:justify-end">
                         <li className="mr-4">
-                            <a href="https://instagram.com/_zanoth_" className="text-gray-700 hover:text-gray-900">
+                            {/* <a href="https://instagram.com/_zanoth_" className="text-gray-700 hover:text-gray-900">
                                 <i className="bi bi-instagram text-3xl pr-4"></i>
-                            </a>
+                            </a> */}
                             <a href="https://github.com/izanoth" className="text-gray-700 hover:text-gray-900">
                                 <i className="bi bi-github text-3xl"></i>
                             </a>

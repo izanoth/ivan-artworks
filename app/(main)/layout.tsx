@@ -2,8 +2,8 @@ import { Inter } from "next/font/google";
 import "@globals.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
-import Header from '@/layout/Header';
-import Footer from '@/layout/Footer';
+import Header from '@/app/(main)/_components/Header';
+import Footer from '@/app/(main)/_components/Footer';
 
 const inter = Inter({ subsets: ['latin'], display: 'optional' });
 

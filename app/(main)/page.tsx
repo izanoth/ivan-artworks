@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Carousel } from 'react-bootstrap';
-import albuns from '../myalbuns.js';
+import albuns from '@MyAlbuns';
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
