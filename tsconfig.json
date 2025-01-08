@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "ES5",
+    "noImplicitAny": false,
     "baseUrl": ".",
     "lib": [
       "dom",
@@ -24,14 +27,26 @@
     ],
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ],
-      "@globals.css": ["app/globals.css"],
-      "@/prisma": ["lib/prisma.ts"],
-      "@rootLayout": ["app/layout.tsx"],
-      "@/layout/*": ["app/(main)/_components/*"],
-      "@/blog/components/*": ["app/(alternatives)/blog/_components/*"],
-      "@MyAlbuns" : ["myalbuns.js"],
+      "@/globals.css": [
+        "src/app/globals.css"
+      ],
+      "@/prisma": [
+        "lib/prisma.ts"
+      ],
+      "@rootLayout": [
+        "src/app/layout.tsx"
+      ],
+      "@/layout/*": [
+        "src/app/_components/*"
+      ],
+      "@/blog/components/*": [
+        "src/app/(alternatives)/blog/_components/*"
+      ],
+      "@MyAlbuns": [
+        "myalbuns.js"
+      ],
     }
   },
   "include": [
@@ -39,7 +54,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/mydata.js", 
+    "lib/mydata.js",
     "prisma/seed.js"
   ],
   "exclude": [
