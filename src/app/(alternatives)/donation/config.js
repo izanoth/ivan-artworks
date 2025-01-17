@@ -20,5 +20,5 @@ const evmWalletChains = {
 }
 
 export const NetworkId = 'mainnet';
-export const HelloNearContract = contractPerNetwork[NetworkId];
+export const DonationNearContract = contractPerNetwork[NetworkId];
 export const EVMWalletChain = evmWalletChains[NetworkId];

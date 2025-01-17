@@ -5,7 +5,7 @@ import { useState, StrictMode } from "react";
 import { Carousel } from 'react-bootstrap';
 import albuns from '@MyAlbuns';
 
-export default function render() {
+export default function Music() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleSelect = (selectedIndex: number) => {
