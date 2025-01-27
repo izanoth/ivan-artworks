@@ -4,32 +4,31 @@ import Link from 'next/link';
 
 const Header: React.FC = () => {
     return (
-        <div className="bg-dark text-white">
+        <div className="bg-gray-300 text-gray-600">
             <div className="container mx-auto flex items-center justify-between p-4">
-                <div>
-                    <p className="text-white text-left text-xl font-bold">Zanoth</p>
+                <div className="flex flex-col justify-center items-center">
+                    <img src="/images/test.png" style={{ height: '30px', width: 'auto' }} />
+                    {/*  <p className="text-white text-left text-xl font-bold">Zanoth</p> */}
                     <p
                         style={{ fontSize: '12px' }}
-                        className="text-white text-left font-bold"
+                        className="font-bold"
                     >
-                        Independent Artworks
+                        Independent Digital Artworks
                     </p>
                 </div>
 
-                <div className="flex items-center flex-row">
-                    <div className="flex flex-col pl-4">
-                        <p className="text-sm tracking-[.20em]">Gift with</p>
-                        <div>
-                            <Link href="/donation" passHref legacyBehavior>
-                                <img
-                                    src="/near.svg"
-                                    alt="NEAR"
-                                    width="80"
-                                    height="auto"
-                                    className="invert cursor-pointer d-inline-block align-text-top"
-                                />
-                            </Link>
-                        </div>
+                <div className="flex flex-col justify-center items-center">
+                    <p className="text-sm tracking-[.20em] font-bold">Gift with</p>
+                    <div>
+                        <Link href="/donation" passHref legacyBehavior>
+                            <img
+                                src="/near.svg"
+                                alt="NEAR"
+                                width="80"
+                                height="auto"
+                                className="cursor-pointer d-inline-block align-text-top"
+                            />
+                        </Link>
                     </div>
                 </div>
             </div >

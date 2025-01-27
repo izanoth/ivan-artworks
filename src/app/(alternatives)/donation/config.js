@@ -1,6 +1,6 @@
 const contractPerNetwork = {
 	mainnet: 'donate-zanoth.near',
-	testnet: 'hello.near-examples.testnet',
+	testnet: 'znt.testnet',
 };
 
 // Chains for EVM Wallets 

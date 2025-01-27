@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { initialBoard } from './components/InitBoard.js';
 import { Square } from './components/Square.js'
-import { isMoveValid } from './Moves.js';
-import { checkMate } from './Checkmate.js';
+import { isMoveValid } from './functions/Moves.js';
+import { checkMate } from './functions/Checkmate.js';
 import './style/App.css';
 
 const OmegaChess = () => {
@@ -103,7 +103,7 @@ const OmegaChess = () => {
     var opponent = 'White';
   }
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col lg:flex-row">
       <div className="w-full flex flex-row md:w-2/3">
         <div className="board">
           {board.map((row, rowIndex) => (
@@ -123,21 +123,20 @@ const OmegaChess = () => {
           <div className="surfice"></div>
           <div className="extra-surfice">
             <h1 className="text-2xl font-bold"></h1>
-
           </div>
         </div>
         <span className={`turn-advice bg-${player.toLowerCase()} text-${opponent.toLowerCase()}`}><b>{player}</b> turn</span>
       </div>
-      <div className="w-full md:w-1/3">
+      <div className="w-full lg:w-1/3">
         <h1 className="text-2xl font-bold">Omega Chess</h1>
         <div className="card p-2 mt-2 text-left">
-          <p className="text-lg bold text-center">Rules</p>
-          <p className="text-sm">A Pawn can move one, two or three squares forward and after that, only one square at a time.</p>
-          <p className="text-sm"><b>The Champion</b> <img height="14" className="inline" src="/pieces/black-champion.svg" />, like the Knight, is classified as a leaper. It can move one square orthogonally, forward, backward or to either side. Or the Champion can jump two squares forward or backward or to either side, or jump two squares diagonally in all four directions. The Champion can jump over pieces and it can control up to twelve squares.The Champion cannot move one square diagonally.</p>
-          <p className="text-sm"><b>The Wizard</b> <img height="14" className="inline" src="/pieces/black-wizard.svg" /> is also classified as a leaper. It can move one square diagonally in all four directions. Or, like an exaggerated Knight move, the Wizard can jump three squares horizontally or vertically and then one square to either side. The Wizard is bound to the color of its starting square. The Wizard can jump over pieces to also control up to twelve squares.</p>
-          <p className="text-sm">The Wizard squares are part of the board and can be occupied by any piece (except for pawns and rooks, which have no way of getting there)</p>
+          <div className="text-lg bold text-center">Rules</div>
+          <div className="text-sm">A Pawn can move one, two or three squares forward and after that, only one square at a time.</div>
+          <div className="text-sm"><b>The Champion</b> <div className="mini-svg"><img height="14" className="inline" src="/pieces/black-champion.svg" /></div>, like the Knight, is classified as a leaper. It can move one square orthogonally, forward, backward or to either side. Or the Champion can jump two squares forward or backward or to either side, or jump two squares diagonally in all four directions. The Champion can jump over pieces and it can control up to twelve squares.The Champion cannot move one square diagonally.</div>
+          <div className="text-sm"><b>The Wizard</b> <div className="mini-svg"><img height="14" className="inline" src="/pieces/black-wizard.svg" /></div> is also classified as a leaper. It can move one square diagonally in all four directions. Or, like an exaggerated Knight move, the Wizard can jump three squares horizontally or vertically and then one square to either side. The Wizard is bound to the color of its starting square. The Wizard can jump over pieces to also control up to twelve squares.</div>
+          <div className="text-sm">The Wizard squares are part of the board and can be occupied by any piece (except for pawns and rooks, which have no way of getting there)</div>
         </div>
-        <p><a href="https://omegachess.com">Omega Chess Official Website</a></p>
+        <div className="inline"><a href="https://omegachess.com">Omega Chess Official Website</a></div>
       </div>
     </div>
   )

@@ -1,3 +1,5 @@
+"use client";
+import { useState } from 'react';
 import { Header } from './_components/LayoutComponents';
 import Footer from '@/app/_components/Footer';
 import "@/globals.css";
@@ -8,6 +10,7 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
+      const [selected, setSelected] = useState<string | null>(null);
     return (
         <html lang="en">
             <head>
@@ -28,9 +31,9 @@ export default function RootLayout({
                 <title>Zanoth&apos;s Blog</title>
             </head>
             <body>
-                <Header />
+                < Header />
                 <>{children}</>
-                <Footer />
+                < Footer setSelected={setSelected} />
             </body>
         </html>
     );

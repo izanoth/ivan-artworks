@@ -1,3 +1,8 @@
+:root {
+  --screen-width: 100vw;
+  --dynamic-size: calc(var(--screen-width) / 14);
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(12, 50px);
@@ -13,7 +18,6 @@
   z-index: -1;
   background-image: url('/images/bg-chessboard.png');
   filter: opacity(0.1);
-  /* box-shadow: 0 0 4px 2px rgba(0, 0, 0); */
 }
 
 .extra-surfice {
@@ -23,7 +27,6 @@
   top: -50px;
   left: -62px;
   z-index: -2;
-  /* background-color: transparent; */
   background-color: rgb(19 78 74);
   box-shadow: 0 0 2px 2px rgba(30, 30, 30);
 }
@@ -34,20 +37,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
-
 }
-
-/* .main-square {
-  background-color: #f0d9b5;
-}
-
-.wizard-square {
-  background-color: #e1e1e1;
-} */
 
 .outside-square {
-  /* background-color: rgb(19 78 74); */
   background-color: transparent;
 }
 
@@ -80,48 +72,66 @@
 }
 
 .svg-piece {
-  width: 100px;
-  height: 100px;
-  filter:opacity(1);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.mini-svg {
+  display:inline-block;
+  width: 30px;
+  height: 30px;
+}
 
 .turn-advice {
   writing-mode: vertical-rl;
-  /* Define a direção do texto (vertical direita para esquerda) */
   text-orientation: sideways-right;
-  /* Mantém os caracteres em pé */
   font-weight: bold;
-  /* Estilo do texto */
   color: #333;
-  /* Cor do texto */
   text-align: center;
-  /* Centraliza o texto dentro do container */
   height: 200px;
-  /* Altura do container para visualizar o texto completo */
   display: flex;
-  /* Facilita alinhamento */
   letter-spacing: 5px;
   justify-content: center;
-  /* Centraliza horizontalmente */
   align-items: center;
-  /* Centraliza verticalmente */
   gap: 15px;
-  /* Espaçamento entre os caracteres */
   font-size: 22px;
-  /* Ajuste do tamanho do texto */
   border: 1px solid #333;
 }
 
 .turn-advice::before,
 .turn-advice::after {
   content: '';
-  /* Espaçamento opcional antes e depois */
 }
 
 .turn-advice span {
   display: inline-block;
-  /* Necessário para aplicar transform em elementos inline */
   transform: rotate(45deg);
-  /* Rotaciona cada caractere 45 graus */
+}
+
+@media (max-width: 600px) {
+  .square {
+    width: var(--dynamic-size);
+    height: var(--dynamic-size);
+  }
+
+  .extra-surfice {
+    display: none;
+  }
+
+  .surfice {
+    display: none;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(12, var(--dynamic-size));
+    grid-template-rows: repeat(12, var(--dynamic-size));
+  }
+  .svg-piece {
+    width: var(--dynamic-size);
+    height: var(--dynamic-size);
+  }
 }
