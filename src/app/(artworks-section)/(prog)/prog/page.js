@@ -2,14 +2,14 @@
 
 import React from "react";
 import OmegaChess from './App';
-
 import Link from 'next/link';
+import Image from 'next/image';
 
-export default function Prog() {
+const Prog = () => {
     return (
         <div className="container-fluid md:container space-y-6 p-4 text-center">
-
             <OmegaChess />
+
 
             <div className="card mt-4 bg-sky-100">
                 <div className="p-4 flex flex-col items-center justify-center">
@@ -23,9 +23,9 @@ export default function Prog() {
                     </Link>
 
                     <div className="">or</div>
-                    <div className="flex justify-center items-center text-center">
+                    <div className="flex flex-row justify-center items-center text-center">
                         <Link href="/donation" passHref legacyBehavior>
-                            <button className="bg-black outside-square text-white hover:bg-gray-400 font-bold py-2 px-4 rounded">
+                            <button className="bg-black outside-square text-white hover:bg-gray-400 font-bold py-2 px-4 mr-4 rounded">
                                 <p className="text-sm tracking-[.20em]">using Ⓝ</p>
                                 <img
                                     src="/near.svg"
@@ -36,6 +36,20 @@ export default function Prog() {
                                 />
                             </button>
                         </Link>
+
+                        <div className="flex flex-col ml-4">
+                            <Image
+                                src={ '/images/wisetag.png'}
+                                width={80}
+                                height={400}
+                                style={{hue: '(20%,70%,150%)'}}
+                            />
+                            <Image
+                                src={ '/images/ivanc2874-wisetag.png'}
+                                width={100}
+                                height={100}
+                            />
+                        </div>
                     </div>
                     <p className="pt-4">
                         Fork from <a href="https://github.com/izanoth/omega-chess"><i className="bi bi-github text-2/3xl"></i></a>
@@ -52,3 +66,5 @@ export default function Prog() {
         </div>
     );
 }
+
+export default Prog;

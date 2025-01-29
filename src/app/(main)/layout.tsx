@@ -1,54 +1,38 @@
-'use client';
+import { Metadata } from "next";
+import ClientLayout from '@/app/_components/ClientLayout';
 
-import { Inter } from "next/font/google";
-import "@/globals.css";
-import Script from "next/script";
-import { Analytics } from "@vercel/analytics/react";
-import Header from '@/app/_components/Header';
-import Footer from '@/app/_components/Footer';
-import '@/app/globals.css';
-import Menu from '@/app/_components/Menu';
-import { useState } from 'react';
+export const metadata: Metadata = {
+  title: "Zanoth Independent Digital Artworks",
+  description: "Zanoth Independent Digital Artworks - Personal Portfolio.",
+  openGraph: {
+    type: "website",
+    url: "https://zanoth.vercel.app/",
+    title: "Zanoth © Independent Digital Artworks",
+    description: "My Personal Portfolium - Music, Art and Entertainment",
+    siteName: "Zanoth Independent Digital Artworks",
+    images: [
+      {
+        url: "https://zanoth.vercel.app/images/zanoth.png",
+        width: 239,
+        height: 40,
+        alt: "Zanoth Independent Digital Artworks",
+      },
+    ],
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zanoth Independent Digital Artworks",
+    description: "Music, Art and Entertainment - My Personal Portfolium.",
+    images: ["https://zanoth.vercel.app/images/zanoth.png"],
+    creator: "@zanoth4",
+  },
+};
 
-const inter = Inter({ subsets: ['latin'], display: 'optional' });
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [selected, setSelected] = useState<string | null>(null);
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Portfolium" />
-        <meta name="author" content="Ivan Cilento" />
-        <title>Zanoth&apos;s Artworks</title>
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
-        <Script src="globals.js" strategy="beforeInteractive" />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-        {/*  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="ivanzanothw" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script> */}
-
-      </head>
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Header />
-        <Menu selected={selected} setSelected={setSelected} />
-        <div className="flex-grow">
-          {children}
-          <Analytics />
-        </div>
-
-        <Footer setSelected={setSelected} />
-      </body>
-    </html >
+    <>
+      <ClientLayout>{children}</ClientLayout>
+    </>
   );
 }
