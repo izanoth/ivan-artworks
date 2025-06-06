@@ -20,11 +20,11 @@ export default function Footer({ setSelected }: FooterProps) {
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
                         <li className="inline mr-2">
-                            <Link href="/guestbook" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Guestbook</Link>
+                            <Link href="/guestbook" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Livro de Visitas</Link>
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
                         <li className="inline">
-                            <Link href="/contact" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Contact</Link>
+                            <Link href="/contact" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Contato</Link>
                         </li>
                     </ul>
                     <p className="text-gray-600 text-sm mb-0">Zanoth &copy; Independent Artworks 2023-25. All Rights Reserved.</p>

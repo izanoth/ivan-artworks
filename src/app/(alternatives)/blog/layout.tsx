@@ -1,22 +1,59 @@
-"use client";
-import { useState } from 'react';
-import { Header } from './_components/LayoutComponents';
-import Footer from '@/app/_components/Footer';
 import "@/globals.css";
+import { Metadata } from "next";
+import Link from 'next/link';
+import PostPreview from '@/blog/components/PostPreview';
+import React, { useState } from 'react';
+import ClientLayout from '@/blog/components/ClientLayout';
 
+interface Post {
+    id: string;
+    title: string;
+    content: string;
+    author: {
+        name: string;
+        email: string;
+    } | null;
+    createdAt: Date;
+    updatedAt: Date;
+    published: boolean;
+}
+
+export const metadata: Metadata = {
+  title: "Zanoth's Blog | Cultura, Música e Sociedade",
+  description: "Reflexões sobre o Brasil, a arte e o mundo contemporâneo.",
+  openGraph: {
+    type: "website",
+    url: "https://zanoth.vercel.app/blog",
+    title: "Zanoth e-magazine | Cultura em movimento",
+    description: "Um espaço para ideias livres, crítica social, música e arte independente.",
+    siteName: "Zanoth Independent Digital Artworks",
+    images: [
+      {
+        url: "https://zanoth.vercel.app/images/zntmag.png",
+        width: 865,
+        height: 338,
+        alt: "Zanoth Independent Digital Artworks",
+      },
+    ],
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zanoth e-magazine",
+    description: "Crítica, arte e rebeldia em forma de conteúdo digital.",
+    images: ["https://zanoth.vercel.app/images/zanoth.png"],
+    creator: "@zanoth4",
+  },
+};
 
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-      const [selected, setSelected] = useState<string | null>(null);
     return (
         <html lang="en">
             <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Portfolium" />
-                <meta name="author" content="Ivan Cilento" />
                 <script src="https://accounts.google.com/gsi/client" async defer></script>
                 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
@@ -28,12 +65,9 @@ export default function RootLayout({
                     referrerPolicy="no-referrer"
                 />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <title>Zanoth&apos;s Blog</title>
             </head>
             <body>
-                < Header />
-                <>{children}</>
-                < Footer setSelected={setSelected} />
+                <ClientLayout>{children}</ClientLayout>
             </body>
         </html>
     );

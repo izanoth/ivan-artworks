@@ -13,7 +13,7 @@ export default function Music() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto max-w-2x1 p-4">
       <div className="w-full mb-4">
         <ul className="flex items-center justify-center space-x-4 p-4">
           <li>

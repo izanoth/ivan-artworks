@@ -26,6 +26,7 @@ type PostPreviewProps = {
 const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false }) => {
   const router = useRouter();
   const authorName = post.author ? post.author.name : "Unknown author";
+  const content = post.content.replace(/\\n/g, "\n");
 
   // Função para gerar o resumo do conteúdo
   const getContentSummary = (content: string) => {
@@ -42,7 +43,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false
             <h2 className="text-2xl font-bold text-gray-800 mb-6">{post.title}</h2>
             <small className="text-gray-600 mb-4 block">By {authorName}</small>
             <ReactMarkdown className="text-gray-700">
-              {showFullContent ? post.content : getContentSummary(post.content)}
+              {showFullContent ? content : getContentSummary(content)}
             </ReactMarkdown>
           </div>
         </div>

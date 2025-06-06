@@ -15,7 +15,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'), // << AQUI
+  ],
   safelist: [
     'play-button',
     'track',

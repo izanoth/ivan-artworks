@@ -3,36 +3,43 @@ import ClientLayout from '@/app/_components/ClientLayout';
 
 export const metadata: Metadata = {
   title: "Zanoth Independent Digital Artworks",
-  description: "Zanoth Independent Digital Artworks - Personal Portfolio.",
+  description:
+    "Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente. Explore projetos únicos e publicações originais.",
   openGraph: {
     type: "website",
     url: "https://zanoth.vercel.app/",
     title: "Zanoth © Independent Digital Artworks",
-    description: "My Personal Portfolium - Music, Art and Entertainment",
+    description:
+      "Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente. Publicações, álbuns e ideias em um só espaço.",
     siteName: "Zanoth Independent Digital Artworks",
+    locale: "pt_BR",
     images: [
       {
-        url: "https://zanoth.vercel.app/images/zanoth.png",
-        width: 239,
-        height: 40,
+        url: "https://zanoth.vercel.app/images/windscover.png",
+        width: 418,
+        height: 418,
         alt: "Zanoth Independent Digital Artworks",
       },
     ],
-    locale: "pt_BR",
   },
   twitter: {
     card: "summary_large_image",
     title: "Zanoth Independent Digital Artworks",
-    description: "Music, Art and Entertainment - My Personal Portfolium.",
+    description:
+      "Arte digital, publicações e música independente por Zanoth. Um portfólio autoral com atitude e originalidade.",
     images: ["https://zanoth.vercel.app/images/zanoth.png"],
     creator: "@zanoth4",
   },
 };
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <>
-      <ClientLayout>{children}</ClientLayout>
+      <ClientLayout>
+        {children}
+      </ClientLayout>
     </>
   );
 }
