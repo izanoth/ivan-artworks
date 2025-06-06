@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://zanoth.vercel.app/images/zntmag.png",
-        width: 865,
-        height: 338,
+        width: 350,
+        height: 137,
         alt: "Zanoth Independent Digital Artworks",
       },
     ],
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zanoth e-magazine",
     description: "Crítica, arte e rebeldia em forma de conteúdo digital.",
-    images: ["https://zanoth.vercel.app/images/zanoth.png"],
+    images: ["https://zanoth.vercel.app/images/zntmag.png"],
     creator: "@zanoth4",
   },
 };
