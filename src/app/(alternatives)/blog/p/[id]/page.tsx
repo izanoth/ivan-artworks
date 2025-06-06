@@ -1,8 +1,6 @@
 import React from "react";
 import PostDetail, { PostProps } from "@/blog/components/PostDetail";
 import prisma from "@/prisma";
-import 'react-comments-section/dist/index.css'
-
 
 // Definição do tipo PageProps
 type PageProps = {
@@ -53,12 +51,51 @@ async function getPostData(id: string): Promise<PostWithRelations | null> {
     };
 }
 
+/*********
+//METADATA
+**********/
 // Função do servidor para buscar os dados do post com base na rota
 export async function generateMetadata({ params }: PageProps) {
-    const post = await getPostData(params.id);
-    return { title: post?.title || "Post Not Found" };
-}
+  function getExcerpt(content: string = "", wordLimit = 30): string {
+    return content
+      .split(/\s+/)
+      .slice(0, wordLimit)
+      .join(" ")
+      .trim()
+      .concat("...");
+  }
 
+  const post = await getPostData(params.id);
+  const excerpt = getExcerpt(post?.content || "");
+
+  return {
+    title: `${post?.title || "Página não encontrada!" } | Zanoth's Blog`,
+    description: excerpt,
+    openGraph: {
+      title: `${post?.title || "Página não encontrada!" } | Zanoth's Blog`,
+      description: excerpt,
+      url: `https://zanoth.vercel.app/blog/p/${params.id}`,
+      siteName: "Zanoth Independent Digital Artworks",
+      locale: "pt_BR",
+      type: "article",
+      images: [
+        {
+          url: "https://zanoth.vercel.app/images/zntmag.png",
+          width: 865,
+          height: 338,
+          alt: post?.title || "",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post?.title || "Página não encontrada!" } | Zanoth's Blog`,
+      description: excerpt,
+      images: ["https://zanoth.vercel.app/media/images/zntmag.png"],
+      creator: "@zanoth4",
+    },
+  };
+}
 // Componente principal da página
 const PostPage = async ({ params }: PageProps) => {
     const post = await getPostData(params.id);

@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 const Header: React.FC = () => {
     return (
-        <div className="bg-gray-300 text-gray-600">
+        <div className="bg-white text-gray-600">
             <div className="container mx-auto flex items-center justify-between p-4">
                 <div className="flex flex-col justify-center items-center">
-                    <img src="/images/zanoth.png" style={{ height: '30px', width: 'auto' }} />
+                    <img src="/images/zntmag.png" style={{ height: '70px', width: 'auto' }} />
                     {/*  <p className="text-white text-left text-xl font-bold">Zanoth</p> */}
                     <p
                         style={{ fontSize: '12px' }}

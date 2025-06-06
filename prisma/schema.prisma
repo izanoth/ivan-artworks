@@ -21,14 +21,15 @@ model Guest {
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   title     String
   content   String?
-  published Boolean  @default(false)
+  published Boolean   @default(false)
   authorId  String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  author    User?    @relation(fields: [authorId], references: [id])
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  author    User?     @relation(fields: [authorId], references: [id])
+  comments  Comment[]
 }
 
 model User {
@@ -40,4 +41,17 @@ model User {
   posts     Post[]
 
   @@map("users")
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  postId     String
+  guestName  String
+  guestEmail String?
+  text       String
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("comments")
 }
