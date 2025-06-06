@@ -81,17 +81,20 @@ export async function generateMetadata({ params }: PageProps) {
       images: [
         {
           url: "https://zanoth.vercel.app/images/zntmag.png",
-          width: 865,
-          height: 338,
+          width: 350,
+          height: 137,
           alt: post?.title || "",
         },
       ],
+    },
+    other: {
+      'fb:app_id': '1621706575132127',
     },
     twitter: {
       card: "summary_large_image",
       title: `${post?.title || "Página não encontrada!" } | Zanoth's Blog`,
       description: excerpt,
-      images: ["https://zanoth.vercel.app/media/images/zntmag.png"],
+      images: ["https://zanoth.vercel.app/images/zntmag.png"],
       creator: "@zanoth4",
     },
   };

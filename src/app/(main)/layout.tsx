@@ -18,16 +18,19 @@ export const metadata: Metadata = {
         url: "https://zanoth.vercel.app/images/windscover.png",
         width: 418,
         height: 418,
-        alt: "Zanoth Independent Digital Artworks",
+        alt: "Zanoth © Independent Digital Artworks",
       },
     ],
   },
+  other: {
+    'fb:app_id': '1621706575132127',
+  },
   twitter: {
     card: "summary_large_image",
-    title: "Zanoth Independent Digital Artworks",
+    title: "Zanoth © Independent Digital Artworks",
     description:
       "Arte digital, publicações e música independente por Zanoth. Um portfólio autoral com atitude e originalidade.",
-    images: ["https://zanoth.vercel.app/images/zanoth.png"],
+    images: ["https://zanoth.vercel.app/images/windscover.png"],
     creator: "@zanoth4",
   },
 };
