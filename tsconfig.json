@@ -38,6 +38,9 @@
       "@/pusher": [
         "lib/pusher.ts"
       ],
+      "@/auth": [
+        "lib/auth.ts"
+      ],
       "@rootLayout": [
         "src/app/layout.tsx"
       ],

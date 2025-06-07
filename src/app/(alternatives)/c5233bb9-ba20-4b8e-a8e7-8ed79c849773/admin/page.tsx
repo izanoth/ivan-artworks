@@ -12,9 +12,11 @@ type Comment = {
 export default function AdminPage() {
   const [comments, setComments] = useState<Comment[]>([]);
 
+  console.log('Pusher Key:', process.env.NEXT_PUBLIC_PUSHER_KEY);
+
   useEffect(() => {
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+    const pusher = new Pusher(process.env.PUSHER_KEY!, {
+      cluster: process.env.PUSHER_CLUSTER!,
     });
 
     const channel = pusher.subscribe('comments');
