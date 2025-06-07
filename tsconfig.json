@@ -35,6 +35,9 @@
       "@/prisma": [
         "lib/prisma.ts"
       ],
+      "@/pusher": [
+        "lib/pusher.ts"
+      ],
       "@rootLayout": [
         "src/app/layout.tsx"
       ],

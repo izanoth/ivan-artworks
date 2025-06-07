@@ -37,6 +37,8 @@
     "near-api-js": "^4.0.3",
     "next": "^14",
     "next-auth": "^4.24.7",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0",
     "react": "^18",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18",
