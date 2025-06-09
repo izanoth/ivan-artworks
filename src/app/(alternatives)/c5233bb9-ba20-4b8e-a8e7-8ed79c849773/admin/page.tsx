@@ -41,6 +41,12 @@ export default function AdminPage() {
           </li>
         ))}
       </ul>
+      <ul>
+        <form method="POST" action="/api/admin/logout/route.ts">
+          <button type="submit">Logout</button>
+        </form>
+      </ul>
     </main>
   );
 }
+

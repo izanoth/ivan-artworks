@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import ClientLayout from '@/app/_components/ClientLayout';
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Zanoth Independent Digital Artworks",
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <ClientLayout>
+        <Analytics />
         {children}
       </ClientLayout>
     </>
