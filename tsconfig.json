@@ -35,9 +35,6 @@
       "@/prisma": [
         "lib/prisma.ts"
       ],
-      "@/pusher": [
-        "lib/pusher.ts"
-      ],
       "@/auth": [
         "lib/auth.ts"
       ],

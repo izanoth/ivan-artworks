@@ -1,26 +1,52 @@
-// app/api/login/route.ts
+// app/api/admin/login/route.ts
+export const runtime = 'nodejs';
+
 import { NextResponse } from 'next/server';
 import { signToken } from '@/auth';
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
-  const adminUser = process.env.ADMIN_USER;
-  const adminPassword = process.env.ADMIN_PASS;
+  try {
+    console.log('[DEBUG] Requisição recebida');
 
-  if (email === adminUser && password === adminPassword) {
-    const res = NextResponse.json({ success: true });
-    const token = signToken({ email });
+    const { username, password } = await req.json();
+    console.log('[DEBUG] Dados recebidos:', { username, password });
 
-    res.cookies.set('admin-auth', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: 60 * 60 * 2, // 2 horas
+    const adminUser = process.env.ADMIN_USER;
+    const adminPassword = process.env.ADMIN_PASS;
+
+    console.log('[DEBUG] Variáveis do ambiente:', {
+      adminUser,
+      adminPassword,
     });
 
+    if (username === adminUser && password === adminPassword) {
+      const token = await signToken({ username });
+      console.log('[DEBUG] Token gerado:', token);
 
-    return res;
+      const res = new NextResponse(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Debug-Token': token,
+        },
+      });
+
+      res.cookies.set('admin-auth', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: 60 * 60 * 2, // 2 horas
+      });
+
+      return res;
+    }
+
+    console.warn('[WARN] Credenciais inválidas');
+    return NextResponse.json({ success: false, username }, { status: 401 });
+
+  } catch (err) {
+    console.error('[ERROR] Erro no endpoint de login:', err);
+    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
   }
-
-  return NextResponse.json({ success: false }, { status: 401 });
 }
+
