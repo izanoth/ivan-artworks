@@ -38,6 +38,9 @@
       "@/auth": [
         "lib/auth.ts"
       ],
+      "@/firebase-admin": [
+        "/lib/firebase-admin"
+      ],
       "@rootLayout": [
         "src/app/layout.tsx"
       ],
