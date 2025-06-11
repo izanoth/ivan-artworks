@@ -16,6 +16,8 @@ export default function Comments({ postId }: { postId: string }) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [guestName, setGuestName] = useState('');
 
+  const [loading, setLoading] = useState(false);
+  
   useEffect(() => {
     fetch(`/api/blog/comments/${postId}`)
       .then((res) => res.json())
@@ -23,6 +25,7 @@ export default function Comments({ postId }: { postId: string }) {
   }, [postId]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (!text.trim()) return;
 
     const res = await fetch('/api/blog/comments', {
@@ -40,6 +43,7 @@ export default function Comments({ postId }: { postId: string }) {
       setComments((prev) => [newComment, ...prev]);
       setText('');
       setGuestName('');
+      setLoading(false);
     }
   };
 
@@ -48,22 +52,30 @@ export default function Comments({ postId }: { postId: string }) {
         <div className="w-full max-w-xl space-y-6">
         <h2 className="text-lg font-semibold">Comentários</h2>
 
-        {/* Comentários em área isolada à direita com scroll interno */}
-        {comments.length > 0 && (
+        
+        {loading ? (
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <p className="blinking-text block text-xs pb-4">LOADING</p>
+            <span className="loader"></span>
+          </div>
+        ) : (
+          comments.length > 0 && (
             <div className="max-h-64 overflow-auto border border-gray-200 rounded-md p-3 text-sm">
-                <ul className="space-y-3">
+              <ul className="space-y-3">
                 {comments.map((comment: any) => (
-                    <li key={comment.id} className="p-3 border rounded">
+                  <li key={comment.id} className="p-3 border rounded">
                     <p className="font-semibold">{comment.guestName}</p>
                     <p className="text-gray-700">{comment.text}</p>
                     <p className="text-xs text-gray-500">
-                        {new Date(comment.createdAt).toLocaleString()}
+                      {new Date(comment.createdAt).toLocaleString()}
                     </p>
-                    </li>
+                  </li>
                 ))}
-                </ul>
+              </ul>
             </div>
+          )
         )}
+        
 
         {/* Formulário de comentários */}
         <div className="space-y-3 mt-4">
@@ -94,3 +106,4 @@ export default function Comments({ postId }: { postId: string }) {
     );
 
 }
+

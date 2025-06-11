@@ -54,7 +54,7 @@ export default function PopupClient() {
               Algumas expressões refletem a minha forma pessoal de trabalho e inspiração no momento da criação.
             </p>
             <p className="mb-2">
-              Tudo o que integra esse site foi desenvolvido particularmente com <i>know-how</i> em programação.
+              Tudo o que integra esse site foi desenvolvido particularmente, com <i>know-how</i> em programação.
             </p>
             <p>Caso queira apoiar, sua contribuição será muito bem-vinda e valorizada.</p>
             <p>Muito obrigado pela atenção.</p>

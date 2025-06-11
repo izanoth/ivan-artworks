@@ -4,9 +4,19 @@ import { useState, useEffect } from 'react';
 
 export function PixPopup({ onClose }) {
   const [qrCode, setQrCode] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [payload, setPayload] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    if (!loading) return;
+    const interval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? '' : prev + '.'));
+    }, 500);
+    return () => clearInterval(interval); // limpeza
+  }, [loading]);
 
   const handleCopy = async () => {
     if (!payload) return;
@@ -62,16 +72,16 @@ export function PixPopup({ onClose }) {
         </button>
 
         {loading ? (
-          <div className="text-center font-bold">Gerando QR Code...</div>
-        ) : loading && !qrCode ? (
+          <div className="text-center font-bold">Gerando QR Code{dots}</div>
+        ) : !qrCode ? (
           <div className="text-center font-bold text-red-600">Erro ao gerar QR Code</div>
         ) : (
           <div className="text-center">
-            <h2 className="font-bold text-lg">Muito obrigado pelo seu interesse!</h2>
+            <h2 className="font-bold text-lg">Muito obrigado!</h2>
             <div className="font-bold text-lg mb-4">Escaneie ou copie o código</div>
             <button
               onClick={handleCopy}
-              className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
+              className="flex items-center text-center gap-2 text-sm font-medium text-blue-600 hover:underline"
             >
               <i className={`fa-solid ${copied ? 'fa-check' : 'fa-clipboard'}`}></i>
               {copied ? 'Copiado!' : 'Copiar código'}
@@ -79,7 +89,7 @@ export function PixPopup({ onClose }) {
             <img
               src={`data:image/png;base64,${qrCode}`}
               alt="QR Code PIX"
-              className="mx-auto mb-4 w-170 h-170"
+              className="mx-auto mb-4"
             />
             <p className="text-sm text-gray-600">
               Use seu app de banco para escanear o código
