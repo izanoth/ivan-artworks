@@ -16,6 +16,17 @@ export default function Comments({ postId }: { postId: string }) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [guestName, setGuestName] = useState('');
 
+  const [loading, setLoading] = useState(false);
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    if (!loading) return;
+    const interval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? '' : prev + '.'));
+    }, 500);
+    return () => clearInterval(interval); // limpeza
+  }, [loading]);
+  
   useEffect(() => {
     fetch(`/api/blog/comments/${postId}`)
       .then((res) => res.json())
@@ -23,6 +34,7 @@ export default function Comments({ postId }: { postId: string }) {
   }, [postId]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (!text.trim()) return;
 
     const res = await fetch('/api/blog/comments', {
@@ -40,57 +52,64 @@ export default function Comments({ postId }: { postId: string }) {
       setComments((prev) => [newComment, ...prev]);
       setText('');
       setGuestName('');
+      setLoading(false);
     }
   };
 
-    return (
-    <div className="flex justify-start">
-        <div className="w-full max-w-xl space-y-6">
-        <h2 className="text-lg font-semibold">Comentários</h2>
+return (
+  <div className="flex justify-start">
+    <div className="w-72 space-y-4 p-4 border border-gray-200 rounded-md bg-white shadow-sm text-sm">
+      <h2 className="text-base font-semibold text-gray-800">Comentários</h2>
 
-        {/* Comentários em área isolada à direita com scroll interno */}
-        {comments.length > 0 && (
-            <div className="max-h-64 overflow-auto border border-gray-200 rounded-md p-3 text-sm">
-                <ul className="space-y-3">
-                {comments.map((comment: any) => (
-                    <li key={comment.id} className="p-3 border rounded">
-                    <p className="font-semibold">{comment.guestName}</p>
-                    <p className="text-gray-700">{comment.text}</p>
-                    <p className="text-xs text-gray-500">
-                        {new Date(comment.createdAt).toLocaleString()}
-                    </p>
-                    </li>
-                ))}
-                </ul>
-            </div>
-        )}
-
-        {/* Formulário de comentários */}
-        <div className="space-y-3 mt-4">
-            <input
-            type="text"
-            value={guestName}
-            onChange={(e) => setGuestName(e.target.value)}
-            placeholder="Seu nome"
-            className="w-full p-2 border border-gray-300 rounded text-sm"
-            />
-
-            <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
-            rows={3}
-            placeholder="Faça o seu comentário..."
-            />
-            <button
-            onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-            >
-            Enviar
-            </button>
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-8">
+          <p className="text-xs text-dark animate-pulse">Enviando {dots}</p>
         </div>
-        </div>
+      ) : (
+        comments.length > 0 && (
+          <div className="max-h-48 overflow-auto border border-gray-100 rounded p-2">
+            <ul className="space-y-2">
+              {comments.map((comment: any) => (
+                <li key={comment.id} className="p-2 border rounded text-gray-700 bg-gray-50">
+                  <p className="font-medium text-gray-800">{comment.guestName}</p>
+                  <p>{comment.text}</p>
+                  <p className="text-[10px] text-gray-400">
+                    {new Date(comment.createdAt).toLocaleString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      )}
+
+      {/* Formulário de comentários */}
+      <div className="space-y-2 pt-2">
+        <input
+          type="text"
+          value={guestName}
+          onChange={(e) => setGuestName(e.target.value)}
+          placeholder="Seu nome"
+          className="w-full p-1.5 border border-gray-300 rounded text-sm"
+        />
+
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows={2}
+          placeholder="Comente..."
+          className="w-full p-1.5 border border-gray-300 rounded text-sm resize-none"
+        />
+
+        <button
+          onClick={handleSubmit}
+          className="w-full px-2 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 text-sm"
+        >
+          Enviar
+        </button>
+      </div>
     </div>
-    );
-
+  </div>
+  );
 }
+
