@@ -16,10 +16,6 @@ export default function Footer({ setSelected }: FooterProps) {
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
                         <li className="inline mr-2">
-                            <Link href="/blog" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Blog</Link>
-                        </li>
-                        <li className="inline mx-2 text-gray-500">⋅</li>
-                        <li className="inline mr-2">
                             <Link href="/guestbook" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Livro de Visitas</Link>
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
