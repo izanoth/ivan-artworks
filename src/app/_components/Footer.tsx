@@ -34,6 +34,9 @@ export default function Footer({ setSelected }: FooterProps) {
                             <a href="https://github.com/izanoth" className="text-gray-700 hover:text-gray-900">
                                 <i className="bi bi-github text-3xl"></i>
                             </a>
+                            <a rel="me" href="https://mas.to/@izanoth">
+                                <i className="bi bi-mastodon text-3xl"></i>
+                            </a>
                         </li>
                     </ul>
                 </div>
