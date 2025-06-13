@@ -14,6 +14,7 @@ type PostWithRelations = {
     id: string;
     title: string;
     content: string | null;
+    image: string | null;
     published: boolean;
     author: {
         name: string;
@@ -40,6 +41,7 @@ async function getPostData(id: string): Promise<PostWithRelations | null> {
         id: post.id,
         title: post.title,
         content: post.content || '',
+        image: post.image || '',
         published: post.published,
         author: post.author ? {
             name: post.author.name || 'Unknown',
@@ -80,9 +82,8 @@ export async function generateMetadata({ params }: PageProps) {
       type: "article",
       images: [
         {
-          url: "https://zanoth.vercel.app/images/zntmag.png",
-          width: 350,
-          height: 137,
+          url: `${post?.image ? `https://zanoth.vercel.app${post.image}` : "https://zanoth.vercel.app/images/logo-metadata.png"}`,          width: 1200,
+          height: 630,
           alt: post?.title || "",
         },
       ],
