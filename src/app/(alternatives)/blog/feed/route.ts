@@ -1,0 +1,48 @@
+import { Feed } from "feed";
+import prisma from "@/prisma";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const feed = new Feed({
+    title: "Zanoth's Blog",
+    description: "Feed oficial",
+    id: "https://zanoth.vercel.app/blog",
+    link: "https://zanoth.vercel.app/blog",
+    language: "pt-BR",
+    favicon: "https://zanoth.vercel.app/favicon.ico",
+    copyright: `© ${new Date().getFullYear()} Zanoth's Blog`,
+  });
+
+  const posts = await prisma.post.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  posts.forEach((post) => {
+    feed.addItem({
+      title: post.title,
+      id: `https://zanoth.vercel.app/blog/${post.id}`,
+      link: `https://zanoth.vercel.app/blog/${post.id}`,
+      description: post.content,
+      date: post.createdAt,
+      image: post.image ? `https://zanoth.vercel.app${post.image}` : undefined,
+    });
+  });
+
+  // gera o RSS
+  let rss = feed.rss2();
+
+  // injeta o hub WebSub no <rss>
+  rss = rss.replace(
+    "<channel>",
+    `<channel>
+      <link rel="hub">https://pubsubhubbub.appspot.com/</link>`
+  );
+
+  return new NextResponse(rss, {
+    headers: {
+      "Content-Type": "application/rss+xml; charset=utf-8",
+    },
+  });
+}
+
