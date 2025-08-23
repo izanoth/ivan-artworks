@@ -21,8 +21,8 @@ export async function GET() {
   posts.forEach((post) => {
     feed.addItem({
       title: post.title,
-      id: `https://zanoth.vercel.app/blog/${post.id}`,
-      link: `https://zanoth.vercel.app/blog/${post.id}`,
+      id: `https://zanoth.vercel.app/blog/p/${post.id}`,
+      link: `https://zanoth.vercel.app/blog/p/${post.id}`,
       description: post.content,
       date: post.createdAt,
       image: post.image ? `https://zanoth.vercel.app${post.image}` : undefined,

@@ -1,50 +1,55 @@
-// src/app/(main)/api/blog/posts/route.ts
-import prisma from "@/prisma";
 import { NextResponse } from "next/server";
+import prisma from "@/prisma";
 import fs from "fs";
 import path from "path";
-import formidable, { File } from "formidable";
+import { Buffer } from "buffer"; // opcional, Buffer já é global
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  // criar função utilitária para promisificar formidable
-  const parseForm = (req: Request) =>
-    new Promise<{ fields: formidable.Fields; files: formidable.Files }>((resolve, reject) => {
-      const form = formidable({ keepExtensions: true });
-      form.parse(req as any, (err, fields, files) => {
-        if (err) reject(err);
-        else resolve({ fields, files });
-      });
-    });
-
   try {
-    const { fields, files } = await parseForm(req);
+    const formData = await req.formData();
 
-    const title = fields.title as string;
-    const authorId = fields.authorId as string;
-    const content = fields.content as string;
-    const published = fields.published === "true" || fields.published === "on";
+    const title = formData.get("title")?.toString() || "";
+    const authorId = formData.get("authorId")?.toString() || "";
+    const content = formData.get("content")?.toString() || "";
+    const published = formData.get("published") === "on" || formData.get("published") === "true";
 
-    // criar post no banco
+    // cria post no banco
     const post = await prisma.post.create({
       data: { title, content, published, authorId },
     });
 
-    // salvar imagem se existir
-    if (files.image) {
-      const file = Array.isArray(files.image) ? files.image[0] : files.image;
+    // salva arquivo se houver
+    const imageFile = formData.get("image") as File | null;
+    if (imageFile && imageFile.size > 0) {
+      const arrayBuffer = await imageFile.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
       const folderPath = path.join(process.cwd(), "public/images/posts", post.id);
       fs.mkdirSync(folderPath, { recursive: true });
 
       const filePath = path.join(folderPath, "cover.png");
-      const data = fs.readFileSync((file as File).filepath);
-      fs.writeFileSync(filePath, data);
+      fs.writeFileSync(filePath, buffer);
 
-      const imageUrl = `/images/posts/${post.id}/cover.png`;
-      await prisma.post.update({ where: { id: post.id }, data: { image: imageUrl } });
+      await prisma.post.update({
+        where: { id: post.id },
+        data: { image: `/images/posts/${post.id}/cover.png` },
+      });
     }
+
+    // notifica hub
+    const hubUrl = "https://pubsubhubbub.appspot.com/";
+    const feedUrl = "https://zanoth.vercel.app/blog/feed.xml";
+    fetch(hubUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        "hub.mode": "publish",
+        "hub.url": feedUrl,
+      }),
+    }).catch(console.error);
 
     return NextResponse.json({ success: true, post });
   } catch (err) {
