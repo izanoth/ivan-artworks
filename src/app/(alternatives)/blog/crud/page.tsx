@@ -31,7 +31,7 @@ export default async function BlogCrudPage() {
         <form action="/api/blog/posts" method="post" encType="multipart/form-data" className="flex flex-col gap-4">
           <input type="text" name="title" placeholder="Título" className="border p-2 rounded" required />
          
-          <input type="text" name="authorId" placeholder="ID do Autor" className="border p-2 rounded" value="" />
+          <input type="text" name="authorId" placeholder="ID do Autor" className="border p-2 rounded" required />
 
           <textarea name="content" placeholder="Conteúdo" className="border p-2 rounded min-h-[120px]" />
           <input type="file" name="image" className="border p-2 rounded" />
