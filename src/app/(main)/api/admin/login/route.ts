@@ -1,4 +1,6 @@
 // app/api/admin/login/route.ts
+console.log("[DEBUG] process.env keys:", Object.keys(process.env));
+
 import { cookies } from 'next/headers';
 export const runtime = 'nodejs';
 
@@ -34,8 +36,7 @@ export async function POST(req: Request) {
 
       res.cookies.set('admin-auth', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'development',
-        //secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
         path: '/',
         maxAge: 60 * 60 * 2, // 2 horas
       });
