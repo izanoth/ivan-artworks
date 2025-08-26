@@ -64,6 +64,19 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                     referrerPolicy="no-referrer"
                 />
+                 {/* Feed RSS autodiscovery */}
+			        <link
+			          rel="alternate"
+			          type="application/rss+xml"
+			          title="Feed RSS do Site"
+			          href="/blog/feed.xml"
+			        />
+			        <link
+			          rel="alternate"
+			          type="application/atom+xml"
+			          title="Feed Atom do Site"
+			          href="/blog/feed.xml"
+			        />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             </head>
             <body>
