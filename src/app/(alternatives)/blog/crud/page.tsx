@@ -52,7 +52,7 @@ export default async function BlogCrudPage() {
               </span>
               <div className="flex gap-2">
                 <Link
-                  href={`/blog/crud/update/${post.id}`}
+                  href={`/blog/crud/edit/${post.id}`}
                   className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                 >
                   Editar
