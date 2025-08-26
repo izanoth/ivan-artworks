@@ -8,10 +8,12 @@ export default function EditPostForm({ post }: { post: any }) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-
+	
     const formData = new FormData(e.currentTarget);
+  	 formData.append("id", post.id);
+  	 
 	 try {
-	    const res = await fetch(`/blog/crud/api/update/${post.id}`, {
+	    const res = await fetch(`/blog/crud/api/update`, {
 	      method: "PUT",
 	      body: formData,
 	    });
