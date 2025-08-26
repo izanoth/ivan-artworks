@@ -4,16 +4,26 @@ export default function DeletePost({ postId }: { postId: string }) {
   async function handleDelete() {
     if (!confirm("Tem certeza que deseja excluir este post?")) return;
 
-    const res = await fetch(`/api/blog/${postId}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`/blog/crud/api/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: postId }),
+      });
 
-    if (res.ok) {
-      alert("Post excluído com sucesso!");
-      window.location.href = "/blog";
+      if (res.ok) {
+        alert("Post excluído com sucesso!");
+        window.location.href = "/blog/crud";
+      } else {
+        const error = await res.json();
+        alert(`Erro ao excluir: ${error.message || "desconhecido"}`);
+      }
     } catch (err: any) {
-      alert(`${err.message}`);
+      alert(`Erro de rede: ${err.message}`);
     }
+  }
 
   return (
     <button

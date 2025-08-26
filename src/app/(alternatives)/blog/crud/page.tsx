@@ -23,12 +23,10 @@ export default async function BlogCrudPage() {
   return (
     <main className="p-8">
       <h1 className="text-2xl font-bold mb-6">Blog CRUD</h1>
-
-      {/* Formulário de criação */}
-      <section className="mb-10">
+		<section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">Nova Postagem</h2>
         <form
-          action="/api/blog/"
+          action="/blog/crud/api/create"
           method="post"
           encType="multipart/form-data"
           className="flex flex-col gap-4"
@@ -36,7 +34,6 @@ export default async function BlogCrudPage() {
           <input type="text" name="title" placeholder="Título" className="border p-2 rounded" required />
           <input type="text" name="authorId" placeholder="ID do Autor" className="border p-2 rounded" required />
           <textarea name="content" placeholder="Conteúdo" className="border p-2 rounded min-h-[120px]" />
-          <input type="file" name="image" className="border p-2 rounded" placeholder="Inserir manualmente" disabled/>
           <label className="flex items-center gap-2">
             <input type="checkbox" name="published" />
             Publicar imediatamente
@@ -44,7 +41,6 @@ export default async function BlogCrudPage() {
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Salvar Post</button>
         </form>
       </section>
-
       {/* Lista de posts */}
       <section>
         <h2 className="text-xl font-semibold mb-4">Postagens Existentes</h2>
@@ -56,7 +52,7 @@ export default async function BlogCrudPage() {
               </span>
               <div className="flex gap-2">
                 <Link
-                  href={`/blog/crud/edit/${post.id}`}
+                  href={`/blog/crud/update/${post.id}`}
                   className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                 >
                   Editar

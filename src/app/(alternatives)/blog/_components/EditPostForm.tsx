@@ -10,20 +10,25 @@ export default function EditPostForm({ post }: { post: any }) {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-
-    const res = await fetch(`/api/blog/${post.id}`, {
-      method: "PUT",
-      body: formData,
-    });
-
-    setLoading(false);
-
-    if (res.ok) {
-      alert("Post atualizado com sucesso!");
-      window.location.href = "/blog";
+	 try {
+	    const res = await fetch(`/blog/crud/api/update/${post.id}`, {
+	      method: "PUT",
+	      body: formData,
+	    });
+	    
+	    setLoading(false);
+	    
+	    if (res.ok) {
+	      alert("Post atualizado com sucesso!");
+	      window.location.href = "/blog/crud";
+	    } 
+	    else {
+		   alert("Erro ao atualizar post");
+		 }
     } catch (err: any) {
       alert(`${err.message}`);
     }
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
