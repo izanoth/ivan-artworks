@@ -7,6 +7,11 @@ import prisma from '@/prisma';
 interface Post {
     id: string;
     title: string;
+    categoryId: number;
+	 category?: {
+	   id: number;
+	   name: string;
+	 };
     content: string;
     author: {
         name: string | null;
@@ -20,14 +25,11 @@ interface Post {
 export async function GET() {
     try {
         const posts = await prisma.post.findMany({
-            include: {
-                author: {
-                    select: {
-                        name: true,
-                        email: true,
-                    },
-                },
-            },
+			  include: {
+			    category: true,
+			    author: true,
+			  },
+			  orderBy: { createdAt: 'desc' },
         });
         return NextResponse.json(posts as Post[]);
     } catch (error) {

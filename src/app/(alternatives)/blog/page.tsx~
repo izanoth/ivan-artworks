@@ -57,7 +57,7 @@ export default function Blog() {
             <main className="container">
                 {posts.map((post) => (
                     <div key={post.id} className="post">
-                        <PostPreview post={post}/>
+                        <PostPreview post={post} category={category}/>
                     </div>
                 ))}
             </main>
