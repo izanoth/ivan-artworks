@@ -1,0 +1,27 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { verifyToken } from "@/auth";
+
+export default async function BlogCreatePage() {
+  return (
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-4">Nova Postagem</h2>
+        <form
+          action="/blog/crud/api"
+          method="post"
+          encType="multipart/form-data"
+          className="flex flex-col gap-4"
+        >
+          <input type="text" name="title" placeholder="Título" className="border p-2 rounded" required />
+          <input type="text" name="authorId" placeholder="ID do Autor" className="border p-2 rounded" required />
+          <textarea name="content" placeholder="Conteúdo" className="border p-2 rounded min-h-[120px]" />
+          <label className="flex items-center gap-2">
+            <input type="checkbox" name="published" />
+            Publicar imediatamente
+          </label>
+          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Salvar Post</button>
+        </form>
+      </section>
+  )
+}

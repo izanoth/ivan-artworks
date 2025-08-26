@@ -26,6 +26,8 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/blog/crud',
+    '/blog/crud/:path*',
     '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin',
     '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/:path*'
   ],

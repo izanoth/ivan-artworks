@@ -4,8 +4,12 @@ import React from "react";
 import OmegaChess from './App';
 import Link from 'next/link';
 import Image from 'next/image';
+import { PixPopup } from '@/layout/PixPopup';
+import { useState } from 'react';
 
 const Prog = () => {
+    const [showPixPopup, setShowPixPopup] = useState(false);
+
     return (
         <div className="container-fluid md:container space-y-6 p-4 text-center">
             <OmegaChess />
@@ -14,6 +18,19 @@ const Prog = () => {
             <div className="card mt-4 bg-sky-100">
                 <div className="p-4 flex flex-col items-center justify-center">
                     <h2 className="text-lg font-semibold">Did you like it? Help to improve this project!</h2>
+                    <a className="p-1">
+                                    <button 
+                                    onClick={() => setShowPixPopup(true)} 
+                                    className="bg-blue-900 text-white hover:bg-blue-800 font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40"
+                                    >
+                                        <img                    
+                                            className="cursor-pointer max-h-[30px] h-auto"
+                                            src="/images/pix.png"
+                                            alt="Pix Logo"
+                                        />
+                                    </button>
+                    </a>
+                    {showPixPopup && <PixPopup onClose={() => setShowPixPopup(false)} />}
                     <Link href="https://www.buymeacoffee.com/ivanzanothw" target="_blank" rel="noopener noreferrer">
                         <img
                             src="https://img.buymeacoffee.com/button-api/?text=&emoji=&slug=ivanzanothw&button_colour=555&font_colour=ddd&font_family=Cookie&outline_colour=aaa&coffee_colour=fff"
@@ -21,7 +38,7 @@ const Prog = () => {
                             className="inline-block mt-4"
                         />
                     </Link>
-
+                    
                     <div className="">or</div>
                     <div className="flex flex-row justify-center items-center text-center">
                         <Link href="/donation" passHref legacyBehavior>
