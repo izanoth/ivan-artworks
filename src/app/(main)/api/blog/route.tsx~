@@ -3,18 +3,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma';
 
-export const runtime = "nodejs"; /************/
-export const dynamic = "force-dynamic";
-
 
 interface Post {
     id: string;
     title: string;
+    categoryId: number;
+	 category?: {
+	   id: number;
+	   name: string;
+	 };
     content: string;
     author: {
         name: string | null;
         email: string | null;
     } | null;
+    _count: {
+	   comments: number;
+	 };
     createdAt: Date;
     updatedAt: Date;
     published: boolean;
@@ -23,14 +28,12 @@ interface Post {
 export async function GET() {
     try {
         const posts = await prisma.post.findMany({
-            include: {
-                author: {
-                    select: {
-                        name: true,
-                        email: true,
-                    },
-                },
-            },
+			  include: {
+			    category: true,
+			    author: true,
+			    comments: true;
+			  },
+			  orderBy: { createdAt: 'desc' },
         });
         return NextResponse.json(posts as Post[]);
     } catch (error) {

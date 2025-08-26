@@ -7,6 +7,10 @@ interface Post {
     id: string;
     title: string;
     content: string;
+    category: {
+		  id: number;
+		  name: string;    
+    }
     author: {
         name: string;
         email: string;
@@ -53,7 +57,7 @@ export default function Blog() {
             <main className="container">
                 {posts.map((post) => (
                     <div key={post.id} className="post">
-                        <PostPreview post={post} />
+                        <PostPreview post={post}/>
                     </div>
                 ))}
             </main>

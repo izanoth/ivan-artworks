@@ -33,37 +33,34 @@ export default function Menu({ selected, setSelected }: MenuProps) {
         }
     };
     return (
-        <div className="bg-gray-600">
-            <nav className="container flex text-sm">
-                {/* <Link
-                    href="/"
-                    onClick={() => handleClick('/')}
-                    className={`hover:text-dark-300 bg-gray-400 p-3 transition-colors duration-200 ${selected === '/' ? 'bg-sky-100 font-bold' : ''}`}
-                >
-                    Home
-                </Link> */}
-                <Link
-                    href="/music"
-                    onClick={() => setSelected('/music')}
-                    className={`hover:text-dark-300 bg-gray-400 p-3 transition-colors duration-200 ${selected === '/music' ? 'bg-sky-100 font-bold' : ''}`}
-                >
-                    Music
-                </Link>
-                <Link
-                    href="/prog"
-                    onClick={() => setSelected('/prog')}
-                    className={`hover:text-dark-300 bg-gray-400 p-3 transition-colors duration-200 ${selected === '/prog' ? 'bg-sky-100 font-bold' : ''}`}
-                >
-                    Programming
-                </Link>
-                 <Link
-                    href="/blog"
-                    onClick={() => setSelected('/blog')}
-                    className={`hover:text-dark-300 bg-gray-400 p-3 mr-0 transition-colors duration-200 ${selected === '/blog' ? 'bg-sky-100 font-bold' : ''}`}
-                >
-                    Blog
-                </Link>
-            </nav>
-        </div>
+		  <nav className="container flex items-center justify-between py-4 text-sm">
+		    {/* Links principais à esquerda */}
+		    <div className="flex gap-6">
+		      <Link
+		        href="/music"
+		        onClick={() => setSelected('/music')}
+		        className={`transition-colors duration-200 hover:text-sky-600 ${selected === '/music' ? 'text-sky-600 font-bold' : 'text-gray-800'}`}
+		      >
+		        Music
+		      </Link>
+		      <Link
+		        href="/prog"
+		        onClick={() => setSelected('/prog')}
+		        className={`transition-colors duration-200 hover:text-sky-600 ${selected === '/prog' ? 'text-sky-600 font-bold' : 'text-gray-800'}`}
+		      >
+		        Programming
+		      </Link>
+		    </div>
+		
+		    {/* Botão Blog à direita */}
+		    <Link
+		      href="/blog"
+		      onClick={() => setSelected('/blog')}
+		      className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${selected === '/blog' ? 'bg-sky-100 font-bold text-sky-800' : 'bg-gray-100 text-gray-800 hover:bg-sky-50'}`}
+		    >
+		      <i className="fa-rss"></i>
+		      Blog
+		    </Link>
+		  </nav>
     );
 }
