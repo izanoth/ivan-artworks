@@ -1,0 +1,31 @@
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/prisma';
+
+export async function PUT(req: Request) {
+  try {
+    const formData = await req.formData();
+    const idRaw = formData.get("id");
+	 if (!idRaw || typeof idRaw !== "string") throw new Error("ID inválido");
+	 const id = idRaw;
+	
+	 const titleRaw = formData.get("title");
+	 const title = typeof titleRaw === "string" ? titleRaw : "";
+	
+	 const authorIdRaw = formData.get("authorId");
+	 const authorId = typeof authorIdRaw === "string" ? authorIdRaw : undefined;
+	
+	 const contentRaw = formData.get("content");
+	 const content = typeof contentRaw === "string" ? contentRaw : "";
+	
+	 const published = formData.get("published") === "on";
+
+    await prisma.post.update({
+      where: { id }, // id é string
+      data: { title, authorId, content, published },
+    });
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Erro ao atualizar post" }, { status: 500 });
+  }
+}

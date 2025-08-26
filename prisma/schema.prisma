@@ -23,7 +23,8 @@ model Guest {
 model Post {
   id        String    @id @default(cuid())
   title     String
-  content   String?
+  content   String
+  image     String?
   published Boolean   @default(false)
   authorId  String?
   createdAt DateTime  @default(now()) @map("created_at")

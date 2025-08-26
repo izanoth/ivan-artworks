@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Pusher from 'pusher-js';
+import { useRouter } from 'next/navigation';
 
 type Comment = {
   name: string;
@@ -11,24 +11,24 @@ type Comment = {
 
 export default function AdminPage() {
   const [comments, setComments] = useState<Comment[]>([]);
+  const router = useRouter();
 
-  console.log('Pusher Key:', process.env.NEXT_PUBLIC_PUSHER_KEY);
+  async function handleLogout() {
+    try {
+      const res = await fetch('/api/admin/logout', {
+        method: 'POST',
+        credentials: 'include', // garante envio/recebimento de cookies
+      });
 
-  useEffect(() => {
-    const pusher = new Pusher(process.env.PUSHER_KEY!, {
-      cluster: process.env.PUSHER_CLUSTER!,
-    });
-
-    const channel = pusher.subscribe('comments');
-    channel.bind('new-comment', (data: Comment) => {
-      setComments((prev) => [data, ...prev]);
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, []);
+      if (res.ok) {
+        router.push('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773'); // ou onde quiser redirecionar
+      } else {
+        console.error('Erro ao fazer logout');
+      }
+    } catch (err) {
+      console.error('Erro de rede no logout', err);
+    }
+  }
 
   return (
     <main className="p-8">
@@ -42,9 +42,14 @@ export default function AdminPage() {
         ))}
       </ul>
       <ul>
-        <form method="POST" action="/api/admin/logout/route.ts">
-          <button type="submit">Logout</button>
-        </form>
+      
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Logout
+        </button>
       </ul>
     </main>
   );

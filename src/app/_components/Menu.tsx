@@ -11,7 +11,7 @@ type MenuProps = {
 
 export default function Menu({ selected, setSelected }: MenuProps) {
     const router = useRouter();
-    type Routes = '/' | '/music' | '/prog' | '/gallery';
+    type Routes = '/' | '/music' | '/prog' | '/blog';
 
     const Route = (route: Routes) => {
         switch (route) {
@@ -23,6 +23,9 @@ export default function Menu({ selected, setSelected }: MenuProps) {
                 break;
             case '/prog':
                 router.push('/prog');
+                break;
+            case '/blog':
+                router.push('/blog');
                 break;
             default:
                 router.push('/404');
@@ -52,6 +55,13 @@ export default function Menu({ selected, setSelected }: MenuProps) {
                     className={`hover:text-dark-300 bg-gray-400 p-3 transition-colors duration-200 ${selected === '/prog' ? 'bg-sky-100 font-bold' : ''}`}
                 >
                     Programming
+                </Link>
+                 <Link
+                    href="/blog"
+                    onClick={() => setSelected('/blog')}
+                    className={`hover:text-dark-300 bg-gray-400 p-3 mr-0 transition-colors duration-200 ${selected === '/blog' ? 'bg-sky-100 font-bold' : ''}`}
+                >
+                    Blog
                 </Link>
             </nav>
         </div>

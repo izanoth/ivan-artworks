@@ -1,9 +1,23 @@
 // lib/auth.ts
 
 //const secret = process.env.JWT_SECRET!;
-import { SignJWT, jwtVerify } from 'jose';
+//import { SignJWT, jwtVerify } from 'jose';
+import jwt from 'jsonwebtoken';
 
-const secret = new TextEncoder().encode(
+export async function signToken(payload: object) {
+  return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '2h' });
+}
+
+export async function verifyToken(token: string) {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET!);
+  } catch (e) {
+    return null;
+  }
+}
+
+
+/*const secret = new TextEncoder().encode(
   "13pDCQeP3jY$4)e*@LusrNmzQ4HRIpa7YR$%X6UdITg&"
 );
 
@@ -21,5 +35,5 @@ export async function signToken(payload: object) {
 export async function verifyToken(token: string) {
   const { payload } = await jwtVerify(token, secret);
   return payload;
-}
+}*/
 

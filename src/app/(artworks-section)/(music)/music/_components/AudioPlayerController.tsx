@@ -1,0 +1,158 @@
+'use client';
+
+import { useRef, useState, useEffect } from 'react';
+import Image from "next/image";
+import AudioPlayerList from './AudioPlayerList';
+import AudioBarFix from './AudioBarFix';
+import { Carousel } from 'react-bootstrap';
+import albuns from '@MyAlbuns';
+
+interface Track {
+  title: string;
+  src?: string;
+  isPrimary?: boolean;
+}
+
+export default function AudioPlayerController() {
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const handleSelect = (selectedIndex: number) => {
+            setActiveIndex(selectedIndex);
+        };
+    // Atualiza tempo de reprodução
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+        
+        
+
+        const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+        setDuration(audio.duration || 0);
+        };
+
+        const handleEnded = () => {
+        setIsPlaying(false);
+        setCurrentTrack(null);
+        };
+
+        audio.addEventListener('timeupdate', handleTimeUpdate);
+        audio.addEventListener('ended', handleEnded);
+
+        return () => {
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('ended', handleEnded);
+        };
+    }, []);
+
+    const handleTrackSelect = (track: Track) => {
+        const audio = audioRef.current;
+        if (!track.src || !audio) return;
+
+        if (track.src === currentTrack?.src) {
+        // Toggle play/pause
+        if (isPlaying) {
+            audio.pause();
+            setIsPlaying(false);
+        } else {
+            audio.play();
+            setIsPlaying(true);
+        }
+        } else {
+        // Nova faixa
+        audio.src = track.src;
+        audio.play();
+        setCurrentTrack(track);
+        setIsPlaying(true);
+        setCurrentTime(0);
+        setDuration(0);
+        }
+    };
+
+    const handleSeek = (value: number) => {
+        if (audioRef.current) {
+        audioRef.current.currentTime = value;
+        }
+    };
+
+    return (
+        <>
+        <div className="w-full mb-4">
+                <ul className="flex items-center justify-center space-x-4 p-4">
+                  <li>
+                    <i className="fa-solid fa-wine-bottle text-4xl"></i>
+                  </li>
+                  {albuns.map((album, index) => (
+                    <li
+                      key={index}
+                      className={`cursor-pointer p-2`}
+                      onClick={() => {
+                        handleSelect(index);
+                      }}
+                    >
+                      <Image
+                        src={`/${album.coverImage}`}
+                        alt={album.title}
+                        width={80}
+                        height={80}
+                        className={`w-full h-auto rounded-lg shadow-md ${!(activeIndex === index) ? 'opacity-40' : 'opacity-100'}`}
+                      />
+                    </li>
+                  ))}
+                  <li>
+                    <i className="fa-solid fa-wine-glass text-4xl"></i>
+                  </li>
+                </ul>
+              </div>
+            <audio ref={audioRef} />
+            <AudioBarFix
+                track={currentTrack}
+                isPlaying={isPlaying}
+                currentTime={currentTime}
+                duration={duration}
+                onPlayPause={() => handleTrackSelect(currentTrack!)}
+                onSeek={handleSeek}
+            />
+            <Carousel interval={null} controls={false} indicators={false} activeIndex={activeIndex} onSelect={handleSelect}>
+            {albuns.map((album, albumIndex) => (
+                <Carousel.Item key={albumIndex}>
+                  <div className="flex flex-col md:flex-row lg:space-x-4 lg:px-4 lg:mb-0">
+                    <div className="flex-1 md:p-6 lg:mb-0 mb-4 bg-white border text-dark w-full md:w-[400px] rounded">
+                      {/*<div className="flex items-center justify-center">
+                          <i className="bi bi-music-note-beamed text-primary text-2xl"></i>
+                      </div>*/}
+                      <AudioPlayerList
+                          tracks={album.tracks}
+                          currentTrack={currentTrack}
+                          isPlaying={isPlaying}
+                          onSelect={handleTrackSelect}
+                      />
+                    </div>
+                    <div className="flex flex-col mt-0 mb-4">
+                      <img
+                          src={album.coverImage}
+                          alt={album.title}
+                          className="album-cover w-full h-auto rounded-lg shadow-md mt-0"
+                      />
+                      <div className="text-xs text-gray-600">
+                          <ul>
+                          <li><strong>Álbum:</strong> {album.title}</li>
+                          <li><strong>Artista:</strong> {album.artist}</li>
+                          <li><strong>Ano:</strong> {album.year}</li>
+                          <li><strong>Gênero:</strong> {album.genre}</li>
+                          <li><strong>Compositor:</strong> {album.composer}</li>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+                </Carousel.Item>
+            ))}
+            </Carousel>
+        </>
+    )
+}

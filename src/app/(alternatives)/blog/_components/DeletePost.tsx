@@ -1,0 +1,36 @@
+"use client";
+
+export default function DeletePost({ postId }: { postId: string }) {
+  async function handleDelete() {
+    if (!confirm("Tem certeza que deseja excluir este post?")) return;
+
+    try {
+      const res = await fetch(`/blog/crud/api/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: postId }),
+      });
+
+      if (res.ok) {
+        alert("Post excluído com sucesso!");
+        window.location.href = "/blog/crud";
+      } else {
+        const error = await res.json();
+        alert(`Erro ao excluir: ${error.message || "desconhecido"}`);
+      }
+    } catch (err: any) {
+      alert(`Erro de rede: ${err.message}`);
+    }
+  }
+
+  return (
+    <button
+      onClick={handleDelete}
+      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+    >
+      Excluir
+    </button>
+  );
+}

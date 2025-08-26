@@ -1,4 +1,7 @@
 // app/api/admin/login/route.ts
+console.log("[DEBUG] process.env keys:", Object.keys(process.env));
+
+import { cookies } from 'next/headers';
 export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
@@ -19,7 +22,7 @@ export async function POST(req: Request) {
       adminPassword,
     });
 
-    if (username === adminUser && password === adminPassword) {
+    if (username === 'izanoth' && password ===   process.env.ADMIN_PASS) {
       const token = await signToken({ username });
       console.log('[DEBUG] Token gerado:', token);
 

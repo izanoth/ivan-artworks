@@ -14,6 +14,7 @@ export type PostProps = {
         email: string;
     } | null;
     content: string;
+    image: string;
     published: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -39,7 +40,17 @@ const PostDetail: React.FC<{ post: PostProps }> = ({ post }) => {
             <div className="text-sm text-gray-500 mb-4 text-left">
                 <span>Por {authorName}</span> | <span>{new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>
             </div>
-
+            <div className="flex items-center justify-center">
+                {post.image && (
+                    <img
+                        src={post.image}
+                        alt={post.title}
+                        width={400}
+                        height={400}
+                        className="mb-4 rounded-xl"
+                    />
+                )}
+            </div>
             <div className="w-full text-left prose-lg prose-p:my-4 text-gray-700">
                 <ReactMarkdown
                     components={{
