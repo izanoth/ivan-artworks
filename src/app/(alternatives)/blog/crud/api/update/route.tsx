@@ -1,25 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma';
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request) {
   try {
-    const data = await req.formData();
+    const formData = await req.formData();
+    const idRaw = formData.get("id");
+	 if (!idRaw || typeof idRaw !== "string") throw new Error("ID inválido");
+	 const id = idRaw;
+	
+	 const titleRaw = formData.get("title");
+	 const title = typeof titleRaw === "string" ? titleRaw : "";
+	
+	 const authorIdRaw = formData.get("authorId");
+	 const authorId = typeof authorIdRaw === "string" ? authorIdRaw : undefined;
+	
+	 const contentRaw = formData.get("content");
+	 const content = typeof contentRaw === "string" ? contentRaw : "";
+	
+	 const published = formData.get("published") === "on";
 
-    const updated = await prisma.post.update({
-      where: { id: params.id },
-      data: {
-        title: data.get("title") as string,
-        content: data.get("content") as string,
-        authorId: data.get("authorId") as string,
-        published: data.get("published") === "on",
-        image: data.get("image") ? (data.get("image") as string) : undefined,
-      },
+    await prisma.post.update({
+      where: { id }, // id é string
+      data: { title, authorId, content, published },
     });
-
-    return NextResponse.json({ success: true, post: updated });
+    
+    return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Erro ao atualizar post" }, { status: 500 });
   }
