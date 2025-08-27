@@ -10,7 +10,7 @@ interface Post {
     category: {
 		  id: number;
 		  name: string;    
-    }
+    } | null;
     author: {
         name: string;
         email: string;

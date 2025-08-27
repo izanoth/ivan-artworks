@@ -7,12 +7,13 @@ export async function POST(req: Request) {
 
     const title = formData.get("title")?.toString() || "";
     const authorId = formData.get("authorId")?.toString() || "";
+	 const categoryId = Number(formData.get('categoryId'));    
     const content = formData.get("content")?.toString() || "";
     const published = formData.get("published") === "on" || formData.get("published") === "true";
-
+		
     // cria post no banco
     const post = await prisma.post.create({
-      data: { title, content, published, authorId },
+      data: { title, content, published, authorId, categoryId },
     });
 
     // notifica hub
