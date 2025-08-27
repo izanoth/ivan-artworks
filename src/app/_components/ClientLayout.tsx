@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/react";
 import Header from '@/app/_components/Header';
 import Footer from '@/app/_components/Footer';
 import '@/app/globals.css';
-import Menu from '@/app/_components/Menu';
 import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'], display: 'optional' });
@@ -36,8 +35,7 @@ export default function ClientLayout({
 
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Header />
-        <Menu selected={selected} setSelected={setSelected} />
+        <Header selected={selected} setSelected={setSelected} />
         <div className="flex-grow">
           {children}
           <Analytics />

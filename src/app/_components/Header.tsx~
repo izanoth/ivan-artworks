@@ -106,7 +106,7 @@ export default function Header({ selected, setSelected }: HeaderProps) {
                 : 'text-gray-800 font-medium hover:text-sky-600'
             }`}
           >
-            <FontAwesomeIcon icon={faRss} />
+            <FontAwesomeIcon icon={faRss} style={'text-orange-500'}/>
             Blog
           </Link>
         </nav>
