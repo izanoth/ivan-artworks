@@ -84,6 +84,9 @@ export default function AudioPlayerController() {
         <>
         <div className="w-full mb-4">
                 <ul className="flex items-center justify-center space-x-4 p-4">
+                  {//<li>}
+                  {//  <i className="fa-solid fa-wine-bottle text-4xl"></i>}
+                  {//</li>}
                   {albuns.map((album, index) => (
                     <li
                       key={index}
@@ -101,6 +104,9 @@ export default function AudioPlayerController() {
                       />
                     </li>
                   ))}
+                  {//<li>}
+                  {//  <i className="fa-solid fa-wine-glass text-4xl"></i>}
+                  {//</li>}
                 </ul>
               </div>
             <audio ref={audioRef} />
