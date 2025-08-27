@@ -39,16 +39,17 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false
   };
 
   const categoryColors: Record<string, { badge: string; bgGradient: string }> = {
-    news: { badge: "bg-blue-100 text-blue-800", bgGradient: "from-blue-50 to-white" },
-    tech: { badge: "bg-green-100 text-green-800", bgGradient: "from-green-50 to-white" },
-    sports: { badge: "bg-yellow-100 text-yellow-800", bgGradient: "from-yellow-50 to-white" },
-    music: { badge: "bg-purple-100 text-purple-800", bgGradient: "from-purple-50 to-white" },
-    artigos: { badge: "bg-gray-100 text-gray-800", bgGradient: "from-gray-50 to-white" },
+    news: { badge: "bg-yellow-300 text-yellow-800", bgGradient: "from-yellow-50 to-white" },
+    artigos: { badge: "bg-blue-300 text-blue-800", bgGradient: "from-blue-50 to-white" },
+    tech: { badge: "bg-green-300 text-green-800", bgGradient: "from-green-50 to-white" },
+    esportes: { badge: "bg-yellow-300 text-yellow-800", bgGradient: "from-yellow-50 to-white" },
+    música: { badge: "bg-purple-300 text-purple-800", bgGradient: "from-purple-50 to-white" },
+    default: { badge: "bg-gray-300 text-gray-800", bgGradient: "from-gray-50 to-white" },
   };
 
 
 
-  const categoryName = post.category?.name?.toLowerCase() || "artigos";
+  const categoryName = post.category?.name?.toLowerCase() || "default";
   const categoryStyles = categoryColors[categoryName] || categoryColors.artigos;
 
   return (
@@ -67,11 +68,11 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false
               </span>
             )}
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 mt-8">
+            <h2 className="text-2xl font-bold text-gray-800 max-width-200 mb-6 mt-8">
               {post.title}
             </h2>
             <small className="text-gray-600 mb-4 block">By {authorName}</small>
-            <ReactMarkdown className="text-gray-700">
+            <ReactMarkdown className="text-gray-700 max-width-200">
               {showFullContent ? content : getContentSummary(content)}
             </ReactMarkdown>
           </div>
