@@ -1,0 +1,36 @@
+'use client';
+
+import * as React from "react";
+import { useState } from "react";
+
+type Category = {
+  id: number;
+  name: string;
+};
+
+type Props = {
+  categories: Category[];
+};
+
+export default function CategorySelect({ categories }: Props) {
+
+  return (
+  	 <div>
+  	 	<label htmlFor="category" className="block text-sm font-medium">
+        Categoria
+      </label>
+	   <select
+	     id="category"
+	     name="categoryId"
+	     className="mt-1 block w-full rounded-md border p-2"
+	   >
+	     <option value="">Selecione uma Categoria</option>
+	     {categories.map((category) => (
+	       <option key={category.id} value={category.id}>
+	         {category.name}
+	       </option>
+	     ))}
+	   </select>
+	 </div>
+  );
+}

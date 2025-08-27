@@ -1,0 +1,33 @@
+'use client';
+
+import { useState } from "react";
+
+type Author = {
+  id: number;
+  name: string;
+};
+
+type Props = {
+  authors: Author[];
+};
+
+export default function AuthorSelect({ authors }: Props) {
+  const [selectedAuthor, setSelectedAuthor] = useState<string>("");
+
+  return (
+	   <select
+	     id="author"
+	     name="author"
+	     value={selectedAuthor}
+	     onChange={(e) => setSelectedAuthor(e.target.value)}
+	     className="mt-1 block w-full rounded-md border p-2"
+	   >
+	     <option value="">Selecione um autor</option>
+	     {authors.map((author) => (
+	       <option key={author.id} value={author.name}>
+	         {author.name}
+	       </option>
+	     ))}
+	   </select>
+  );
+}
