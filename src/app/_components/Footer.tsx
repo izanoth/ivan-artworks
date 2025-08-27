@@ -27,17 +27,16 @@ export default function Footer({ setSelected }: FooterProps) {
                 </div>
                 <div className="text-center text-lg-end my-auto">
                     <ul className="list-none mb-0 flex justify-center lg:justify-end">
-                        <li className="mr-4">
-                            {/* <a href="https://instagram.com/_zanoth_" className="text-gray-700 hover:text-gray-900">
-                                <i className="bi bi-instagram text-3xl pr-4"></i>
-                            </a> */}
+                        <li className="mr-4">                                                     
                             <a href="https://github.com/izanoth" className="text-gray-700 hover:text-gray-900">
                                 <i className="bi bi-github text-3xl"></i>
                             </a>
-                            <a rel="me" href="https://mas.to/@izanoth">
+                        </li>
+                        <li>
+                            <a rel="me" href="https://mas.to/@izanoth" className="text-gray-700 hover:text-gray-900">
                                 <i className="bi bi-mastodon text-3xl"></i>
                             </a>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
             </div>
