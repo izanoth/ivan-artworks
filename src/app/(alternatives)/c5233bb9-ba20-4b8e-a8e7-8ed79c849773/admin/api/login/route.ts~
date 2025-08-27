@@ -43,6 +43,31 @@ export async function POST(req: Request) {
 
       return res;
     }
+    
+    /*************************
+    GUEST AUTHETICATION
+    *************************/
+    else if(username === process.env.GUEST_USER && password ===   process.env.GUEST_PASS) {
+    	const token = await signToken({ username });
+      console.log('[DEBUG] Token gerado:', token);
+
+      const res = new NextResponse(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Debug-Token': token,
+        },
+      });
+
+      res.cookies.set('guest-auth', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: 60 * 60 * 2, // 2 horas
+      });
+
+      return res;
+    )
 
     console.warn('[WARN] Credenciais inválidas');
     return NextResponse.json({ success: false, username }, { status: 401 });
