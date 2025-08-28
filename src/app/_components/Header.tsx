@@ -34,7 +34,7 @@ export default function Header({ selected, setSelected }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white text-gray-600">
+    <header className="text-gray-600">
       <div className="container mx-auto flex flex-col">
         {/* Topo com logo e donation */}
         <div className="flex items-center justify-between p-4">
@@ -66,7 +66,7 @@ export default function Header({ selected, setSelected }: HeaderProps) {
         </div>
 
         {/* Menu principal */}
-        <nav className="container flex items-center justify-between p-4 md:text-xl text-sm bg-white">
+        <nav className="container flex items-center justify-between p-4 md:text-xl text-sm">
           {/* Links principais à esquerda */}
           <div className="flex items-center gap-8">
             <Link
