@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic, faTerminal, faRss, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faMusic, faTerminal, faRss, faEnvelope, faBook,faUserSecret } from '@fortawesome/free-solid-svg-icons';
 
 type HeaderProps = {
   selected: string | null;
@@ -11,7 +11,7 @@ type HeaderProps = {
 
 export default function Header({ selected, setSelected }: HeaderProps) {
   const router = useRouter();
-  type Routes = '/' | '/music' | '/prog' | '/blog' | '/contact';
+  type Routes = '/' | '/music' | '/prog' | '/blog' | '/contact' | '/guestbook' | '/whoami';
 
   const Route = (route: Routes) => {
     switch (route) {
@@ -23,6 +23,12 @@ export default function Header({ selected, setSelected }: HeaderProps) {
         break;
       case '/prog':
         router.push('/prog');
+        break;
+      case '/whoami':
+        router.push('/whoami');
+        break;
+      case '/guestbook':
+        router.push('/guestbook');
         break;
       case '/blog':
         router.push('/blog');
@@ -37,96 +43,56 @@ export default function Header({ selected, setSelected }: HeaderProps) {
   };
 
   return (
-    <header className="text-gray-600">
-      <div className="container mx-auto flex flex-col">
-        {/* Topo com logo e donation */}
-        <div className="flex items-center justify-between p-4">
-          <div className="flex flex-col justify-center items-center">
-            <img
-              src="/images/zemag.png"
-              style={{ height: '70px', width: 'auto' }}
-              alt="Zanoth logo"
-            />
-            <p style={{ fontSize: '12px' }} className="font-bold">
-              Independent Digital Artworks
-            </p>
-          </div>
-
-          <div className="flex flex-col justify-center items-center">
-            <p className="text-sm tracking-[.20em] font-bold">Gift with</p>
-            <div>
-              <Link href="/donation" passHref legacyBehavior>
-                <img
-                  src="/near.svg"
-                  alt="NEAR"
-                  width="80"
-                  height="auto"
-                  className="cursor-pointer d-inline-block align-text-top"
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Menu principal */}
-        <nav className="container flex items-center justify-between p-4 md:text-xl text-sm">
-          {/* Links principais à esquerda */}
-          <div className="flex items-center gap-8">
-            <Link
-              href="/music"
-              onClick={() => setSelected('/music')}
-              className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${
-                selected === '/music'
-                  ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
-                  : 'text-gray-800 font-medium'
-              }`}
-            >
-              <FontAwesomeIcon icon={faMusic} />
-              Music
-            </Link>
-
-            <Link
-              href="/prog"
-              onClick={() => setSelected('/prog')}
-              className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${
-                selected === '/prog'
-                  ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
-                  : 'text-gray-800 font-medium'
-              }`}
-            >
-              <FontAwesomeIcon icon={faTerminal} />
-              Programming
-            </Link>
-          </div>
-
-          {/* Blog à direita, isolado */}
-          <div className="flex items-center gap-8">
-	          <Link
-	            href="/blog"
-	            onClick={() => setSelected('/blog')}
-	            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 ${
-	              selected === '/blog'
-	                ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
-	                : 'text-gray-800 font-medium hover:text-sky-600'
-	              }`}
-	          >
-	            <FontAwesomeIcon icon={faRss} />
-	            Blog
-	          </Link>
-	          <Link 
-	          	href="/contact" 
-	          	onClick={() => setSelected('/contact')} 
-	          	className={`relative flex items-center gap-4 pb-1 text-gray-700 hover:text-gray-900 ${
-	              selected === '/contact'
-	                ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
-	                : 'text-gray-800 font-medium hover:text-sky-600'
-	          		}`}
-	          >
-	          	<FontAwesomeIcon icon={faEnvelope} />
-	          </Link>
-          </div>
-        </nav>
-      </div>
-    </header>
+	<header className="text-gray-600">
+	  {/* Navbar secundária */}
+	  <nav className="bg-black w-full">
+	    <div className="container mx-auto flex justify-end items-center p-2 gap-6">
+	      <Link href="/guestbook" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
+	        <FontAwesomeIcon icon={faBook} size="2x" className="invert"/>
+	      </Link>			    
+	      <Link href="/whoami" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
+	        <FontAwesomeIcon icon={faUserSecret} size="2x" className="invert"/>			 
+	      </Link>	
+	      <Link href="/contact" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
+	        <FontAwesomeIcon icon={faEnvelope} size="2x" className="invert"/>			      
+	      </Link>
+	    </div>
+	  </nav>
+	
+	  {/* Container com logo e donation */}
+	  <div className="container mx-auto flex justify-between items-center p-4">
+	    <div className="flex flex-col items-center">
+	      <img src="/images/zemag.png" style={{ height: '70px', width: 'auto' }} alt="Zanoth logo" />
+	      <p className="font-bold text-[12px]">Independent Digital Artworks</p>
+	    </div>
+	
+	    <div className="flex flex-col items-center">
+	      <p className="text-sm tracking-[.20em] font-bold">Gift with</p>
+	      <Link href="/donation" passHref legacyBehavior>
+	        <img src="/near.svg" alt="NEAR" width="80" height="auto" className="cursor-pointer" />
+	      </Link>
+	    </div>
+	  </div>    
+	
+	  {/* Navbar principal */}
+	  <nav className="container mx-auto flex justify-between items-center p-4 md:text-xl text-sm">
+	    <div className="flex items-center gap-8">
+	      <Link href="/music" className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/music' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}>
+	        <FontAwesomeIcon icon={faMusic} />
+	        Music
+	      </Link>
+	
+	      <Link href="/prog" className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/prog' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}>
+	        <FontAwesomeIcon icon={faTerminal} />
+	        Programming
+	      </Link>
+	    </div>   
+	
+	    <Link href="/blog" className="relative flex items-center gap-2 pb-1 transition-colors duration-200 text-gray-600 hover:text-gray-900">
+	      <FontAwesomeIcon icon={faRss} />
+	      Blog
+	    </Link>
+	  </nav>
+	</header>
   );
 }

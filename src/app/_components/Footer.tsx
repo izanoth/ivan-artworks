@@ -10,7 +10,7 @@ export default function Footer({ setSelected }: FooterProps) {
         <footer className="py-4">
             <div className="container mx-auto flex flex-wrap justify-between items-center">
                 <div className="text-left ml-0">
-                    <ul className="list-none mb-2 ml-0 p-0">
+                    {/*<ul className="list-none mb-2 ml-0 p-0">
                         <li className="inline mr-2">
                             <Link href="/whoami" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Who Am I</Link>
                         </li>
@@ -19,7 +19,7 @@ export default function Footer({ setSelected }: FooterProps) {
                             <Link href="/guestbook" onClick={() => setSelected(null)} className="text-gray-700 hover:text-gray-900">Livro de Visitas</Link>
                         </li>
                         <li className="inline mx-2 text-gray-500">⋅</li>
-                    </ul>
+                    </ul>*/}
                     <p className="text-gray-600 text-sm mb-0">Zanoth &copy; Independent Artworks 2023-25. All Rights Reserved.</p>
                 </div>
                 <div className="text-center text-lg-end my-auto">
