@@ -49,6 +49,7 @@
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
     "remark-gfm": "^4.0.1",
+    "resend": "^6.0.1",
     "sharp": "^0.33.5",
     "vercel": "^37.1.1",
     "wagmi": "^2.12.16"

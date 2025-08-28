@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic, faTerminal, faRss } from '@fortawesome/free-solid-svg-icons';
+import { faMusic, faTerminal, faRss, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 type HeaderProps = {
   selected: string | null;
@@ -11,7 +11,7 @@ type HeaderProps = {
 
 export default function Header({ selected, setSelected }: HeaderProps) {
   const router = useRouter();
-  type Routes = '/' | '/music' | '/prog' | '/blog';
+  type Routes = '/' | '/music' | '/prog' | '/blog' | '/contact';
 
   const Route = (route: Routes) => {
     switch (route) {
@@ -26,6 +26,9 @@ export default function Header({ selected, setSelected }: HeaderProps) {
         break;
       case '/blog':
         router.push('/blog');
+        break;
+      case '/contact':
+        router.push('/contact');
         break;
       default:
         router.push('/404');
@@ -97,18 +100,31 @@ export default function Header({ selected, setSelected }: HeaderProps) {
           </div>
 
           {/* Blog à direita, isolado */}
-          <Link
-            href="/blog"
-            onClick={() => setSelected('/blog')}
-            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 ${
-              selected === '/blog'
-                ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
-                : 'text-gray-800 font-medium hover:text-sky-600'
-            }`}
-          >
-            <FontAwesomeIcon icon={faRss} />
-            Blog
-          </Link>
+          <div className="flex items-center gap-8">
+	          <Link
+	            href="/blog"
+	            onClick={() => setSelected('/blog')}
+	            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 ${
+	              selected === '/blog'
+	                ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
+	                : 'text-gray-800 font-medium hover:text-sky-600'
+	              }`}
+	          >
+	            <FontAwesomeIcon icon={faRss} />
+	            Blog
+	          </Link>
+	          <Link 
+	          	href="/contact" 
+	          	onClick={() => setSelected('/contact')} 
+	          	className={`relative flex items-center gap-4 pb-1 text-gray-700 hover:text-gray-900 ${
+	              selected === '/contact'
+	                ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]'
+	                : 'text-gray-800 font-medium hover:text-sky-600'
+	          		}`}
+	          >
+	          	<FontAwesomeIcon icon={faEnvelope} />
+	          </Link>
+          </div>
         </nav>
       </div>
     </header>

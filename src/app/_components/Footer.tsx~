@@ -36,8 +36,7 @@ export default function Footer({ setSelected }: FooterProps) {
                             <a rel="me" href="https://mas.to/@izanoth" className="text-gray-700 hover:text-gray-900">
                                 <i className="bi bi-mastodon text-3xl"></i>
                             </a>
-                        </li>
-                        
+                        </li>                        
                     </ul>
                 </div>
             </div>
