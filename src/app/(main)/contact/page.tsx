@@ -1,54 +1,101 @@
-export default function Contact() {
-  return (
-    <div className="flex items-center justify-center h-full">
-      <div className="bg-gray-200 p-8 rounded-lg shadow-lg text-center">
-        <h2 className="text-xl font-semibold mb-4"></h2>
-        <div className="space-y-4">
-          <p>
-            <i className="fa-brands fa-telegram text-blue-500 mr-2"></i>
-            <a href="https://t.me/izanoth" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Telegram: @izanoth
-            </a>
-          </p>
-          <p>
-            <i className="fa-brands fa-discord text-purple-500 mr-2"></i>
-            <a href="https://discord.com/users/_zanoth_" className="text-purple-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Discord: _zanoth_
-            </a>
-          </p>
-          <p>
-            <i className="fa-solid fa-envelope mr-2"></i>
-            <a href="mailto:ivanzanoth@gmail.com" className="text-red-600 hover:underline">
-              ivanzanoth@gmail.com
-            </a>
-          </p>
-        </div>
-        <textarea className="bg-gray-200 p-8 rounded-lg" 
-                  value="-----BEGIN PGP PUBLIC KEY BLOCK-----
+'use client';
 
-                        mDMEZT59ahYJKwYBBAHaRw8BAQdAeYKsr7nBMVBhue/B9m/NjO+c4FWGNx5d0SpC
-                        /jBPIvW0I2l2YW4gY2lsZW50byA8aXZhbnphbm90aEBnbWFpbC5jb20+iJAEExYI
-                        ADgCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTL31Irihp+M3VV4Un3aBIB
-                        7L4wXwUCZ4OtogAKCRD3aBIB7L4wXxaYAQCHiM1VtWN75nRfpeE30ARmYRbX4QWT
-                        mbfdEPgevnFKDQD/TiamBXlskbnZiT15dAtcM9EUYvSKZZZD9ZlWPrH12QW4OARl
-                        Pn1qEgorBgEEAZdVAQUBAQdA49/Wgajh9+HwcyPWZMUpOa3yCWsbWOOz7v2wW++U
-                        9lEDAQgHiHgEGBYIACACGwwWIQTL31Irihp+M3VV4Un3aBIB7L4wXwUCZ4OtuAAK
-                        CRD3aBIB7L4wX1n8AP497NBMhqGIfM9I1J0Daf263FnNDBJLexUpe55/Vy9xtgD/
-                        QAEWhK3j49B0QjSVQfIZX/c6c65klCBANDJEreGmHA+YMwRmjU5jFgkrBgEEAdpH
-                        DwEBB0DyJPJigJk1/UnGWfZ8RWkYRMYB0j7yGW0tdl5ZXCKJzLQjSXZhbiBDaWxl
-                        bnRvIDxpdmFuemFub3RoQGdtYWlsLmNvbT6IkAQTFggAOBYhBCQFkVnGhKVMX5q7
-                        MXwivF3/3QR5BQJmjU5jAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHwi
-                        vF3/3QR55Z0A/j9KKOuMNCj9zuYFnws4liI6mobZFd+wyla7AahBuMfYAP4h/Jei
-                        HN/eKSDZeND14PRVplj3JdFuHXC1/tsmtyZdBrg4BGaNTmMSCisGAQQBl1UBBQEB
-                        B0Bu3gpcyAFssWbVt30G1luMDBw9M2+BPAbs+flTsv/JNwMBCAeIeAQYFggAIBYh
-                        BCQFkVnGhKVMX5q7MXwivF3/3QR5BQJmjU5jAhsMAAoJEHwivF3/3QR5HjAA/3ii
-                        9rGOFvNmlSaFgJ2hV0ja77ZibdeIgOzctQOgUDuMAQCEjZfQoEfSypisXbNCkZfx
-                        VfDbwRSvSEQealDX/1BOAQ==
-                        =mN1y
-                        -----END PGP PUBLIC KEY BLOCK-----
-                        " 
-        />
-      </div>
-    </div>
-  );
+import { useState } from "react";
+
+export default function Contact() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<null | string>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("Enviando...");
+
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, subject, message }),
+    });
+
+    if (res.ok) {
+      setStatus("Mensagem enviada com sucesso!");
+      setName(""); setEmail(""); setSubject(""); setMessage("");
+    } else {
+      setStatus("Erro ao enviar a mensagem.");
+    }
+  };
+	
+	return (
+	  <div className="flex items-center justify-center min-h-screen p-6 bg-gray-50">
+	    <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md border border-solid border-gray-600 bg-gray-100">
+	      <h2 className="text-xl font-semibold mb-6 text-center text-gray-800">
+	        Entre em contato
+	      </h2>
+	      
+	      <form className="space-y-4" onSubmit={handleSubmit}>
+	        <input
+	          type="text"
+	          placeholder="Nome"
+	          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          value={name}
+	          onChange={(e) => setName(e.target.value)}
+	          required
+	        />
+	
+	        <input
+	          type="email"
+	          placeholder="Email"
+	          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          value={email}
+	          onChange={(e) => setEmail(e.target.value)}
+	          required
+	        />
+	
+	        <select
+	          className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          value={subject}
+	          onChange={(e) => setSubject(e.target.value)}
+	          required
+	        >
+	          <option value="" disabled>Selecione o assunto</option>
+	          <option value="Crítica ou sugestão">Crítica ou sugestão</option>
+	          <option value="Solicitar material">Solicitar material</option>
+	          <option value="Parceria ou colaboração">Parceria ou colaboração</option>
+	          <option value="Outro">Outro</option>
+	        </select>
+	
+	        <textarea
+	          placeholder="Mensagem"
+	          className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          value={message}
+	          onChange={(e) => setMessage(e.target.value)}
+	          required
+	        />
+	
+	        <button
+	          type="submit"
+	          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+	        >
+	          Enviar
+	        </button>
+	      </form>
+	
+	      {status && (
+	        <p className="mt-4 text-center text-sm text-gray-600">{status}</p>
+	      )}
+	
+	      <div className="mt-6 text-sm text-gray-600 text-center">
+	        <p className="mb-1">Ou me contate diretamente:</p>
+	        <a
+	          href="mailto:ivanzanoth@gmail.com"
+	          className="text-blue-600 hover:underline"
+	        >
+	          ivanzanoth@gmail.com
+	        </a>
+	      </div>
+	    </div>
+	  </div>
+	);
 }
