@@ -12,7 +12,7 @@ export default function Footer({ setSelected }: FooterProps) {
                 <div className="text-left ml-0">
                     <p className="text-gray-600 text-sm mb-0">Zanoth &copy; Independent Artworks 2023-25. All Rights Reserved.</p>
                 </div>
-                <div className="text-center text-lg-end my-auto">
+                <div className="text-center text-lg-end my-auto mt-2">
                     <ul className="list-none mb-0 flex justify-center lg:justify-end">
                         <li className="mr-4">                                                     
                             <a href="https://github.com/izanoth" className="text-gray-700 hover:text-gray-900">

@@ -141,13 +141,12 @@ export default function AudioPlayerController() {
                           <li><strong>Compositor:</strong> {album.composer}</li>
                           </ul>
                       </div>
-                      <div className="flex justify-center mt-2"
-		                    <a href="/music/support">
+                      <div className="flex justify-center mt-2">
+		                    <a href="/support">
 		                    	 <FontAwesomeIcon icon={ faDownload } size="6x" />
 		                    </a>
 		                </div>
-                    </div>
-                    
+                    </div>                    
                   </div>
                 </Carousel.Item>
             ))}

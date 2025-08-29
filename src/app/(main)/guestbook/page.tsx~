@@ -1,5 +1,5 @@
 
-"use client";
+"use client"; // Marcar o componente como Client Component
 
 import React, { useState, Suspense, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
