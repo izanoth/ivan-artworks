@@ -142,7 +142,7 @@ export default function AudioPlayerController() {
                           </ul>
                       </div>
                       <div className="flex justify-center mt-2">
-		                    <a href="/music/support">
+		                    <a href="/support">
 		                    	 <FontAwesomeIcon icon={ faDownload } size="6x" />
 		                    </a>
 		                </div>

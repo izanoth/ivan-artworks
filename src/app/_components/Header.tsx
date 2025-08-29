@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic, faTerminal, faRss, faEnvelope, faBook,faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { faMusic, faTerminal, faRss, faEnvelope, faBook, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 
 type HeaderProps = {
@@ -46,16 +46,34 @@ export default function Header({ selected, setSelected }: HeaderProps) {
   return (
 	<header className="text-gray-600">
 	  {/* Navbar secundária */}
-	  <nav className="w-full">
-	    <div className="container mx-auto flex justify-end items-center px-4 gap-6">
-	      <Link href="/guestbook" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
-	        <FontAwesomeIcon icon={faBook} size="2x" />
+	  <nav className="w-full bg-black">
+	    <div className="container mx-auto flex justify-end items-center px-4 py-2 gap-6">
+	      <Link 
+	      	href="/guestbook"
+	      	onClick={() => setSelected('/guestbook')}
+	      	className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
+	      					${selected === '/guestbook' ? 'text-black' : ''}
+	      				  `}
+	      >
+	        <FontAwesomeIcon icon={faBook} className="invert" />
 	      </Link>			    
-	      <Link href="/whoami" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
-			  <Image src="/images/whoami-icon" width={64} height={64} />
+	      <Link 
+	      	href="/whoami" 
+				onClick={() => setSelected('/whoami')}	      	
+	      	className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
+	      					${selected === '/whoami' ? 'text-black' : ''}
+	      				  `}
+	      >
+			  <FontAwesomeIcon icon={ faQuestionCircle } className="invert" />
 	      </Link>	
-	      <Link href="/contact" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
-	        <FontAwesomeIcon icon={faEnvelope} size="2x" />			      
+	      <Link 
+	      	href="/contact"
+	      	onClick={() => setSelected('/contact')}
+	      	className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
+								${selected === '/contact' ? 'text-black' : ''}
+	      				  `}	      
+	      >
+	        <FontAwesomeIcon icon={faEnvelope} className="invert" />			      
 	      </Link>
 	    </div>
 	  </nav>
@@ -78,18 +96,29 @@ export default function Header({ selected, setSelected }: HeaderProps) {
 	  {/* Navbar principal */}
 	  <nav className="container mx-auto flex justify-between items-center p-4 md:text-xl text-sm">
 	    <div className="flex items-center gap-8">
-	      <Link href="/music" className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/music' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}>
+	      <Link 
+	      	href="/music"
+	       	onClick={() => setSelected('/music')} 
+	      	className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/music' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
+	      >
 	        <FontAwesomeIcon icon={faMusic} />
 	        Music
 	      </Link>
 	
-	      <Link href="/prog" className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/prog' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}>
+	      <Link 
+	      	href="/prog"
+	      	onClick={() => setSelected('/prog')}
+	      	className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/prog' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
+	      >
 	        <FontAwesomeIcon icon={faTerminal} />
 	        Programming
 	      </Link>
 	    </div>   
-	
-	    <Link href="/blog" className="relative flex items-center gap-2 pb-1 transition-colors duration-200 text-gray-600 hover:text-sky-900">
+
+	    <Link 
+	    	href="/blog" 
+	    	className="relative flex items-center gap-2 pb-1 transition-colors duration-200 text-gray-600 hover:text-sky-600"
+	    >
 	      <FontAwesomeIcon icon={faRss} />
 	      Blog
 	    </Link>
