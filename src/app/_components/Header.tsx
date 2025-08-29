@@ -46,7 +46,7 @@ export default function Header({ selected, setSelected }: HeaderProps) {
 	<header className="text-gray-600">
 	  {/* Navbar secundária */}
 	  <nav className="bg-black w-full">
-	    <div className="container mx-auto flex justify-end items-center p-2 gap-6">
+	    <div className="container mx-auto flex justify-end items-center p-4 gap-6">
 	      <Link href="/guestbook" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
 	        <FontAwesomeIcon icon={faBook} size="2x" className="invert"/>
 	      </Link>			    
