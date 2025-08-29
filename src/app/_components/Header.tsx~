@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faTerminal, faRss, faEnvelope, faBook,faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 type HeaderProps = {
   selected: string | null;
@@ -45,16 +46,16 @@ export default function Header({ selected, setSelected }: HeaderProps) {
   return (
 	<header className="text-gray-600">
 	  {/* Navbar secundária */}
-	  <nav className="bg-black w-full">
-	    <div className="container mx-auto flex justify-end items-center p-2 gap-6">
+	  <nav className="w-full">
+	    <div className="container mx-auto flex justify-end items-center px-4 gap-6">
 	      <Link href="/guestbook" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
-	        <FontAwesomeIcon icon={faBook} size="2x" className="invert"/>
+	        <FontAwesomeIcon icon={faBook} size="2x" />
 	      </Link>			    
 	      <Link href="/whoami" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
-	        <FontAwesomeIcon icon={faUserSecret} size="2x" className="invert"/>			 
+			  <Image src="/images/whoami-icon" width={64} height={64} />
 	      </Link>	
 	      <Link href="/contact" className="transition-colors duration-200 text-gray-600 hover:text-gray-900">
-	        <FontAwesomeIcon icon={faEnvelope} size="2x" className="invert"/>			      
+	        <FontAwesomeIcon icon={faEnvelope} size="2x" />			      
 	      </Link>
 	    </div>
 	  </nav>
@@ -88,7 +89,7 @@ export default function Header({ selected, setSelected }: HeaderProps) {
 	      </Link>
 	    </div>   
 	
-	    <Link href="/blog" className="relative flex items-center gap-2 pb-1 transition-colors duration-200 text-gray-600 hover:text-gray-900">
+	    <Link href="/blog" className="relative flex items-center gap-2 pb-1 transition-colors duration-200 text-gray-600 hover:text-sky-900">
 	      <FontAwesomeIcon icon={faRss} />
 	      Blog
 	    </Link>

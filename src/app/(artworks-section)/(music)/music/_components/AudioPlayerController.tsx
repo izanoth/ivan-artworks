@@ -4,6 +4,8 @@ import { useRef, useState, useEffect } from 'react';
 import Image from "next/image";
 import AudioPlayerList from './AudioPlayerList';
 import AudioBarFix from './AudioBarFix';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { Carousel } from 'react-bootstrap';
 import albuns from '@MyAlbuns';
 
@@ -117,9 +119,6 @@ export default function AudioPlayerController() {
                 <Carousel.Item key={albumIndex}>
                   <div className="flex flex-col md:flex-row lg:space-x-4 lg:px-4 lg:mb-0">
                     <div className="flex-1 md:p-6 lg:mb-0 mb-4 bg-white border text-dark w-full md:w-[400px] rounded">
-                      {/*<div className="flex items-center justify-center">
-                          <i className="bi bi-music-note-beamed text-primary text-2xl"></i>
-                      </div>*/}
                       <AudioPlayerList
                           tracks={album.tracks}
                           currentTrack={currentTrack}
@@ -142,7 +141,12 @@ export default function AudioPlayerController() {
                           <li><strong>Compositor:</strong> {album.composer}</li>
                           </ul>
                       </div>
-                    </div>
+                      <div className="flex justify-center mt-2">
+		                    <a href="/music/support">
+		                    	 <FontAwesomeIcon icon={ faDownload } size="6x" />
+		                    </a>
+		                </div>
+                    </div>                    
                   </div>
                 </Carousel.Item>
             ))}

@@ -17,11 +17,6 @@ export default function Music() {
       <section> 
         <PopupClient />
         <AudioPlayerController />
-        <div className="flex items-center">
-        		<a href="/music/support">
-        			<i className="fa-solid fa-download text-lg"></i>
-        		</a>
-        	</div>
       </section>
     </div >
   )
