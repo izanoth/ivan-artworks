@@ -33,7 +33,7 @@ export default function SupportPage() {
         </p>
         
         {/* Botões de ação principais */}
-	      <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
+	      <div className="flex flex-wrap justify-center items-center gap-4 mb-6 pt-4">
 	        {/* Pix */}
 	        <button
 	          onClick={() => setShowPixPopup(true)}
@@ -68,7 +68,7 @@ export default function SupportPage() {
 	        </Link>
 	
 	        {/* WiseTag */}
-	        <div className="flex flex-col items-center gap-2">
+	        <div className="flex flex-col items-center justify-items-center gap-2">
 	          <Image src="/images/wisetag.png" alt="WiseTag" width={140} height={28} className="invert" />
 	          <Image src="/images/ivanc2874-wisetag.png" alt="WiseTag 2" width={140} height={140} />
 	        </div>
