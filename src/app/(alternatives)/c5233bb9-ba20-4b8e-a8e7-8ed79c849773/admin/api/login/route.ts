@@ -1,4 +1,4 @@
-// app/api/admin/login/route.ts
+// /admin/api/login/route.ts
 console.log("[DEBUG] process.env keys:", Object.keys(process.env));
 
 import { cookies } from 'next/headers';
@@ -22,9 +22,6 @@ export async function POST(req: Request) {
       adminPassword,
     });
 
-	 /*************************
-    ADMIN AUTHETICATION
-    *************************/
     if (username === 'izanoth' && password ===   process.env.ADMIN_PASS) {
       const token = await signToken({ username });
       console.log('[DEBUG] Token gerado:', token);
@@ -38,31 +35,6 @@ export async function POST(req: Request) {
       });
 
       res.cookies.set('admin-auth', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-        maxAge: 60 * 60 * 2, // 2 horas
-      });
-
-      return res;
-    }
-    
-    /*************************
-    GUEST AUTHETICATION
-    *************************/
-    else if(username === process.env.GUEST_USER && password ===   process.env.GUEST_PASS) {
-    	const token = await signToken({ username });
-      console.log('[DEBUG] Token gerado:', token);
-
-      const res = new NextResponse(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Debug-Token': token,
-        },
-      });
-
-      res.cookies.set('editor-auth', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         path: '/',
