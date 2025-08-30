@@ -1,55 +1,72 @@
 // /admin/api/login/route.ts
-console.log("[DEBUG] process.env keys:", Object.keys(process.env));
+import { NextResponse } from "next/server";
+import prisma from "@/prisma";
+import bcrypt from "bcryptjs";
+import { signToken } from "@/auth";
 
-import { cookies } from 'next/headers';
-export const runtime = 'nodejs';
-
-import { NextResponse } from 'next/server';
-import { signToken } from '@/auth';
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    console.log('[DEBUG] Requisição recebida');
-
     const { username, password } = await req.json();
-    console.log('[DEBUG] Dados recebidos:', { username, password });
+    if (!username || !password) {
+      return NextResponse.json(
+        { error: "Usuário e senha obrigatórios" },
+        { status: 400 }
+      );
+    }
 
+    // Admin via env
     const adminUser = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
 
-    console.log('[DEBUG] Variáveis do ambiente:', {
-      adminUser,
-      adminPassword,
-    });
+    if (username === 'izanoth' && password === adminPassword) {
+      const token = await signToken({ id: username, role: "admin" });
+      const res = NextResponse.json({ success: true, role: "admin" }, { status: 200 });
 
-    if (username === 'izanoth' && password ===   process.env.ADMIN_PASS) {
-      const token = await signToken({ username });
-      console.log('[DEBUG] Token gerado:', token);
-
-      const res = new NextResponse(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Debug-Token': token,
-        },
-      });
-
-      res.cookies.set('admin-auth', token, {
+      res.cookies.set("admin-auth", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
         maxAge: 60 * 60 * 2, // 2 horas
       });
 
       return res;
     }
 
-    console.warn('[WARN] Credenciais inválidas');
-    return NextResponse.json({ success: false, username }, { status: 401 });
+    // Usuário comum
+    const user = await prisma.user.findFirst({
+      where: { email: username },
+    });
 
+    if (!user || !user.password) {
+      return NextResponse.json(
+        { error: "Usuário ou senha inválidos" },
+        { status: 401 }
+      );
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return NextResponse.json(
+        { error: "Usuário ou senha inválidos" },
+        { status: 401 }
+      );
+    }
+
+    const token = await signToken({ id: user.id, role: user.role });
+    const res = NextResponse.json({ success: true, role: user.role }, { status: 200 });
+
+    res.cookies.set("friend-auth", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 2, // 2 horas
+    });
+
+    return res;
   } catch (err) {
-    console.error('[ERROR] Erro no endpoint de login:', err);
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
+    console.error("[ERROR] Erro no endpoint de login:", err);
+    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
   }
 }
-

@@ -47,6 +47,7 @@ model User {
   name      String?
   email     String?  @unique
   role      String   @default("user")
+  password  String?  
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   posts     Post[]

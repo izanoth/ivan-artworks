@@ -1,6 +1,13 @@
+// app/api/user/newuser/route.ts
 // app/api/users/route.ts
 import prisma from "@/prisma";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+
+function generateRandomPassword(length = 12) {
+  return crypto.randomBytes(length).toString("base64").slice(0, length);
+}
 
 export async function POST(req: Request) {
   try {
@@ -13,11 +20,24 @@ export async function POST(req: Request) {
       );
     }
 
+    // gera a senha automaticamente
+    const plainPassword = generateRandomPassword();
+
+    // gera hash
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+
     const user = await prisma.user.create({
-      data: { name, email, role },
+      data: {
+        name,
+        email,
+        role,
+        password: hashedPassword,
+      },
     });
 
-    return NextResponse.json(user, { status: 201 });
+    // retorna a senha gerada para envio ao usuário
+    return NextResponse.json({ ...user, plainPassword }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
