@@ -15,7 +15,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch('/admin/api/login', {
+      const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,7 +23,6 @@ export default function LoginPage() {
         body: JSON.stringify({ username: username, password: password }),
       });
 
-      console.log('rRESPONSE: ', res);
       if (res.ok) {
         const data = await res.json();
         console.log('Login bem-sucedido:', data);
