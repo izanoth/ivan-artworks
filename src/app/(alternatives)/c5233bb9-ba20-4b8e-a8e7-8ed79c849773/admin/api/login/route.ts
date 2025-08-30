@@ -62,7 +62,7 @@ export async function POST(req: Request) {
         },
       });
 
-      res.cookies.set('guest-auth', token, {
+      res.cookies.set('editor-auth', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         path: '/',
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
       });
 
       return res;
-    )
+    }
 
     console.warn('[WARN] Credenciais inválidas');
     return NextResponse.json({ success: false, username }, { status: 401 });
