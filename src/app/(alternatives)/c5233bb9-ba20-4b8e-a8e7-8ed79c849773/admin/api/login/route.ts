@@ -1,4 +1,4 @@
-// app/api/admin/login/route.ts
+// /admin/api/login/route.ts
 console.log("[DEBUG] process.env keys:", Object.keys(process.env));
 
 import { cookies } from 'next/headers';

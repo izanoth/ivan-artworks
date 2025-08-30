@@ -1,7 +1,7 @@
 // app/dashboard/page.tsx
 import prisma from "@/prisma";
 import Link from "next/link";
-import { LogoutButton } from './_components/LogoutButton';
+import LogoutButton from './_components/LogoutButton';
 import NewUserForm from "./_components/NewUserForm"; 
 
 export default async function Dashboard() {
@@ -70,7 +70,7 @@ export default async function Dashboard() {
             Ir para CRUD
           </Link>
         </div>
-        <
+        <NewUserForm />
         <LogoutButton />
       </div>
     </main>

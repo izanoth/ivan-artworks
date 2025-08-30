@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 	   html: message
 	 });
 
-    return NextResponse.json({ success: true, id: result.rows[0].id });
+    return NextResponse.json({ success: true });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ success: false }, { status: 500 });

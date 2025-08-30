@@ -11,7 +11,8 @@ export default function UserForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch("/admin/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/api/users", {
+<<<<<<< HEAD
+    const res = await fetch("/admin/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/api/newuser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, role }),
@@ -82,6 +83,9 @@ export default function UserForm() {
     e.preventDefault();
 
     const res = await fetch("/api/users", {
+=======
+    const res = await fetch("/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/api/newuser", {
+>>>>>>> admin_area-dev
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, role }),
