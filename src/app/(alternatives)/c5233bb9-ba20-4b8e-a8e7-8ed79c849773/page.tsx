@@ -19,8 +19,9 @@ export default function LoginPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
+        },        
         body: JSON.stringify({ username: username, password: password }),
+        credentials: 'include',
       });
 
       if (res.ok) {
@@ -39,33 +40,41 @@ export default function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-8">
-      <h1 className="text-xl font-bold mb-4">Login Admin</h1>
-
-      <input
-        className="border px-3 py-2 block mb-2"
-        placeholder="Email"
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-
-      <input
-        className="border px-3 py-2 block mb-2"
-        placeholder="Senha"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <input
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 cursor-pointer"
-        value="Entrar"
-      />
-
-      {message && <div className="text-red-600 mt-2">{message}</div>}
-    </form>
+	    <form
+	      onSubmit={handleSubmit}
+	      className="flex flex-col space-y-4"
+	    >
+	      <h1 className="text-2xl font-semibold text-center text-gray-800">
+	        Login Admin
+	      </h1>
+	
+	      <input
+	        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+	        placeholder="Email"
+	        type="text"
+	        value={username}
+	        onChange={(e) => setUsername(e.target.value)}
+	      />
+	
+	      <input
+	        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+	        placeholder="Senha"
+	        type="password"
+	        value={password}
+	        onChange={(e) => setPassword(e.target.value)}
+	      />
+	
+	      <button
+	        type="submit"
+	        className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 rounded-lg transition-colors"
+	      >
+	        Entrar
+	      </button>
+	
+	      {message && (
+	        <div className="text-red-600 text-sm text-center">{message}</div>
+	      )}
+	    </form>
   );
 }
 
