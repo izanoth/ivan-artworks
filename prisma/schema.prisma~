@@ -12,7 +12,7 @@ datasource db {
 model Guest {
   id        String   @id @default(cuid())
   name      String?
-  email     String?  @unique
+  email     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   comment   String?
@@ -45,15 +45,15 @@ model Category {
 model User {
   id        String   @id @default(cuid())
   name      String?
-  email     String?  @unique
+  email     String   @unique
   role      String   @default("user")
+  password  String?  
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   posts     Post[]
 
   @@map("users")
 }
-
 
 model Comment {
   id         String   @id @default(cuid())

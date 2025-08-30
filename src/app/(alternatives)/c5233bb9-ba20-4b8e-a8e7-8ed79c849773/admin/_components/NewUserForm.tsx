@@ -6,18 +6,22 @@ export default function UserForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("user");
-  const [message, setMessage] = useState("");
-
+  const [message, setMessage] = useState("");	
+  const [generatedPassword, setGeneratedPassword] = useState("");
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/api/newuser", {
+    const res = await fetch("/api/user/newuser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, role }),
     });
+    
+	 const data = await res.json();
 
     if (res.ok) {
       setMessage("Usuário criado com sucesso!");
+      setGeneratedPassword(data.plainPassword);
       setName("");
       setEmail("");
       setRole("user");
@@ -64,6 +68,7 @@ export default function UserForm() {
         </button>
       </form>
       {message && <p className="mt-4 text-sm">{message}</p>}
+      {generatedPassword && <p className="mt-4 text-sm">Senha: {generatedPassword}</p>}
     </div>
   );
 }
