@@ -13,7 +13,7 @@ export default function LogoutButton() {
 
   async function handleLogout() {
     try {
-      const res = await fetch('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/api/logout', {
+      const res = await fetch('/api/user/logout', {
         method: 'POST',
         credentials: 'include', // garante envio/recebimento de cookies
       });
