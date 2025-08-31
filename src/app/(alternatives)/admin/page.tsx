@@ -3,6 +3,7 @@
 //import '@/globals.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from "next/image";
 
 export default function LoginPage() {
 
@@ -29,11 +30,11 @@ export default function LoginPage() {
         const role = data.role;
         console.log('Login bem-sucedido:', data);
 		  const roleRoutes: Record<string, string> = {
-		    admin: '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin',
-		    editor: '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor',
+		    admin: '/admin/su',
+		    editor: '/admin/editor',
 		  };
 		
-		  const redirectTo = roleRoutes[role] ?? '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773';
+		  const redirectTo = roleRoutes[role] ?? '/admin';
 		  router.push(redirectTo);
       } else if (res.status === 401) {
         setMessage('Credenciais inválidas.');
@@ -50,7 +51,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center">
 		  <Image
-		  		src="/images/adminarelogo.png"
+		  		src="/images/suarelogo.png"
 		  		alt="admin area logo"
 		  />
         <div className="w-full mb-6">

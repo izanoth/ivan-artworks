@@ -10,12 +10,12 @@ export default async function BlogCrudPage() {
   const cookieStore = cookies();
   const token = cookieStore.get("admin-auth")?.value;
 
-  if (!token) redirect("/c5233bb9-ba20-4b8e-a8e7-8ed79c849773");
+  if (!token) redirect("/admin");
 
   try {
     verifyToken(token);
   } catch {
-    redirect("/c5233bb9-ba20-4b8e-a8e7-8ed79c849773");
+    redirect("/admin");
   }
 
   const posts = await prisma.post.findMany({ 

@@ -9,7 +9,7 @@ interface TokenPayload {
 
 export function middleware(req: NextRequest) {
 
-	  if (req.nextUrl.pathname.startsWith('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin')) {
+	  if (req.nextUrl.pathname.startsWith('/admin/su')) {
 	   const token = req.cookies.get('admin-auth')?.value;
 
       try {
@@ -18,12 +18,12 @@ export function middleware(req: NextRequest) {
         return NextResponse.next(); // autorizado
       } catch (err) {
         return NextResponse.redirect(
-          new URL('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773', req.url)
+          new URL('/admin', req.url)
         );
       }
     }
      // Rotas editor
-    if (req.nextUrl.pathname.startsWith('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor')) {
+    if (req.nextUrl.pathname.startsWith('/admin/editor')) {
 		  const token =
 		    req.cookies.get('friend-auth')?.value ??
 		    req.cookies.get('admin-auth')?.value;
@@ -34,7 +34,7 @@ export function middleware(req: NextRequest) {
 		    return NextResponse.next(); // autorizado
 		  } catch (err) {
 		    return NextResponse.redirect(
-		      new URL('/c5233bb9-ba20-4b8e7-8ed79c849773', req.url)
+		      new URL('/admin', req.url)
 		    );
 		  }
         return NextResponse.next();
@@ -47,8 +47,8 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     '/blog/crud/:path*',
-    '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/:path*',
-    '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor/:path*',
+    '/admin/su/:path*',
+    '/admin/editor/:path*',
   ],
 };
 
