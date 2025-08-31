@@ -3,6 +3,7 @@
 //import '@/globals.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from "next/image";
 
 export default function LoginPage() {
 
@@ -49,18 +50,11 @@ export default function LoginPage() {
  return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center">
-		  <Image
-		  		src="/images/suarelogo.png"
-		  		alt="admin area logo"
-		  />
-        <div className="w-full mb-6">
+        <div className="w-full mb-6 justify-items-center">
           <Image
-            src={logoImg}
-            alt="Logo Admin"
-            width={300} // ajusta conforme necessário
-            height={100} 
-            className="mx-auto"
-          />
+		  		src="/images/adminarealogo.png"
+		  		alt="admin area logo"
+		  	 />
         </div>
 
         {/* Formulário */}

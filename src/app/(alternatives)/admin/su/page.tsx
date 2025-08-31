@@ -64,7 +64,7 @@ export default async function Dashboard() {
         <div className="bg-blue-600 text-white shadow rounded-2xl p-6 flex flex-col items-center justify-center">
           <p className="text-lg mb-2">Gerenciar Blog</p>
           <Link
-            href="/blog/crud"
+            href="/admin/blog"
             className="px-4 py-2 bg-white text-blue-600 rounded-lg font-semibold"
           >
             Ir para CRUD
