@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { verifyToken } from "@/auth";
-import DeletePost from "@/blog/components/DeletePost";
+import DeletePost from "./_components/DeletePost";
 
 export default async function BlogCrudPage() {
   const cookieStore = cookies();
@@ -39,7 +39,7 @@ export default async function BlogCrudPage() {
 		<section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">Nova Postagem</h2>
         <form
-          action="/blog/crud/api/create"
+          action="/admin/blog/api/create"
           method="post"
           encType="multipart/form-data"
           className="flex flex-col gap-4"

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { verifyToken } from "@/auth";
-import DeletePost from "@/blog/components/DeletePost";
+import DeletePost from "./_components/DeletePost";
 
 export default async function BlogCrudPage() {
   const cookieStore = cookies();

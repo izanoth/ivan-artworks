@@ -9,7 +9,7 @@ interface TokenPayload {
 
 export function middleware(req: NextRequest) {
 
-	  if (req.nextUrl.pathname.startsWith('/admin/admin')) {
+	  if (req.nextUrl.pathname.startsWith('/admin/su')) {
 	   const token = req.cookies.get('admin-auth')?.value;
 
       try {
@@ -23,7 +23,7 @@ export function middleware(req: NextRequest) {
       }
     }
      // Rotas editor
-    if (req.nextUrl.pathname.startsWith('/admin/editor')) {
+    if (req.nextUrl.pathname.startsWith('/admin/blog')) {
 		  const token =
 		    req.cookies.get('friend-auth')?.value ??
 		    req.cookies.get('admin-auth')?.value;
@@ -46,9 +46,8 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/blog/crud/:path*',
     '/admin/su/:path*',
-    '/admin/editor/:path*',
+    '/admin/blog/:path*',
   ],
 };
 
