@@ -8,8 +8,8 @@ interface TokenPayload {
 }
 
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
 
+<<<<<<< HEAD
   try {
     // Rotas admin
     if (pathname.startsWith("/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin")) {
@@ -19,6 +19,7 @@ export function middleware(req: NextRequest) {
 		if (!payload || payload.role !== "admin") {
 		  throw new Error("Não autorizado");
 		}
+		console.log('payload.role')
       if (payload.role !== "admin") throw new Error("Não autorizado");
       return NextResponse.next();
     }
@@ -40,13 +41,56 @@ export function middleware(req: NextRequest) {
   }
 
   // Demais rotas públicas
+=======
+	  if (req.nextUrl.pathname.startsWith('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin')) {
+	   const token = req.cookies.get('admin-auth')?.value;
+
+      try {
+        if (!token) throw new Error('No token');
+        verifyToken(token); // lança erro se inválido
+        return NextResponse.next(); // autorizado
+      } catch (err) {
+        return NextResponse.redirect(
+          new URL('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773', req.url)
+        );
+      }
+    }
+     // Rotas editor
+    if (req.nextUrl.pathname.startsWith('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor')) {
+		  const token =
+		    req.cookies.get('friend-auth')?.value ??
+		    req.cookies.get('admin-auth')?.value;
+		
+		  try {
+		    if (!token) throw new Error('No token');
+		    verifyToken(token);
+		    return NextResponse.next(); // autorizado
+		  } catch (err) {
+		    return NextResponse.redirect(
+		      new URL('/c5233bb9-ba20-4b8e7-8ed79c849773', req.url)
+		    );
+		  }
+        return NextResponse.next();
+    }
+
+  // para todas as outras rotas
+>>>>>>> debug
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
+<<<<<<< HEAD
     "/blog/crud/:path*",
     "/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/:path*",
     "/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor/:path*",
+=======
+    '/blog/crud/:path*',
+    '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin/:path*',
+    '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor/:path*',
+>>>>>>> debug
   ],
 };
+
+
+

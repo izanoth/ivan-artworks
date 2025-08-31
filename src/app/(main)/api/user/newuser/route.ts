@@ -1,5 +1,5 @@
 // app/api/user/newuser/route.ts
-// app/api/users/route.ts
+
 import prisma from "@/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";

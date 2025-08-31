@@ -1,10 +1,7 @@
 // lib/auth.ts
-import jwt, { JwtPayload } from 'jsonwebtoken';
 
-export interface TokenPayload extends JwtPayload {
-  id: string;
-  role: string;
-}
+import jwt from 'jsonwebtoken';
+
 
 export function signToken(payload: TokenPayload) {
   return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '2h' });
