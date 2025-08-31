@@ -19,7 +19,7 @@ export default function LogoutButton() {
       });
 
       if (res.ok) {
-        router.push('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773'); // ou onde quiser redirecionar
+        router.push('/admin'); // ou onde quiser redirecionar
       } else {
         console.error('Erro ao fazer logout');
       }

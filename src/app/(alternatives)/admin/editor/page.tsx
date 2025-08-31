@@ -1,7 +1,8 @@
-// app/admin/editor/page.tsx
+// app/su/editor/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
+import prisma from "@/prisma";
 
 interface Post {
   id: string;
@@ -9,35 +10,38 @@ interface Post {
   content: string;
   image?: string;
   published: boolean;
+  categoryName?: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
 }
 
 export default function EditorPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
+  const [categoryId, setCategoryId] = useState<number | "">("");
+  const [categories, setCategories] = useState<Category[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchPosts = async () => {
-    const res = await fetch("/api/posts/me");
-    if (res.ok) {
-      const data = await res.json();
-      setPosts(data);
-    }
-  };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const posts = prisma.post.findMany({
+  where: email = getcookie *(***********)
+  }
+  )
+   const categories = prisma.category.findMany();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const res = await fetch("/api/posts", {
+    const res = await fetch("/", { *************
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, image }),
+      body: JSON.stringify({ title, content }),
     });
 
     if (res.ok) {
@@ -50,7 +54,7 @@ export default function EditorPage() {
     setLoading(false);
   };
 
-  return (
+ return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
       <h1 className="text-4xl font-bold mb-6 text-neon-pink drop-shadow-neon">
         Painel do Editor
@@ -77,13 +81,20 @@ export default function EditorPage() {
           rows={6}
           required
         />
-        <input
-          type="text"
-          placeholder="URL da imagem (opcional)"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
+        <select
+          value={categoryId}
+          onChange={(e) => setCategoryId(Number(e.target.value))}
           className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
-        />
+          required
+        >
+          <option value="">Selecione a categoria</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+
         <button
           type="submit"
           disabled={loading}
@@ -101,12 +112,8 @@ export default function EditorPage() {
             className="p-6 bg-gray-800 rounded-2xl shadow-neon flex flex-col space-y-2 hover:scale-105 transition-transform"
           >
             <h2 className="text-2xl font-bold text-neon-cyan">{post.title}</h2>
-            {post.image && (
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full max-h-60 object-cover rounded-lg"
-              />
+            {post.categoryName && (
+              <span className="text-sm text-gray-400">Categoria: {post.categoryName}</span>
             )}
             <p className="text-gray-300">{post.content}</p>
             <span
