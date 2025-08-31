@@ -3,6 +3,7 @@
 //import '@/globals.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from "next/image";
 
 export default function LoginPage() {
 
@@ -19,14 +20,22 @@ export default function LoginPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
+        },        
         body: JSON.stringify({ username: username, password: password }),
+        credentials: 'include',
       });
 
       if (res.ok) {
         const data = await res.json();
+        const role = data.role;
         console.log('Login bem-sucedido:', data);
-        router.push('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin');
+		  const roleRoutes: Record<string, string> = {
+		    admin: '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin',
+		    editor: '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/editor',
+		  };
+		
+		  const redirectTo = roleRoutes[role] ?? '/c5233bb9-ba20-4b8e-a8e7-8ed79c849773';
+		  router.push(redirectTo);
       } else if (res.status === 401) {
         setMessage('Credenciais inválidas.');
       } else {
@@ -38,34 +47,57 @@ export default function LoginPage() {
     }
   }
 
-  return (
-    <form onSubmit={handleSubmit} className="p-8">
-      <h1 className="text-xl font-bold mb-4">Login Admin</h1>
+ return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center">
+		  <Image
+		  		src="/images/adminarelogo.png"
+		  		alt="admin area logo"
+		  />
+        <div className="w-full mb-6">
+          <Image
+            src={logoImg}
+            alt="Logo Admin"
+            width={300} // ajusta conforme necessário
+            height={100} 
+            className="mx-auto"
+          />
+        </div>
 
-      <input
-        className="border px-3 py-2 block mb-2"
-        placeholder="Email"
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        {/* Formulário */}
+        <form
+          onSubmit={handleSubmit}
+          className="w-full flex flex-col space-y-4"
+        >
+          <input
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full"
+            placeholder="Email"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-      <input
-        className="border px-3 py-2 block mb-2"
-        placeholder="Senha"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+          <input
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full"
+            placeholder="Senha"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-      <input
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 cursor-pointer"
-        value="Entrar"
-      />
+          <button
+            type="submit"
+            className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 rounded-lg transition-colors w-full"
+          >
+            Entrar
+          </button>
 
-      {message && <div className="text-red-600 mt-2">{message}</div>}
-    </form>
+          {message && (
+            <div className="text-red-600 text-sm text-center">{message}</div>
+          )}
+        </form>
+      </div>
+    </div>
   );
 }
 
