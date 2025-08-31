@@ -4,8 +4,8 @@ import { verifyToken } from '@/auth';
 
 export function middleware(req: NextRequest) {
 
-  if (req.nextUrl.pathname.startsWith('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin')) {
-      const token = req.cookies.get('admin-auth')?.value;
+	  if (req.nextUrl.pathname.startsWith('/c5233bb9-ba20-4b8e-a8e7-8ed79c849773/admin')) {
+	   const token = req.cookies.get('admin-auth')?.value;
 
       try {
         if (!token) throw new Error('No token');
@@ -25,13 +25,9 @@ export function middleware(req: NextRequest) {
 		
 		  try {
 		    if (!token) throw new Error('No token');
-		
-		    // valida qualquer token (friend ou admin)
 		    verifyToken(token);
-		
 		    return NextResponse.next(); // autorizado
 		  } catch (err) {
-		    // redireciona se token ausente ou inválido
 		    return NextResponse.redirect(
 		      new URL('/c5233bb9-ba20-4b8e7-8ed79c849773', req.url)
 		    );

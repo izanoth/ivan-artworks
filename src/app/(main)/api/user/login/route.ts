@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     if (username === 'izanoth' && password === adminPassword) {
       const token = await signToken({ username });
       
-      const res = new NextResponse(JSON.stringify({ success: true }), {
+      const res = new NextResponse(JSON.stringify({ success: true, role: 'admin' }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     }
 
     const token = await signToken({ username: user.email });
-    const res = new NextResponse(JSON.stringify({ success: true }), {
+    const res = new NextResponse(JSON.stringify({ success: true, role: 'editor' }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -78,9 +78,6 @@ export async function POST(req: Request) {
     });
 
     return res;
-    
-        console.warn('[WARN] Credenciais inválidas');
-    return NextResponse.json({ success: false, username }, { status: 401 });
     
   } catch (err) {
     console.error("[ERROR] Erro no endpoint de login:", err);
