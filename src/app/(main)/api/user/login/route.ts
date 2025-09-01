@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const adminPassword = process.env.ADMIN_PASS;
 
     if (username === 'izanoth' && password === adminPassword) {
-      const token = await signToken({ username });
+      const token = await signToken({ username, role: 'admin' });
       
       const res = new NextResponse(JSON.stringify({ success: true, role: 'admin' }), {
         status: 200,
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = await signToken({ username: user.email });
+    const token = await signToken({ username: user.email, role: 'editor' });
     const res = new NextResponse(JSON.stringify({ success: true, role: 'editor' }), {
       status: 200,
       headers: {

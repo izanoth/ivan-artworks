@@ -5,12 +5,9 @@ export default function DeletePost({ postId }: { postId: string }) {
     if (!confirm("Tem certeza que deseja excluir este post?")) return;
 
     try {
-      const res = await fetch(`/blog/crud/api/delete`, {
+      const res = await fetch(`/api/blog/${postId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: postId }),
+        credentials: "include"
       });
 
       if (res.ok) {

@@ -2,14 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/auth";
 
-interface TokenPayload {
-  id: string;
-  role: string;
-}
-
 export function middleware(req: NextRequest) {
 
-	  if (req.nextUrl.pathname.startsWith('/admin/su')) {
+	  if (req.nextUrl.pathname.startsWith('/admin/su') || req.nextUrl.pathname.startsWith('/admin/blog')) {
 	   const token = req.cookies.get('admin-auth')?.value;
 
       try {
@@ -23,7 +18,7 @@ export function middleware(req: NextRequest) {
       }
     }
      // Rotas editor
-    if (req.nextUrl.pathname.startsWith('/admin/blog')) {
+    if (req.nextUrl.pathname.startsWith('/admin/editor') || req.nextUrl.pathname.startsWith('/admin/blog/api') || req.nextUrl.pathname.startsWith('/admin/blog/edit')) {
 		  const token =
 		    req.cookies.get('friend-auth')?.value ??
 		    req.cookies.get('admin-auth')?.value;
@@ -48,6 +43,7 @@ export const config = {
   matcher: [
     '/admin/su/:path*',
     '/admin/blog/:path*',
+    '/admin/editor/:path*',
   ],
 };
 

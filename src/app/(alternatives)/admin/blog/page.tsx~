@@ -39,7 +39,7 @@ export default async function BlogCrudPage() {
 		<section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">Nova Postagem</h2>
         <form
-          action="/blog/crud/api/create"
+          action="/api/blog/create"
           method="post"
           encType="multipart/form-data"
           className="flex flex-col gap-4"
