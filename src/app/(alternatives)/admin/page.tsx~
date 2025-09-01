@@ -10,10 +10,12 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch('/api/user/login', {
@@ -50,7 +52,7 @@ export default function LoginPage() {
  return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center">
-        <div className="w-full mb-6 justify-items-center">
+        <div className="mb-6 justify-items-center">
           <Image
 		  		src="/images/adminarealogo.png"
 		  		alt="admin area logo"

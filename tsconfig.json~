@@ -54,7 +54,7 @@
         "myalbuns.js"
       ],
       "@/admin/components/*": [
-			"src/app/(alternatives)/admin/_components/*"      
+			"src/app/(alternatives)/admin/_components"      
       ],
     }
   },

@@ -10,10 +10,12 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch('/api/user/login', {
@@ -44,7 +46,10 @@ export default function LoginPage() {
     } catch (err) {
       console.error(err);
       setMessage('Erro de conexão com o servidor.');
+    } finally {
+		setLoading(false);    
     }
+    
   }
 
  return (
@@ -82,7 +87,7 @@ export default function LoginPage() {
             type="submit"
             className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 rounded-lg transition-colors w-full"
           >
-            Entrar
+            {loading ? "Um momento..." : "Entrar" }
           </button>
 
           {message && (

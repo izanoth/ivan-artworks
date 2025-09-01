@@ -3,17 +3,17 @@ import prisma from '@/prisma';
 
 export async function POST(req: Request) {
   try {
-    const formData = await req.formData();
-
-    const title = formData.get("title")?.toString() || "";
-    const authorId = formData.get("authorId")?.toString() || "";
-	 const categoryId = Number(formData.get('categoryId'));    
-    const content = formData.get("content")?.toString() || "";
-    const published = formData.get("published") === "on" || formData.get("published") === "true";
+    const data = await req.json();
 		
     // cria post no banco
     const post = await prisma.post.create({
-      data: { title, content, published, authorId, categoryId },
+      data: {
+        title: data.title,
+        content: data.content,
+        published: data.published ?? false,
+        categoryId: data.categoryId ?? null,
+        authorId,
+      },    
     });
 
     // notifica hub

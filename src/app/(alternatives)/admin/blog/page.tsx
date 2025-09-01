@@ -39,7 +39,7 @@ export default async function BlogCrudPage() {
 		<section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">Nova Postagem</h2>
         <form
-          action="/api/blog/create"
+          action="/admin/editor/api/create"
           method="post"
           encType="multipart/form-data"
           className="flex flex-col gap-4"
@@ -101,7 +101,7 @@ export default async function BlogCrudPage() {
               </span>
               <div className="flex gap-2">
                 <Link
-                  href={`/api/blog/${post.id}`}
+                  href={`/admin/editor/edit/${post.id}`}
                   className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                 >
                   Editar
