@@ -1,4 +1,4 @@
-// File: src/app/api/post/route.ts
+// File: src/app/api/blog/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma';
@@ -26,20 +26,20 @@ interface Post {
 type Role = 'admin' | 'editor' | 'user' | 'guest'
 
 function getAuthFromRequest(req: NextRequest): { role: Role; username: string | null } {
-  const role = (req.cookies.get('role')?.value as Role) || 'guest'
-  const username = req.cookies.get('username')?.value || null
-  return { role, username }
+  const role = (req.cookies.get('role')?.value as Role) || 'guest';
+  const username = req.cookies.get('username')?.value || null;
+  return { role, username };
 }
 
 export async function GET(req: NextRequest) {
   try {
-    const { role, username } = getAuthFromRequest(req)
+    const { role, username } = getAuthFromRequest(req);
 
     // Regras de visibilidade
-    let where: any = {}
+    let where: any = {};
     if (role === 'admin') {
       // nada: vê tudo
-      where = {}
+      where = {};
     } else if (role === 'editor' && username) {
       where = {
         OR: [
@@ -64,14 +64,14 @@ export async function GET(req: NextRequest) {
     const limit = Math.min(Number(searchParams.get('limit') || '20'), 100)
     const skip = (page - 1) * limit*/
 
-    const posts = prisma.post.findMany({
+    const posts = await prisma.post.findMany({
         where,
         include: {
           category: true,
           author: true,
         },
-        orderBy: { createdAt: 'desc' }, // ajuste para um campo que exista no seu schema
-     }),
+        orderBy: { createdAt: 'desc' },
+     });
 
      return NextResponse.json(posts as Post[]);
   } catch (err) {
@@ -82,4 +82,4 @@ export async function GET(req: NextRequest) {
 
 
 // Opcional: forçar dinamismo se usar caching agressivo
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';

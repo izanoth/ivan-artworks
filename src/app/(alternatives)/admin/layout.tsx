@@ -9,7 +9,7 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body className="bg-gray-100 flex items-center justify-center">
-        <div className="w-full max-w-md bg-white rounded-2xl p-6">
+        <div className="w-full bg-white p-6">
           {children}
         </div>
       </body>

@@ -1,7 +1,7 @@
 // app/dashboard/page.tsx
 import prisma from "@/prisma";
 import Link from "next/link";
-import LogoutButton from './_components/LogoutButton';
+import LogoutButton from '@/admin/components/LogoutButton';
 import NewUserForm from "./_components/NewUserForm"; 
 
 export default async function Dashboard() {
@@ -20,12 +20,12 @@ export default async function Dashboard() {
   });
 
   return (
-    <main className="container mx-auto p-6">
+    <main className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Widget: Contacts */}
-        <div className="bg-white shadow rounded-2xl p-6">
+        <div className="bg-white shadow rounded-2xl p-4">
           <p className="text-sm text-gray-500">Contacts</p>
           <p className="text-3xl font-bold mb-4">{contactsCount}</p>
 
@@ -64,7 +64,7 @@ export default async function Dashboard() {
         <div className="bg-blue-600 text-white shadow rounded-2xl p-6 flex flex-col items-center justify-center">
           <p className="text-lg mb-2">Gerenciar Blog</p>
           <Link
-            href="/admin/blog"
+            href="/admin/editor"
             className="px-4 py-2 bg-white text-blue-600 rounded-lg font-semibold"
           >
             Ir para CRUD

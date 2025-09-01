@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import prisma from "@/prisma";
-import crypto from "crypto";
+import Link from "next/link";
+import DeletePost from "./DeletePost";
 
 interface Post {
   id: string;
@@ -11,7 +11,6 @@ interface Post {
   title: string;
   content: string;
   image: string | null;
-  postRequest: boolean | null;
   published: boolean;
   category: {
  	  id: number;
@@ -24,34 +23,52 @@ interface Category {
   name: string;
 }
 
-interface Props {
-  initialPosts: Post[];
-  categories: Category[];
-  authorId: string;
+interface User {
+	id: string;
+	name: string | null;
+	email: string;
 }
 
-export default function EditorForm({ initialPosts, categories, authorId, authorName }: Props) {
+interface Props {
+  initialPosts: Post[];
+  authors: User[]
+  categories: Category[];
+  authorId: string;
+  authorName: string;
+  isAdmin: boolean;
+}
+
+export default function EditorForm({ isAdmin, initialPosts, categories, authorId, authorName, authors }: Props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [categoryId, setCategoryId] = useState<number | "">("");
+  const [suAuthorId, setSuAuthorId] = useState("");
   const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [imagePath, setImagePath] = useState("");
+  const [source, setSource] = useState("");
+  const [publishNow, setPublishNow] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-   const res = await fetch("/admin/blog/api/create", {
+	
+	const finalAuthorId = authorId || suAuthorId;
+	
+	
+   const res = await fetch("/admin/editor/api/create", {
 	  method: "POST", 
 	  headers: { "Content-Type": "application/json" },
 	  body: JSON.stringify({
 	    title,
-	    authorId,
+	    finalAuthorId,
 	    content,
 	    published: false,
-	    postRequest: true,
 	    categoryId: categoryId,
+	    image: imagePath,
+	    source,
 	  }),
+	  credentials: "include",
 	 });
     
 	 const newPostData = await res.json();
@@ -61,15 +78,41 @@ export default function EditorForm({ initialPosts, categories, authorId, authorN
     setTitle("");
     setContent("");
     setCategoryId("");
+    setSuAuthorId("");
+    setImagePath("");
+    setSource("");
     setLoading(false);
   };
+  
+  const handleApprove = async (postId: string) => {
+  	   try {
+			const res = await fetch(`/admin/editor/api/$(post.id)`, {
+			  method: "PATCH",
+			  headers: { 
+			  		"Content-Type": "application/json" },
+			  		body: JSON.stringify({ published: true }),
+			});
+			
+			if (res.ok) {
+			  const updated = await res.json();
+			  setPosts((prev) =>
+			    prev.map((p) => (p.id === updated.id ? updated : p))
+			  );
+			}
+		} catch (err) {
+		    console.error(err);
+		    alert("Falha ao aprovar o post.");
+    }
+  }
 
   return (
     <div className="w-full max-w-lg space-y-6">
     	<div>
-    		<div className="prose">
-    			Olá, { authorName }! É um prazer ter você aqui.
-    		</div>
+    		{!isAdmin && authorName && (
+	    		<div className="prose">
+	    			Olá, {authorName} ! É um prazer ter você aqui, agradeço a sua participação.
+	    		</div>	
+    		)}
 	      <form
 	        onSubmit={handleSubmit}
 	        className="bg-gray-800 p-6 rounded-2xl shadow-neon space-y-4"
@@ -82,6 +125,39 @@ export default function EditorForm({ initialPosts, categories, authorId, authorN
 	          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
 	          required
 	        />
+	        {isAdmin && (
+	 			  <select
+		          value={suAuthorId}
+		          onChange={(e) => setSuAuthorId(e.target.value)}
+		          className="w-full p-3 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+		          required
+		        >
+		          <option value="">Selecione um Autor</option>
+		          {authors.map((author) => (
+		            <option key={author.id} value={author.id}>
+		              {author.name}
+		            </option>
+		          ))}
+		        </select>
+           )}
+	        { isAdmin && ()
+					<input
+		          type="text"
+		          placeholder="Image Path"
+		          value={imagePath}
+		          onChange={(e) => setImagePath(e.target.value)}
+		          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+		          required
+		        />     
+	        )}
+			  <input
+	          type="text"
+	          placeholder="Fonte"
+	          value={source}
+	          onChange={(e) => setSource(e.target.value)}
+	          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          required
+	        />     
 	        <textarea
 	          placeholder="Conteúdo do post"
 	          value={content}
@@ -103,7 +179,15 @@ export default function EditorForm({ initialPosts, categories, authorId, authorN
 	            </option>
 	          ))}
 	        </select>
-	
+	        {isAdmin && (
+		        <label className="flex items-center gap-2">
+		            <input
+		            	onChange = { () => setPublishNow(true) }
+		            	type="checkbox" 
+		            	name="published" />
+		            Publicar imediatamente
+	           </label>
+           )}
 	        <button
 	          type="submit"
 	          disabled={loading}
@@ -112,28 +196,39 @@ export default function EditorForm({ initialPosts, categories, authorId, authorN
 	          {loading ? "Salvando..." : "Criar Post"}
 	        </button>
 	      </form>
-	
-	      <div className="space-y-4">
-	        {posts.map((post) => (
-	          <div
-	            key={post.id}
-	            className="p-6 bg-gray-800 rounded-2xl shadow-neon flex flex-col space-y-2 hover:scale-105 transition-transform"
-	          >
-	            <h2 className="text-2xl font-bold text-neon-cyan">{post.title}</h2>
-	            {post.category && (
-	              <span className="text-sm text-gray-400">Categoria: {post.category.name}</span>
-	            )}
-	            <p className="text-gray-300">{post.content}</p>
-	            <span
-	              className={`self-start px-3 py-1 rounded-full font-semibold ${
-	                post.published ? "bg-green-500" : "bg-red-500"
-	              }`}
-	            >
-	              {post.published ? "Publicado" : "Rascunho"}
-	            </span>
-	          </div>
-	        ))}
-	      </div>
+
+		   {/* Lista de posts */}
+	      <section>
+	        <h2 className="text-xl font-semibold mb-4">Postagens Existentes</h2>
+	        <ul className="flex flex-col gap-2">
+	          {posts.map(post => (
+	            <li key={post.id} className="flex justify-between items-center border p-2 rounded">
+	              <span className="flex-1">
+	                {post.title} ({post.published ? "Publicado" : "Rascunho"})
+	              </span>
+	              <div className="flex gap-2">
+	              	{isAdmin && post.authorId !== 'e04eaac0-efa5-4686-9961-3ccf38e3bf11' && (
+						  <button
+							 onClick={() => handleApprove(post.id)}
+						    className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
+						  >
+						    Aprovar
+						  </button>
+						)}
+
+	                <Link
+	                  href={`/admin/editor/edit/${post.id}`}
+	                  className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+	                >
+	                  Editar
+	                </Link>
+	               <DeletePost postId={post.id} />
+	              </div>
+	            </li>
+	          ))}
+	        </ul>
+	      </section>
+	    </div>
     </div>
   );
 }
