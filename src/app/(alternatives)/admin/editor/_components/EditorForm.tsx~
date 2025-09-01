@@ -11,6 +11,7 @@ interface Post {
   title: string;
   content: string;
   image: string | null;
+  postRequest: boolean | null;
   published: boolean;
   category: {
  	  id: number;
@@ -29,7 +30,7 @@ interface Props {
   authorId: string;
 }
 
-export default function EditorForm({ initialPosts, categories, authorId }: Props) {
+export default function EditorForm({ initialPosts, categories, authorId, authorName }: Props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [categoryId, setCategoryId] = useState<number | "">("");
@@ -47,7 +48,8 @@ export default function EditorForm({ initialPosts, categories, authorId }: Props
 	    title,
 	    authorId,
 	    content,
-	    published: true,
+	    published: false,
+	    postRequest: true,
 	    categoryId: categoryId,
 	  }),
 	 });
@@ -64,70 +66,74 @@ export default function EditorForm({ initialPosts, categories, authorId }: Props
 
   return (
     <div className="w-full max-w-lg space-y-6">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-gray-800 p-6 rounded-2xl shadow-neon space-y-4"
-      >
-        <input
-          type="text"
-          placeholder="Título do post"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
-          required
-        />
-        <textarea
-          placeholder="Conteúdo do post"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
-          rows={6}
-          required
-        />
-        <select
-          value={categoryId}
-          onChange={(e) => setCategoryId(Number(e.target.value))}
-          className="w-full p-3 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
-          required
-        >
-          <option value="">Selecione a categoria</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3 bg-pink-500 hover:bg-pink-600 rounded-lg font-bold transition-colors"
-        >
-          {loading ? "Salvando..." : "Criar Post"}
-        </button>
-      </form>
-
-      <div className="space-y-4">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="p-6 bg-gray-800 rounded-2xl shadow-neon flex flex-col space-y-2 hover:scale-105 transition-transform"
-          >
-            <h2 className="text-2xl font-bold text-neon-cyan">{post.title}</h2>
-            {post.category && (
-              <span className="text-sm text-gray-400">Categoria: {post.category.name}</span>
-            )}
-            <p className="text-gray-300">{post.content}</p>
-            <span
-              className={`self-start px-3 py-1 rounded-full font-semibold ${
-                post.published ? "bg-green-500" : "bg-red-500"
-              }`}
-            >
-              {post.published ? "Publicado" : "Rascunho"}
-            </span>
-          </div>
-        ))}
-      </div>
+    	<div>
+    		<div className="prose">
+    			Olá, { authorName }! É um prazer ter você aqui.
+    		</div>
+	      <form
+	        onSubmit={handleSubmit}
+	        className="bg-gray-800 p-6 rounded-2xl shadow-neon space-y-4"
+	      >
+	        <input
+	          type="text"
+	          placeholder="Título do post"
+	          value={title}
+	          onChange={(e) => setTitle(e.target.value)}
+	          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          required
+	        />
+	        <textarea
+	          placeholder="Conteúdo do post"
+	          value={content}
+	          onChange={(e) => setContent(e.target.value)}
+	          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          rows={6}
+	          required
+	        />
+	        <select
+	          value={categoryId}
+	          onChange={(e) => setCategoryId(Number(e.target.value))}
+	          className="w-full p-3 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+	          required
+	        >
+	          <option value="">Selecione a categoria</option>
+	          {categories.map((cat) => (
+	            <option key={cat.id} value={cat.id}>
+	              {cat.name}
+	            </option>
+	          ))}
+	        </select>
+	
+	        <button
+	          type="submit"
+	          disabled={loading}
+	          className="w-full py-3 bg-blue-500 hover:bg-blue-600 rounded-lg font-bold transition-colors"
+	        >
+	          {loading ? "Salvando..." : "Criar Post"}
+	        </button>
+	      </form>
+	
+	      <div className="space-y-4">
+	        {posts.map((post) => (
+	          <div
+	            key={post.id}
+	            className="p-6 bg-gray-800 rounded-2xl shadow-neon flex flex-col space-y-2 hover:scale-105 transition-transform"
+	          >
+	            <h2 className="text-2xl font-bold text-neon-cyan">{post.title}</h2>
+	            {post.category && (
+	              <span className="text-sm text-gray-400">Categoria: {post.category.name}</span>
+	            )}
+	            <p className="text-gray-300">{post.content}</p>
+	            <span
+	              className={`self-start px-3 py-1 rounded-full font-semibold ${
+	                post.published ? "bg-green-500" : "bg-red-500"
+	              }`}
+	            >
+	              {post.published ? "Publicado" : "Rascunho"}
+	            </span>
+	          </div>
+	        ))}
+	      </div>
     </div>
   );
 }

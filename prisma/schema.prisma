@@ -21,19 +21,20 @@ model Guest {
 }
 
 model Post {
-  id         String    @id @default(cuid())
-  categoryId Int?
-  title      String
-  content    String
-  image      String?
-  published  Boolean   @default(false)
-  authorId   String?
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
+  id         	String    @id @default(cuid())
+  categoryId 	Int?
+  title      	String
+  content    	String
+  image      	String?
+  published  	Boolean   @default(false)
+  authorId   	String?
+  postRequest	Boolean?	 
+  createdAt  	DateTime  @default(now()) @map("created_at")
+  updatedAt  	DateTime  @updatedAt @map("updated_at")
 
-  category   Category? @relation(fields: [categoryId], references: [id])
-  author     User?     @relation(fields: [authorId], references: [id])
-  comments   Comment[]
+  category   	Category? @relation(fields: [categoryId], references: [id])
+  author     	User?     @relation(fields: [authorId], references: [id])
+  comments   	Comment[]
 }
 
 model Category {

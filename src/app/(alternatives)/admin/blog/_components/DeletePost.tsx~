@@ -7,7 +7,6 @@ export default function DeletePost({ postId }: { postId: string }) {
     try {
       const res = await fetch(`/api/blog/${postId}`, {
         method: "DELETE",
-        credentials: "include"
       });
 
       if (res.ok) {

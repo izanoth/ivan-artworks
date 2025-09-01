@@ -12,7 +12,7 @@ datasource db {
 model Guest {
   id        String   @id @default(cuid())
   name      String?
-  email     String   @unique
+  email     String?  @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   comment   String?
@@ -21,19 +21,20 @@ model Guest {
 }
 
 model Post {
-  id         String    @id @default(cuid())
-  categoryId Int?
-  title      String
-  content    String
-  image      String?
-  published  Boolean   @default(false)
-  authorId   String?
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
+  id         	String    @id @default(cuid())
+  categoryId 	Int
+  title      	String
+  content    	String
+  image      	String?
+  published  	Boolean   @default(false)
+  authorId   	String?
+  postRequest	Boolean?	 
+  createdAt  	DateTime  @default(now()) @map("created_at")
+  updatedAt  	DateTime  @updatedAt @map("updated_at")
 
-  category   Category? @relation(fields: [categoryId], references: [id])
-  author     User?     @relation(fields: [authorId], references: [id])
-  comments   Comment[]
+  category   	Category? @relation(fields: [categoryId], references: [id])
+  author     	User?     @relation(fields: [authorId], references: [id])
+  comments   	Comment[]
 }
 
 model Category {
@@ -47,11 +48,7 @@ model User {
   name      String?
   email     String   @unique
   role      String   @default("user")
-<<<<<<< HEAD
-  password  String?  // 👈 nova coluna, pode ser null
-=======
   password  String?  
->>>>>>> debug
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   posts     Post[]

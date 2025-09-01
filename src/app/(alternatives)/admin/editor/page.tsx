@@ -32,7 +32,7 @@ export default async function EditorPage() {
       </h1>
 
       {/* Componente client-side isolado */}
-      <EditorForm initialPosts={posts} categories={categories} authorId={user?.id || ""} />
+      <EditorForm initialPosts={posts} categories={categories} authorId={user?.id || ""} authorName={user?.name || ""} />
     </div>
   );
 }

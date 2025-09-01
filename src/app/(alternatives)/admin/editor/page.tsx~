@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 
 export default async function EditorPage() {
   // Carrega posts e categorias no server
-  const categories = await prisma.category.findMany();
 
   const cookieStore = cookies(); 
   const adminAuth = cookieStore.get("admin-auth")?.value; 
@@ -23,6 +22,8 @@ export default async function EditorPage() {
   const posts = user
     ? await prisma.post.findMany({ where: { authorId: user.id }, include: { category: true } })
     : [];
+  
+  const categories = await prisma.category.findMany();
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
