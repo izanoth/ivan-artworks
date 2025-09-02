@@ -12,7 +12,7 @@ export default async function Dashboard() {
   const commentsCount = await prisma.comment.count();
   const cookieStore = cookies(); 
     
-  const tokenObject = await verifyToken(cookieStore.get("admin-auth")?.value);
+  const tokenObject = await verifyToken(cookieStore.get("admin-auth")?.value || "");
 
   const latestContacts = await prisma.contact.findMany({
     orderBy: { createdAt: "desc" },

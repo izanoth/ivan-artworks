@@ -3,19 +3,37 @@ import prisma from '@/prisma'
 import { verifyToken } from "@/auth";
 import { cookies } from "next/headers";
 
-async function getAuthFromRequest(req: NextRequest): Promise<{ role: Role; username: string | null }> {
-  const cookieStore = cookies(); 
-  const adminAuth = await verifyToken(cookieStore.get("admin-auth")?.value);
-  const friendAuth = await verifyToken(cookieStore.get("friend-auth")?.value);
-  const auth = adminAuth || friendAuth;
-  return { role: auth?.role, username: auth?.username ?? null };
+type Auth = {
+  role: string;
+  username: string;
+};
+
+async function getAuthFromRequest(): Promise<Auth> {
+  const cookieStore = cookies();
+
+  const adminCookie = cookieStore.get("admin-auth")?.value;
+  const friendCookie = cookieStore.get("friend-auth")?.value;
+
+  // garante que verifyToken sempre retorne um objeto ou null
+  const adminAuth = adminCookie
+    ? (await verifyToken(adminCookie)) as Auth | null
+    : null;
+
+  const friendAuth = friendCookie
+    ? (await verifyToken(friendCookie)) as Auth | null
+    : null;
+
+  // auth final: admin > friend > guest
+  const auth: Auth = adminAuth || friendAuth || { role: "guest", username: 'default' };
+
+  return auth;
 }
 
 // ===================================================
 // GET /admin/editor/api/[id] → pegar um post
 // ===================================================
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const { role, username } = getAuthFromRequest(req)
+  const auth = await getAuthFromRequest();
   const postId = params.id
 
   try {
@@ -29,12 +47,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
 
     // Regras de acesso
-    if (role === 'admin') {
+    if (auth.role === 'admin') {
       return NextResponse.json(post)
     }
 
-    if (role === 'editor') {
-      if (post.published || post.authorId === username) {
+    if (auth.role === 'editor') {
+      if (post.published || post.authorId === auth.username) {
         return NextResponse.json(post)
       }
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -127,13 +145,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		  where: { email: auth.username },
 	 });		
 	 const authorId = user?.id;
-    if (post.authorId !== authorId) {
+
+    if (post.authorId !== authorId && user?.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    await prisma.post.delete({ where: { id: postId } })
+    const res = await prisma.post.delete({ where: { id: postId } })
+    console.log(res);
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ res, success: true })
   } catch (err) {
     console.error('DELETE /admin/editor/api/[id] error:', err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
