@@ -8,7 +8,6 @@ interface Post {
     id: string;
     title: string;
     categoryId: number;
-    postRequest: boolean | null;
 	 category?: {
 	   id: number;
 	   name: string;
