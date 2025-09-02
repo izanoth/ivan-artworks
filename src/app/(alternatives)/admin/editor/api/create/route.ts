@@ -3,14 +3,31 @@ import prisma from '@/prisma'
 import { verifyToken } from "@/auth";
 import { cookies } from "next/headers";
 
-async function getAuthFromRequest(req: NextRequest): Promise<{ role: Role; username: string | null }> {
-  const cookieStore = cookies(); 
-  const adminAuth = await verifyToken(cookieStore.get("admin-auth")?.value);
-  const friendAuth = await verifyToken(cookieStore.get("friend-auth")?.value);
-  const auth = adminAuth || friendAuth;
-  return { role: auth?.role, username: auth?.username ?? null };
-}
+type Auth = {
+  role: string;
+  username: string;
+};
 
+async function getAuthFromRequest(): Promise<Auth> {
+  const cookieStore = cookies();
+
+  const adminCookie = cookieStore.get("admin-auth")?.value;
+  const friendCookie = cookieStore.get("friend-auth")?.value;
+
+  // garante que verifyToken sempre retorne um objeto ou null
+  const adminAuth = adminCookie
+    ? (await verifyToken(adminCookie)) as Auth | null
+    : null;
+
+  const friendAuth = friendCookie
+    ? (await verifyToken(friendCookie)) as Auth | null
+    : null;
+
+  // auth final: admin > friend > guest
+  const auth: Auth = adminAuth || friendAuth || { role: "guest", username: 'default' };
+
+  return auth;
+}
 
 export async function POST(req: NextRequest) {
   try {
