@@ -12,7 +12,7 @@ export default function DeletePost({ postId }: { postId: string }) {
 
       if (res.ok) {
         alert("Post excluído com sucesso!");
-        window.location.href = "/editor";
+        window.location.href = "/admin/editor";
       } else {
         const error = await res.json();
         alert(`Erro ao excluir: ${error.message || "desconhecido"}`);

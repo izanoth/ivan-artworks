@@ -5,19 +5,43 @@ import { cookies } from "next/headers";
 import LogoutButton from '@/admin/components/LogoutButton';
 import { verifyToken } from "@/auth";
 
+type Auth = {
+  role: string;
+  username: string;
+};
+
+async function getAuthFromRequest(): Promise<Auth> {
+  const cookieStore = cookies();
+
+  const adminCookie = cookieStore.get("admin-auth")?.value;
+  const friendCookie = cookieStore.get("friend-auth")?.value;
+
+  // garante que verifyToken sempre retorne um objeto ou null
+  const adminAuth = adminCookie
+    ? (await verifyToken(adminCookie)) as Auth | null
+    : null;
+
+  const friendAuth = friendCookie
+    ? (await verifyToken(friendCookie)) as Auth | null
+    : null;
+
+  // auth final: admin > friend > guest
+  const auth: Auth = adminAuth || friendAuth || { role: "guest", username: 'default' };
+
+  return auth;
+}
+
+
 export default async function EditorPage() {
   // Carrega posts e categorias no server
 
-  const cookieStore = cookies(); 
-  const adminAuth = await verifyToken(cookieStore.get("admin-auth")?.value); 
-  const friendAuth = await verifyToken(cookieStore.get("friend-auth")?.value); // Definindo email a partir do cookie disponível 
-  const auth = adminAuth || friendAuth; 
+  const auth = await getAuthFromRequest();
   if (!auth) { 
   	 return new Response(JSON.stringify({ 
   	 	error: "Não autenticado" 
   	 }), { status: 401 }); 
   }
-  const isAdmin = Boolean(adminAuth);
+  const isAdmin = (auth.role === 'admin');
 	const uniqueUser = await prisma.user.findUnique({
 	  where: { email: auth.username },
 	});
@@ -43,7 +67,7 @@ export default async function EditorPage() {
       </h1>
 
       {/* Componente client-side isolado */}
-      <EditorForm isAdmin={ isAdmin } initialPosts={posts} authors={authors} categories={categories} authorId={user?.id || ""} authorName={uniqueUser?.name || ""} />
+      <EditorForm isAdmin={ isAdmin } initialPosts={posts} authors={authors} categories={categories} authorId={uniqueUser?.id || ""} authorName={uniqueUser?.name || ""} />
     </div>
   );
 }
