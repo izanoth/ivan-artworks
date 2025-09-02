@@ -4,9 +4,15 @@ import Link from "next/link";
 import LogoutButton from '@/admin/components/LogoutButton';
 import NewUserForm from "./_components/NewUserForm"; 
 
+import { cookies } from "next/headers";
+import { verifyToken } from "@/auth";
+
 export default async function Dashboard() {
   const contactsCount = await prisma.contact.count();
   const commentsCount = await prisma.comment.count();
+  const cookieStore = cookies(); 
+    
+  const tokenObject = await verifyToken(cookieStore.get("admin-auth")?.value);
 
   const latestContacts = await prisma.contact.findMany({
     orderBy: { createdAt: "desc" },

@@ -109,7 +109,7 @@ export default function EditorForm({ isAdmin, initialPosts, categories, authorId
     <div className="w-full max-w-lg space-y-6">
     	<div>
     		{!isAdmin && authorName && (
-	    		<div className="prose">
+	    		<div className="text-2xl mb-4 font-bold text-white font-weight">
 	    			Olá, {authorName} ! É um prazer ter você aqui, agradeço a sua participação.
 	    		</div>	
     		)}
@@ -147,7 +147,6 @@ export default function EditorForm({ isAdmin, initialPosts, categories, authorId
 		          value={imagePath}
 		          onChange={(e) => setImagePath(e.target.value)}
 		          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-		          required
 		        />     
 	        )}
 			  <input
@@ -156,7 +155,6 @@ export default function EditorForm({ isAdmin, initialPosts, categories, authorId
 	          value={source}
 	          onChange={(e) => setSource(e.target.value)}
 	          className="w-full p-3 rounded-lg bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-	          required
 	        />     
 	        <textarea
 	          placeholder="Conteúdo do post"
@@ -206,7 +204,7 @@ export default function EditorForm({ isAdmin, initialPosts, categories, authorId
 	              <span className="flex-1">
 	                {post.title} ({post.published ? "Publicado" : "Rascunho"})
 	              </span>
-	              <div className="flex gap-2">
+	              <div className="flex gap-2">	              
 	              	{isAdmin && post.authorId !== 'e04eaac0-efa5-4686-9961-3ccf38e3bf11' && (
 						  <button
 							 onClick={() => handleApprove(post.id)}

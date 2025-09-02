@@ -22,10 +22,9 @@ export async function POST(req: Request) {
     // Admin via env
     const adminUser = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
-
-    if (username === 'izanoth' && password === adminPassword) {
+	
+    if (username === 'ivanzanoth@gmail.com' && password === adminPassword) {
       const token = await signToken({ username, role: 'admin' });
-      
       const res = new NextResponse(JSON.stringify({ success: true, role: 'admin' }), {
         status: 200,
         headers: {
@@ -36,7 +35,7 @@ export async function POST(req: Request) {
       
       res.cookies.set("admin-auth", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "development",
         path: "/",
         maxAge: 60 * 60 * 2, // 2 horas
       });      
