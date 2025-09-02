@@ -17,6 +17,7 @@ export type PostProps = {
     email: string;
   } | null;
   content: string;
+  source: string | null;
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -68,7 +69,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false
               </span>
             )}
 
-            <h2 className="text-2xl font-bold text-gray-800 max-width-200mb-6 mt-8">
+            <h2 className="text-2xl font-bold text-gray-800 max-width-200 mb-6 mt-8">
               {post.title}
             </h2>
             <small className="text-gray-600 mb-4 block">By {authorName}</small>

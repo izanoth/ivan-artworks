@@ -17,6 +17,7 @@ export type PostProps = {
     email: string;
   } | null;
   content: string;
+  source: string;
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
