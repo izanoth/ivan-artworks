@@ -59,6 +59,8 @@ export default function LoginPage() {
           <Image
 		  		src="/images/adminarealogo.png"
 		  		alt="admin area logo"
+		  		width={50}
+		  		height={100}
 		  	 />
         </div>
 

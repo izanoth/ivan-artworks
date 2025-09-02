@@ -3,23 +3,24 @@ import prisma from "@/prisma";
 import EditorForm from "./_components/EditorForm";
 import { cookies } from "next/headers";
 import LogoutButton from '@/admin/components/LogoutButton';
-
+import { verifyToken } from "@/auth";
 
 export default async function EditorPage() {
   // Carrega posts e categorias no server
 
   const cookieStore = cookies(); 
-  const adminAuth = cookieStore.get("admin-auth")?.value; 
-  const friendAuth = cookieStore.get("friend-auth")?.value; // Definindo email a partir do cookie disponível 
-  const email = adminAuth || friendAuth; 
-  if (!email) { 
+  const adminAuth = await verifyToken(cookieStore.get("admin-auth")?.value); 
+  const friendAuth = await verifyToken(cookieStore.get("friend-auth")?.value); // Definindo email a partir do cookie disponível 
+  const auth = adminAuth || friendAuth; 
+  if (!auth) { 
   	 return new Response(JSON.stringify({ 
   	 	error: "Não autenticado" 
   	 }), { status: 401 }); 
   }
   const isAdmin = Boolean(adminAuth);
-  
-  const user = await prisma.user.findUnique({ where: { email } });
+	const uniqueUser = await prisma.user.findUnique({
+	  where: { email: auth.username },
+	});
    
   const posts = isAdmin 
 	  ? await prisma.post.findMany({
@@ -28,7 +29,7 @@ export default async function EditorPage() {
 	  			category:true
 	  		}	  		
 	  	}) 
-	  : (user ? await prisma.post.findMany({ where: { authorId: user.id }, include: { category: true } }) : []);
+	  : (uniqueUser ? await prisma.post.findMany({ where: { authorId: uniqueUser.id }, include: { category: true } }) : []);
 	
 	  
   const categories = await prisma.category.findMany();
@@ -42,7 +43,7 @@ export default async function EditorPage() {
       </h1>
 
       {/* Componente client-side isolado */}
-      <EditorForm isAdmin={ isAdmin } initialPosts={posts} authors={authors} categories={categories} authorId={user?.id || ""} authorName={user?.name || ""} />
+      <EditorForm isAdmin={ isAdmin } initialPosts={posts} authors={authors} categories={categories} authorId={uniqueUser?.id || ""} authorName={uniqueUser?.name || ""} />
     </div>
   );
 }

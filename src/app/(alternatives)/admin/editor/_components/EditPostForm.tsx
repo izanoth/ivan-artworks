@@ -10,12 +10,22 @@ export default function EditPostForm({ post }: { post: any }) {
     setLoading(true);
 	
     const formData = new FormData(e.currentTarget);
-  	 formData.append("id", post.id);
-  	 
+
+  	 const payload = {
+	    id: post.id,
+	    title: formData.get("title"),
+	    content: formData.get("content"),
+	    published: formData.get("published") === "on", // checkbox
+	 };
+
 	 try {
-	    const res = await fetch(`/admin/editor/api`, {
+	    const res = await fetch(`/admin/editor/api/${post.id}`, {
 	      method: "PUT",
-	      body: formData,
+	      headers: {
+	        "Content-Type": "application/json",
+	      },
+	      body: JSON.stringify(payload),
+	      credentials: 'include',
 	    });
 	    
 	    setLoading(false);
@@ -41,18 +51,11 @@ export default function EditPostForm({ post }: { post: any }) {
         className="border p-2 rounded"
         required
       />
-      <input
-        type="text"
-        name="authorId"
-        defaultValue={post.authorId || ""}
-        className="border p-2 rounded"
-      />
       <textarea
         name="content"
         defaultValue={post.content}
         className="border p-2 rounded min-h-[120px]"
       />
-      <input type="file" name="image" className="border p-2 rounded" />
       <label className="flex items-center gap-2">
         <input type="checkbox" name="published" defaultChecked={post.published} />
         Publicar

@@ -46,7 +46,10 @@ export default function LoginPage() {
     } catch (err) {
       console.error(err);
       setMessage('Erro de conexão com o servidor.');
+    } finally {
+		setLoading(false);    
     }
+    
   }
 
  return (
@@ -56,6 +59,7 @@ export default function LoginPage() {
           <Image
 		  		src="/images/adminarealogo.png"
 		  		alt="admin area logo"
+		  		width={50}
 		  	 />
         </div>
 
@@ -84,7 +88,7 @@ export default function LoginPage() {
             type="submit"
             className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 rounded-lg transition-colors w-full"
           >
-            Entrar
+            {loading ? "Um momento..." : "Entrar" }
           </button>
 
           {message && (
