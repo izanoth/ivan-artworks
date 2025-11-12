@@ -1,12 +1,12 @@
 'use client';
 
 import { Inter } from "next/font/google";
-import "@/globals.css";
+import "@/app/globals.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import Header from '@/app/_components/Header';
 import Footer from '@/app/_components/Footer';
-import '@/app/globals.css';
+import Popup from '@/app/_components/PopUp';
 import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'], display: 'optional' });
@@ -17,6 +17,10 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => setIsPopupOpen(true);
+  const handleClosePopup = () => setIsPopupOpen(false);
 
   return (
     <html lang="en">
@@ -35,13 +39,14 @@ export default function ClientLayout({
 
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Header selected={selected} setSelected={setSelected} />
+        <Header selected={selected} setSelected={setSelected} onOpenPopup={handleOpenPopup} />
         <div className="flex-grow">
           {children}
           <Analytics />
         </div>
 
         <Footer setSelected={setSelected} />
+        <Popup isOpen={isPopupOpen} onClose={handleClosePopup} />
       </body>
     </html >
   );
