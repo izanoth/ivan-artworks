@@ -14,6 +14,7 @@ export type PostProps = {
         email: string;
     } | null;
     content: string;
+    source: string;
     image: string;
     published: boolean;
     createdAt: Date;
@@ -24,7 +25,7 @@ const PostDetail: React.FC<{ post: PostProps }> = ({ post }) => {
     const router = useRouter();
     const authorName = post.author ? post.author.name : "Unknown author";
     const content = post.content.replace(/\\n/g, "\n");
-
+	console.log('source?: ', post.source);
     return (
         <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6 mb-8">
             <Link
@@ -52,18 +53,10 @@ const PostDetail: React.FC<{ post: PostProps }> = ({ post }) => {
                 )}
             </div>
             <div className="w-full text-left prose-lg prose-p:my-4 text-gray-700">
-                <ReactMarkdown
-                    components={{
-                        p: ({ node, ...props }) => <p className="text-justify w-full">{props.children}</p>,
-                        h1: ({ node, ...props }) => <h1 className="text-xl font-bold mt-6 mb-2">{props.children}</h1>,
-                        h2: ({ node, ...props }) => <h2 className="text-lg font-semibold mt-5 mb-2">{props.children}</h2>,
-                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1">{props.children}</ul>,
-                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1">{props.children}</ol>,
-                        li: ({ node, ...props }) => <li>{props.children}</li>,
-                    }}
-                >
-                    {content}
+                <ReactMarkdown>
+                    { content }                    
                 </ReactMarkdown>
+                { post.source && (<i className="pb-2">Fonte: <a href={post.source}>{post.source}</a></i>) }
             </div>
             <Comments postId={post.id} />
         </div>

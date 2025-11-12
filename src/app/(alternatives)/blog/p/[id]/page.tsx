@@ -15,6 +15,7 @@ type PostWithRelations = {
     title: string;
     content: string | null;
     image: string | null;
+    source: string;
     published: boolean;
     author: {
         name: string;
@@ -30,7 +31,7 @@ async function getPostData(id: string): Promise<PostWithRelations | null> {
     const post = await prisma.post.findUnique({
         where: { id },
         include: {
-            author: { select: { name: true, email: true } }, // Inclua o email se necessário
+            author: { select: { name: true, email: true } },
         },
     });
 
@@ -42,14 +43,15 @@ async function getPostData(id: string): Promise<PostWithRelations | null> {
         title: post.title,
         content: post.content || '',
         image: post.image || '',
+        source: post.source || '',
         published: post.published,
         author: post.author ? {
             name: post.author.name || 'Unknown',
-            email: post.author.email || null, // Permite null
+            email: post.author.email || null,
         } : null,
         authorId: post.authorId || null,
-        createdAt: post.createdAt, // Incluindo campos adicionais
-        updatedAt: post.updatedAt, // Incluindo campos adicionais
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
     };
 }
 
