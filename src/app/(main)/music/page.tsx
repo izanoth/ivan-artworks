@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import albuns from '@MyAlbuns';
-import PopupClient from '@/app/_components/PopUp';
 import AudioPlayerController from './_components/AudioPlayerController';
 
 export default function Music() {
@@ -15,7 +14,6 @@ export default function Music() {
   return (
     <div className="container max-w-[800px] mx-auto p-4">
       <section> 
-        <PopupClient />
         <AudioPlayerController />
       </section>
     </div >

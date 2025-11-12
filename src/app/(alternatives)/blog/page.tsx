@@ -15,6 +15,7 @@ interface Post {
         name: string;
         email: string;
     } | null;
+    source: string;
     createdAt: Date;
     updatedAt: Date;
     published: boolean;
