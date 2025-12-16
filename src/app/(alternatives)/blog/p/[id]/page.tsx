@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: PageProps) {
       type: "article",
       images: [
         {
-          url: `${post?.image ? `https://zanoth.vercel.app${post.image}` : "https://zanoth.vercel.app/images/logo-metadata.png"}`,
+          url: `${post?.image ? `{post.image}` : "https://zanoth.vercel.app/images/logo-metadata.png"}`,
           width: 1200,
           height: 630,
           alt: post?.title || "",
