@@ -1,7 +1,6 @@
 const albuns = [
     {
       title: "Winds",
-      artist: "I. Zanoth",
       year: 2022,
       genre: "Neoclassical",
       composer: "Ivan Cilento",
@@ -23,7 +22,6 @@ const albuns = [
     },
     {
       title: "No Brakes",
-      artist: "I. Zanoth",
       year: 2022,
       genre: "Electronic / Instrumental / Experimental",
       composer: "Ivan Cilento",

@@ -41,17 +41,19 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false
 
   const categoryColors: Record<string, { badge: string; bgGradient: string }> = {
     news: { badge: "bg-yellow-300 text-yellow-800", bgGradient: "from-yellow-50 to-white" },
-    artigos: { badge: "bg-blue-300 text-blue-800", bgGradient: "from-blue-50 to-white" },
-    tech: { badge: "bg-green-300 text-green-800", bgGradient: "from-green-50 to-white" },
-    esportes: { badge: "bg-yellow-300 text-yellow-800", bgGradient: "from-yellow-50 to-white" },
-    música: { badge: "bg-purple-300 text-purple-800", bgGradient: "from-purple-50 to-white" },
+    cultura: { badge: "bg-blue-300 text-blue-800", bgGradient: "from-blue-50 to-white" },
+    tecnologia: { badge: "bg-green-300 text-green-800", bgGradient: "from-green-50 to-white" },
+    sociedade: { badge: "bg-red-300 text-red-800", bgGradient: "from-red-50 to-white" },
+    poder: { badge: "bg-purple-300 text-purple-800", bgGradient: "from-purple-50 to-white" },
+    educação: { badge: "bg-pink-300 text-pink-800", bgGradient: "from-pink-50 to-white" },
+    moral: { badge: "bg-orange-300 text-orange-800", bgGradient: "from-orange-50 to-white" },
     default: { badge: "bg-gray-300 text-gray-800", bgGradient: "from-gray-50 to-white" },
   };
 
 
 
-  const categoryName = post.category?.name?.toLowerCase() || "default";
-  const categoryStyles = categoryColors[categoryName] || categoryColors.artigos;
+  const categoryName = post.category?.name?.toLowerCase().split(" ")[0] || "default";
+  const categoryStyles = categoryColors[categoryName] || categoryColors.default;
 
   return (
     <div className="container max-w-screen-xl mx-auto p-8">

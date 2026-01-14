@@ -135,7 +135,6 @@ export default function AudioPlayerController() {
                       <div className="text-xs text-gray-600">
                           <ul>
                           <li><strong>Álbum:</strong> {album.title}</li>
-                          <li><strong>Artista:</strong> {album.artist}</li>
                           <li><strong>Ano:</strong> {album.year}</li>
                           <li><strong>Gênero:</strong> {album.genre}</li>
                           <li><strong>Compositor:</strong> {album.composer}</li>

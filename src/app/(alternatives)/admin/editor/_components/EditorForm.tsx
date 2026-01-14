@@ -11,6 +11,7 @@ interface Post {
   title: string;
   content: string;
   image: string | null;
+  source: string | null;
   published: boolean;
   category: {
  	  id: number;
@@ -64,8 +65,8 @@ export default function EditorForm({ isAdmin, initialPosts, categories, authorId
 	    finalAuthorId,
 	    content,
 	    published: false,
-	    categoryId: categoryId,
-	    image: imagePath,
+	    categoryId,
+	    imagePath,
 	    source,
 	  }),
 	  credentials: "include",
