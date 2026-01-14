@@ -27,6 +27,13 @@ export async function GET() {
         lt: startOfNextMonth,
       },
     },
+	 include: {
+	   category: {
+	     select: {
+	       name: true,
+	     },
+	   },
+	 },
     orderBy: { createdAt: "desc" },
   });
 
@@ -35,9 +42,12 @@ export async function GET() {
       title: post.title,
       id: `https://zanoth.vercel.app/blog/p/${post.id}`,
       link: `https://zanoth.vercel.app/blog/p/${post.id}`,
+    	category: post.category
+      	? [{ name: post.category.name }]
+ 	     	: undefined,
       description: post.content,
       date: post.createdAt,
-      image: post.image ? `https://zanoth.vercel.app${post.image}` : undefined,
+      image: post.image ?? undefined,
     });
   });
 

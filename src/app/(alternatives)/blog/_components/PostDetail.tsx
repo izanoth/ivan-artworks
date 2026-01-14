@@ -36,9 +36,9 @@ const PostDetail: React.FC<{ post: PostProps }> = ({ post }) => {
                 Voltar
             </Link>
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-2 text-left">{post.title}</h2>
+            <h2 className="prose-2xl font-bold text-gray-800 mb-2 text-left">{post.title}</h2>
 
-            <div className="text-sm text-gray-500 mb-4 text-left">
+            <div className="prose-lg text-gray-500 mb-4 text-left">
                 <span>Por {authorName}</span> | <span>{new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>
             </div>
             <div className="flex items-center justify-center">
@@ -52,11 +52,11 @@ const PostDetail: React.FC<{ post: PostProps }> = ({ post }) => {
                     />
                 )}
             </div>
-            <div className="w-full text-left prose-lg prose-p:my-4 text-gray-700">
+            <div className="w-full text-left prose-lg prose-p:my-2 text-gray-700">
                 <ReactMarkdown>
                     { content }                    
                 </ReactMarkdown>
-                { post.source && (<i className="pb-2">Fonte: <a href={post.source}>{post.source}</a></i>) }
+                { post.source && (<i className="text-sm pb-2">Fonte: <a href={post.source}>{post.source}</a></i>) }
             </div>
             <Comments postId={post.id} />
         </div>

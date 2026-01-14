@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 		const categoryId = data.categoryId;
 		const publishedRaw = data.published;
 		const published = publishedRaw === "on" || publishedRaw === "true";
-		const imagePath = data.imagePath;
+		const image = data.imagePath;
 		const source = data.source;
 		const authorIdFromForm = data.finalAuthorId;
 			   
@@ -72,6 +72,8 @@ export async function POST(req: NextRequest) {
 	        content,
 	        published,
 	        categoryId,
+	        image,
+	        source,
 	        authorId,
 	      },
 	    });
