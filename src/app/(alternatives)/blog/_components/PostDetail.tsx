@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"; // Novo hook de navegação para Ne
 import ReactMarkdown from "react-markdown";
 import Link from 'next/link';
 import Comments from './Comments';
+import RichTextRenderer from './RichTextRenderer';
 
 export type PostProps = {
     id: string;
@@ -36,7 +37,9 @@ const PostDetail: React.FC<{ post: PostProps }> = ({ post }) => {
                 Voltar
             </Link>
 
-            <h2 className="prose-2xl font-bold text-gray-800 mb-2 text-left">{post.title}</h2>
+            <h2 className="prose-2xl font-bold text-gray-800 mb-2 text-left">
+                <RichTextRenderer text={post.title} />
+            </h2>
 
             <div className="prose-lg text-gray-500 mb-4 text-left">
                 <span>Por {authorName}</span> | <span>{new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>

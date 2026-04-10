@@ -69,14 +69,20 @@ export async function generateMetadata({ params }: PageProps) {
       .concat("...");
   }
 
+// Helper function to strip italic markers from the title for metadata
+function stripItalicMarkers(text: string): string {
+    return text.replace(/\*([^*]+)\*/g, '$1');
+}
+
   const post = await getPostData(params.id);
   const excerpt = getExcerpt(post?.content || "");
+  const cleanTitle = stripItalicMarkers(post?.title || "Página não encontrada!");
 
   return {
-    title: `${post?.title || "Página não encontrada!" } | Zanoth's Blog`,
+    title: `${cleanTitle} | Zanoth's Blog`,
     description: excerpt,
     openGraph: {
-      title: `${post?.title || "Página não encontrada!" } | Zanoth's Blog`,
+      title: `${cleanTitle} | Zanoth's Blog`,
       description: excerpt,
       url: `https://zanoth.vercel.app/blog/p/${params.id}`,
       siteName: "Zanoth Independent Digital Artworks",

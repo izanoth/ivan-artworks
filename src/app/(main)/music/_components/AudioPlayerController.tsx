@@ -13,6 +13,7 @@ interface Track {
   title: string;
   src?: string;
   isPrimary?: boolean;
+  software?: string[]; // Added software property
 }
 
 export default function AudioPlayerController() {
