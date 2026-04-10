@@ -1,12 +1,7 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PixPopup } from '@/layout/PixPopup';
 
 export default function SupportPage() {
-  const [showPixPopup, setShowPixPopup] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start p-6 sm:p-12 bg-gray-50">
@@ -34,16 +29,14 @@ export default function SupportPage() {
         
         {/* Botões de ação principais */}
 	      <div className="flex flex-wrap justify-center items-center gap-4 mb-6 pt-4">
-	        {/* Pix */}
-	        <button
-	          onClick={() => setShowPixPopup(true)}
-	          className="bg-blue-900 text-white hover:bg-blue-800 font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40"
-	        >
-	          <p className="text-xs sm:text-sm tracking-[.20em] mb-1">Quero fazer um</p>
-	          <Image src="/images/pix.png" alt="Pix Logo" width={80} height={80} />
-	        </button>
-	        {showPixPopup && <PixPopup onClose={() => setShowPixPopup(false)} />}
-	
+           {/* Rifa */}
+           <Link href="https://rifadoivan.vercel.app" passHref legacyBehavior>
+             <button
+               className="font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40"
+             >
+               <Image src="/images/raffle.png" alt="Raffle Image" width={80} height={80} />
+             </button>
+           </Link>	
 	        {/* NEAR */}
 	        <Link href="/donation" passHref legacyBehavior>
 	          <button className="bg-black text-white hover:bg-gray-400 font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40">

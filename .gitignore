@@ -2,6 +2,8 @@
 .zanoth-e-magazine-firebase-adminsdk-fbsvc-3e06e8cbb3.json
 .env
 
+.gemini
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 /app/(alternatives)/donation/build

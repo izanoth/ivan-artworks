@@ -57,20 +57,14 @@ export default function PopupClient({ isOpen, onClose }: PopupClientProps) {
 
             <div className="flex flex-col justify-center items-center text-center mt-4 w-full">
               <div className="flex flex-wrap justify-center items-center gap-4">
-                <a className="p-1">
-                  <button
-                    onClick={() => setShowPixPopup(true)}
-                    className="bg-blue-900 text-white hover:bg-blue-800 font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40"
-                  >
-                    <p className="text-xs sm:text-sm tracking-[.20em]">Quero fazer um</p>
-                    <img
-                      className="cursor-pointer max-h-[30px] h-auto"
-                      src="/images/pix.png"
-                      alt="Pix Logo"
-                    />
-                  </button>
-                </a>
-                {showPixPopup && <PixPopup onClose={() => setShowPixPopup(false)} />}
+                 {/* Rifa */}
+                 <Link href="https://rifadoivan.vercel.app" passHref legacyBehavior>
+                   <button
+                     className="font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40"
+                   >
+                     <Image src="/images/raffle.png" alt="Raffle Image" width={80} height={80} />
+                   </button>
+                 </Link>	
 
                 <Link href="/donation" passHref legacyBehavior>
                   <a className="p-1">

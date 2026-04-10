@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import Link from 'next/link';
+import RichTextRenderer from './RichTextRenderer';
 
 export type PostProps = {
   id: string;
@@ -72,7 +73,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({ post, showFullContent = false
             )}
 
             <h2 className="text-2xl font-bold text-gray-800 max-width-200 mb-6 mt-8">
-              {post.title}
+              <RichTextRenderer text={post.title} />
             </h2>
             <small className="text-gray-600 mb-4 block">By {authorName}</small>
             <ReactMarkdown className="text-gray-700 max-width-200">
