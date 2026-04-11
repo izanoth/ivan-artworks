@@ -7,7 +7,7 @@ const albuns = [
       coverImage: "images/fingerprints.png",
       tracks: [
         { title: "Redención", src: "media/redencion_preview.mp3", software: ["LMMS"] },
-        { title: "Honorable Settlement", src: "media/honor_set_preview.mp3", software: ["LMMS"] },
+        { title: "Honorable Settlement (Syntehsis 2.0)", src: "media/honor_set_preview.mp3", software: ["LMMS"] },
         { title: "Crisp Drops", src: "media/crisp_drops_preview.mp3", software: ["MuseScore", "Audacity"] },
         { title: "The Full On", software: ["MuseScore", "Audacity"] },
         { title: "Tibetan Howl", software: ["MuseScore", "Audacity"] },
