@@ -12,6 +12,7 @@ const albuns = [
         { title: "The Full On", software: ["MuseScore", "Audacity"] },
         { title: "Tibetan Howl", software: ["MuseScore", "Audacity"] },
         { title: "Shivoham", software: ["LMMS"] },
+        { title: "A Little More Action, please", src: "media/a_little_more_action_preview.mp3", software: ["MuseScore", "Audacity"] },
       ],
     },
     {
