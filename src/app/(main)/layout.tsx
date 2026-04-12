@@ -5,21 +5,21 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   title: "Zanoth Independent Digital Artworks",
   description:
-    "Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente. Explore projetos únicos e publicações originais.",
+    "Fingerprints Album: New Release available now! Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente.",
   openGraph: {
     type: "website",
     url: "https://zanoth.vercel.app/",
     title: "Zanoth © Independent Digital Artworks",
     description:
-      "Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente. Publicações, álbuns e ideias em um só espaço.",
+      "Fingerprints Album: New Release available now! Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente.",
     siteName: "Zanoth Independent Digital Artworks",
     locale: "pt_BR",
     images: [
       {
-        url: "https://zanoth.vercel.app/images/windscover.png",
-        width: 418,
-        height: 418,
-        alt: "Zanoth © Independent Digital Artworks",
+        url: "https://zanoth.vercel.app/images/fingerprints.png",
+        width: 1024,
+        height: 1024,
+        alt: "Zanoth © Fingerprints Album New Release",
       },
     ],
   },
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zanoth © Independent Digital Artworks",
     description:
-      "Arte digital, publicações e música independente por Zanoth. Um portfólio autoral com atitude e originalidade.",
-    images: ["https://zanoth.vercel.app/images/windscover.png"],
+      "Fingerprints Album: New Release available now! Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente.",
+    images: ["https://zanoth.vercel.app/images/fingerprints.png"],
     creator: "@zanoth4",
   },
 };

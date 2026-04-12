@@ -37,20 +37,20 @@ export default function AudioPlayerList({
   onSelect,
 }: AudioPlayerListProps) {
   return (
-    <ul className="list-none p-0">
+    <ul className="list-none p-0 text-left">
       {tracks.map((track, index) => {
         const isActive = track.src === currentTrack?.src;
 
         return (
           <li
             key={index}
-            className={`flex flex-col py-2 px-4 ${index === (tracks.length - 1) ? '' : 'border-b'} border-gray-200 ${
-              track.src ? 'track' : 'text-gray-400'
+            className={`flex flex-col py-2 px-4 text-left ${index === (tracks.length - 1) ? '' : 'border-b'} border-gray-200 ${
+              track.src ? '' : 'text-gray-400'
             }`}
           >
             <div className="w-full flex justify-between items-center">
-	            <div className="flex items-center gap-3">
-					  <span>{track.title}</span>					
+	            <div className="flex items-center gap-2">
+					  <span className="inline-block w-[180px]">{track.title}</span>					
 					  {track.software && track.software.map((softwareName, sIndex) => (
 					    softwareIconMap[softwareName] ? (
 					      <img
