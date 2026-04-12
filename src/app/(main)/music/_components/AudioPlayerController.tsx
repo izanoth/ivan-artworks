@@ -119,7 +119,7 @@ export default function AudioPlayerController() {
             {albuns.map((album, albumIndex) => (
                 <Carousel.Item key={albumIndex}>
                   <div className="flex flex-col md:flex-row lg:space-x-4 lg:px-4 lg:mb-0">
-                    <div className="flex-1 md:p-6 lg:mb-0 mb-4 bg-white border text-dark w-full md:w-[400px] rounded">
+                    <div className="flex-1 md:p-6 lg:mb-0 mb-4 bg-white border text-dark w-full md:w-[400px] rounded text-left">
                       <AudioPlayerList
                           tracks={album.tracks}
                           currentTrack={currentTrack}
