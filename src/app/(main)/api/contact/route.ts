@@ -1,26 +1,52 @@
-import { Resend } from 'resend';
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/prisma";
 
 export async function POST(req: NextRequest) {
   try {
     const { name, email, subject, message } = await req.json();
 
-	 const post = await prisma.contact.create({
-      data: { name, email, subject, message },
+    if (!name || !email || !message) {
+      return NextResponse.json({ error: 'Nome, e-mail e mensagem são obrigatórios.' }, { status: 400 });
+    }
+
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const TO_EMAIL = 'ivanzanoth@gmail.com';
+
+    if (!RESEND_API_KEY) {
+      console.error('RESEND_API_KEY is not defined');
+      return NextResponse.json({ error: 'Erro de configuração do servidor.' }, { status: 500 });
+    }
+
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`
+      },
+      body: JSON.stringify({
+        from: 'Contato <onboarding@resend.dev>',
+        to: [TO_EMAIL],
+        subject: `Contato: ${subject || 'Sem Assunto'} - ${name}`,
+        html: `
+          <h2>Novo contato via Ivan Artworks</h2>
+          <p><strong>Nome:</strong> ${name}</p>
+          <p><strong>E-mail:</strong> ${email}</p>
+          <p><strong>Assunto:</strong> ${subject || 'Sem Assunto'}</p>
+          <p><strong>Mensagem:</strong></p>
+          <p>${message.replace(/\n/g, '<br>')}</p>
+        `
+      })
     });
 
-	 const resend = new Resend(process.env.RESEND_API_KEY);
-	 resend.emails.send({
-	   from: 'onboarding@resend.dev',
-	   to: 'ivanzanoth@gmail.com',
-	   subject: subject,
-	   html: message
-	 });
+    const data = await response.json();
 
-    return NextResponse.json({ success: true });
+    if (response.ok) {
+      return NextResponse.json({ success: true, id: data.id });
+    } else {
+      console.error('Resend API error:', data);
+      return NextResponse.json({ error: 'Erro ao enviar e-mail via Resend.' }, { status: 500 });
+    }
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ success: false }, { status: 500 });
+    console.error('Error sending email:', err);
+    return NextResponse.json({ error: 'Erro interno ao processar o contato.' }, { status: 500 });
   }
 }

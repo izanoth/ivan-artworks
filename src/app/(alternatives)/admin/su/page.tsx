@@ -8,16 +8,10 @@ import { cookies } from "next/headers";
 import { verifyToken } from "@/auth";
 
 export default async function Dashboard() {
-  const contactsCount = await prisma.contact.count();
   const commentsCount = await prisma.comment.count();
   const cookieStore = cookies(); 
     
   const tokenObject = await verifyToken(cookieStore.get("admin-auth")?.value || "");
-
-  const latestContacts = await prisma.contact.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 3,
-  });
 
   const latestComments = await prisma.comment.findMany({
     orderBy: { createdAt: "desc" },
@@ -30,23 +24,6 @@ export default async function Dashboard() {
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {/* Widget: Contacts */}
-        <div className="bg-white shadow rounded-2xl p-4">
-          <p className="text-sm text-gray-500">Contacts</p>
-          <p className="text-3xl font-bold mb-4">{contactsCount}</p>
-
-          <ul className="space-y-2 text-sm text-gray-700">
-            {latestContacts.map((c) => (
-              <li key={c.id} className="border-b pb-1">
-                <span className="font-semibold">{c.name}</span> —{" "}
-                {c.subject.length > 30
-                  ? c.subject.slice(0, 30) + "..."
-                  : c.subject}
-              </li>
-            ))}
-          </ul>
-        </div>
-
         {/* Widget: Comments */}
         <div className="bg-white shadow rounded-2xl p-6">
           <p className="text-sm text-gray-500">Comments</p>
