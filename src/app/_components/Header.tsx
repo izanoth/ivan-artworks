@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faTerminal, faRss, faEnvelope, faBook, faQuestionCircle, faHandHoldingHeart } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
+import CopyAddressButton from '@/layout/CopyAddressButton';
 
 type HeaderProps = {
   selected: string | null;
@@ -80,16 +81,47 @@ export default function Header({ selected, setSelected, onOpenPopup }: HeaderPro
       </nav>
 
       {/* Container com logo e donation */}
-      <div className="container mx-auto flex justify-between items-center p-4">
-        <div className="flex flex-col items-center">
-          <img src="/images/zemag.png" style={{ height: '70px', width: 'auto' }} alt="Zanoth logo" />
-          <p className="font-bold text-[12px]">Independent Digital Artworks</p>
+      <div className="container mx-auto flex flex-col gap-4 p-4 sm:flex-row sm:items-end sm:justify-between">
+
+        {/* Logo */}
+        <div className="flex flex-col items-center sm:items-start">
+          <img
+            src="/images/zemag.png"
+            className="h-[70px] w-auto"
+            alt="Zanoth logo"
+          />
+          <p className="font-bold text-[12px]">
+            Independent Digital Artworks
+          </p>
         </div>
 
-        <div className="flex flex-col items-center">
-          <button onClick={onOpenPopup} className="flex flex-col items-center">
-            <FontAwesomeIcon icon={faHandHoldingHeart} className="text-gray-700 text-5xl" />
-          </button>
+        {/* Donation */}
+        <div className="flex min-w-0 flex-col items-center gap-1 text-sm sm:items-end">
+
+          <div className="flex items-center gap-1 text-gray-600">
+            <img
+                src="/near.svg"
+                alt="NEAR"
+                className="ml-0.5 h-[10px] w-auto"
+              />
+       
+            <span className="flex items-center">
+              Ⓝ </span>
+              <span className="text-[10px] bold">NETWORK</span>
+          </div>
+
+        {/* Blockchain address */}
+          <div className="relative w-[160px]">
+            <code
+              className="block w-full truncate rounded border border-gray-300 bg-gray-50 py-1 pl-2 pr-8 text-right text-[11px] text-gray-600"
+              id="blockchainAddressText"
+              title="Endereço para contribuições voluntárias"
+            >
+              8da02e071c4cc55cc482487eea66783d6b57f3da8b7f7189bf53b459128da474
+            </code>
+
+            <CopyAddressButton address="8da02e071c4cc55cc482487eea66783d6b57f3da8b7f7189bf53b459128da474"/>
+          </div>
         </div>
       </div>
 

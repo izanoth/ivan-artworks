@@ -217,6 +217,53 @@ cssloaders.github.io
 }
 
 
+.blockchain-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.blockchain-address {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: #e9e6dd;
+  padding: 3px 6px;
+  border: 1px solid #ccc7ba;
+  color: #1a1a1a;
+  user-select: all;
+  word-break: break-all;
+  flex: 1;
+}
+
+.copy-btn {
+  background: var(--bg-window);
+  border-top: 1px solid var(--border-light);
+  border-left: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-deep-dark);
+  border-bottom: 1px solid var(--border-deep-dark);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.copy-btn:active {
+  border-top: 1px solid var(--border-deep-dark);
+  border-left: 1px solid var(--border-deep-dark);
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.copy-btn.copied {
+  background: #dcfce7;
+  color: #15803d;
+}
+
 
 
 
