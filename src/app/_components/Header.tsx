@@ -117,10 +117,10 @@ export default function Header({ selected, setSelected, onOpenPopup }: HeaderPro
               id="blockchainAddressText"
               title="Endereço para contribuições voluntárias"
             >
-              8da02e071c4cc55cc482487eea66783d6b57f3da8b7f7189bf53b459128da474
+              9e5b01d8c9811fc8d6a30f2a4be1479584a345128a826150c36c9a663e9a311f
             </code>
 
-            <CopyAddressButton address="8da02e071c4cc55cc482487eea66783d6b57f3da8b7f7189bf53b459128da474"/>
+            <CopyAddressButton address="9e5b01d8c9811fc8d6a30f2a4be1479584a345128a826150c36c9a663e9a311f"/>
           </div>
         </div>
       </div>
