@@ -5,8 +5,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("DATABASE_URL")
 }
 
 model Guest {
@@ -69,15 +68,28 @@ model Comment {
   @@map("comments")
 }
 
-model Contact {
-  id        String   @id @default(cuid())
-  name      String   @db.VarChar(150)
-  email     String   @db.VarChar(150)
-  subject   String   @db.VarChar(100)
-  message   String
-  createdAt DateTime @default(now()) @map("created_at")
 
-  @@map("contacts")
+
+model NftToken {
+  id              Int      @id @default(autoincrement())
+  network         String
+  contractId      String
+  tokenId         String
+  priceYocto      String
+  visible         Boolean  @default(false)
+  title           String?
+  description     String?
+  media           String?
+  ownerId         String?
+  metadataJson    String?
+  status          String?
+  mintTxHash      String?
+  buyTxHash       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([network, contractId, tokenId])
+  @@index([network, contractId, visible])
 }
 
 

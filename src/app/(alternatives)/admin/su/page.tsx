@@ -1,9 +1,7 @@
-// app/dashboard/page.tsx
 import prisma from "@/prisma";
 import Link from "next/link";
 import LogoutButton from '@/admin/components/LogoutButton';
 import NewUserForm from "./_components/NewUserForm"; 
-
 import { cookies } from "next/headers";
 import { verifyToken } from "@/auth";
 
@@ -16,7 +14,7 @@ export default async function Dashboard() {
   const latestComments = await prisma.comment.findMany({
     orderBy: { createdAt: "desc" },
     take: 3,
-    include: { post: { select: { title: true } } }, // mostra título do post
+    include: { post: { select: { title: true } } },
   });
 
   return (
@@ -51,6 +49,17 @@ export default async function Dashboard() {
             className="px-4 py-2 bg-white text-blue-600 rounded-lg font-semibold"
           >
             Ir para CRUD
+          </Link>
+        </div>
+
+        {/* Widget: NEAR NFT Studio */}
+        <div className="bg-purple-600 text-white shadow rounded-2xl p-6 flex flex-col items-center justify-center">
+          <p className="text-lg mb-2">NEAR NFT Studio</p>
+          <Link
+            href="/admin/studio"
+            className="px-4 py-2 bg-white text-purple-600 rounded-lg font-semibold"
+          >
+            Ir para Studio
           </Link>
         </div>
               

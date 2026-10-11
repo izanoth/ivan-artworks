@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic, faTerminal, faRss, faEnvelope, faBook, faQuestionCircle, faHandHoldingHeart } from '@fortawesome/free-solid-svg-icons';
+import { faMusic, faTerminal, faRss, faEnvelope, faBook, faQuestionCircle, faHandHoldingHeart, faStore } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import CopyAddressButton from '@/layout/CopyAddressButton';
 
@@ -144,6 +144,15 @@ export default function Header({ selected, setSelected, onOpenPopup }: HeaderPro
           >
             <FontAwesomeIcon icon={faTerminal} />
             Programming
+          </Link>
+
+          <Link
+            href="/marketplace"
+            onClick={() => setSelected('/marketplace')}
+            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/marketplace' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
+          >
+            <FontAwesomeIcon icon={faStore} />
+            Marketplace
           </Link>
         </div>
 

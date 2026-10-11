@@ -5,8 +5,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("DATABASE_URL")
 }
 
 model Guest {
@@ -69,5 +68,51 @@ model Comment {
   @@map("comments")
 }
 
+
+
+model NftCollection {
+  id          Int        @id @default(autoincrement())
+  network     String
+  contractId  String
+  name        String
+  description String?
+  maxCopies   Int        @default(1)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  tokens      NftToken[]
+
+  @@unique([network, contractId, name])
+  @@index([network, contractId])
+}
+
+model NftToken {
+  id              Int           @id @default(autoincrement())
+  network         String
+  contractId      String
+  tokenId         String
+  priceYocto      String
+  saleHistory     String?
+  visible         Boolean?
+  title           String?
+  description     String?
+  media           String?
+  ownerId         String?
+  holders         String[]
+  royalties       String?
+  metadataJson    String?
+  status          String?
+  illustrationUrl String?
+  copies          Int?
+  mintTxHash      String?
+  buyTxHash       String?
+  collectionId    Int?
+  collection      NftCollection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([network, contractId, tokenId])
+  @@index([network, contractId, visible])
+  @@index([collectionId])
+}
 
 

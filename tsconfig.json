@@ -56,6 +56,18 @@
       "@/admin/components/*": [
 			"src/app/(alternatives)/admin/_components/*"      
       ],
+      "@near/*": [
+        "./src/near-studio/*"
+      ],
+      "@/near/*": [
+        "./src/near-studio/*"
+      ],
+      "@near-studio/*": [
+        "./src/near-studio/*"
+      ],
+      "@/near-service": [
+        "./src/near-studio/services/near.js"
+      ]
     }
   },
   "include": [
