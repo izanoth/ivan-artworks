@@ -6,43 +6,40 @@ import { faMusic, faTerminal, faRss, faEnvelope, faBook, faQuestionCircle, faHan
 import Image from 'next/image';
 import CopyAddressButton from '@/layout/CopyAddressButton';
 
+export type HeaderPageItem = {
+  id: string;
+  name: string;
+  slug: string;
+  isActive: boolean;
+  order: number;
+  type: string;
+};
+
 type HeaderProps = {
   selected: string | null;
   setSelected: Dispatch<SetStateAction<string | null>>;
   onOpenPopup: () => void;
+  pages?: HeaderPageItem[];
 };
 
-export default function Header({ selected, setSelected, onOpenPopup }: HeaderProps) {
-  const router = useRouter();
-  type Routes = '/' | '/music' | '/prog' | '/blog' | '/contact' | '/guestbook' | '/whoami';
+const iconMap: { [key: string]: any } = {
+  '/music': faMusic,
+  '/prog': faTerminal,
+  '/blog': faRss,
+  '/contact': faEnvelope,
+  '/guestbook': faBook,
+  '/whoami': faQuestionCircle,
+  '/marketplace': faStore,
+};
 
-  const Route = (route: Routes) => {
-    switch (route) {
-      case '/':
-        router.push('/');
-        break;
-      case '/music':
-        router.push('/music');
-        break;
-      case '/prog':
-        router.push('/prog');
-        break;
-      case '/whoami':
-        router.push('/whoami');
-        break;
-      case '/guestbook':
-        router.push('/guestbook');
-        break;
-      case '/blog':
-        router.push('/blog');
-        break;
-      case '/contact':
-        router.push('/contact');
-        break;
-      default:
-        router.push('/404');
-        break;
-    }
+export default function Header({ selected, setSelected, onOpenPopup, pages = [] }: HeaderProps) {
+  const router = useRouter();
+
+  const mainNavPages = pages.filter(page => page.type === 'main' && page.isActive);
+  const secondaryNavPages = pages.filter(page => page.type === 'secondary' && page.isActive);
+
+  const Route = (route: string) => {
+    router.push(route);
   };
 
   return (
@@ -50,33 +47,19 @@ export default function Header({ selected, setSelected, onOpenPopup }: HeaderPro
       {/* Navbar secundária */}
       <nav className="w-full bg-black">
         <div className="container mx-auto flex justify-end items-center px-4 py-2 gap-6">
-          <Link
-            href="/guestbook"
-            onClick={() => setSelected('/guestbook')}
-            className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
-              ${selected === '/guestbook' ? 'text-black' : ''}
-            `}
-          >
-            <FontAwesomeIcon icon={faBook} className="invert" />
-          </Link>
-          <Link
-            href="/whoami"
-            onClick={() => setSelected('/whoami')}
-            className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
-              ${selected === '/whoami' ? 'text-black' : ''}
-            `}
-          >
-            <FontAwesomeIcon icon={faQuestionCircle} className="invert" />
-          </Link>
-          <Link
-            href="/contact"
-            onClick={() => setSelected('/contact')}
-            className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
-              ${selected === '/contact' ? 'text-black' : ''}
-            `}
-          >
-            <FontAwesomeIcon icon={faEnvelope} className="invert" />
-          </Link>
+          {secondaryNavPages.map((page) => (
+            <Link
+              key={page.id}
+              href={page.slug}
+              onClick={() => setSelected(page.slug)}
+              className={`transition-colors duration-200 text-gray-700 hover:text-gray-900
+                ${selected === page.slug ? 'text-black' : ''}
+              `}
+            >
+              {iconMap[page.slug] && <FontAwesomeIcon icon={iconMap[page.slug]} className="invert" />}
+              {!iconMap[page.slug] && page.name}
+            </Link>
+          ))}
         </div>
       </nav>
 
@@ -128,32 +111,17 @@ export default function Header({ selected, setSelected, onOpenPopup }: HeaderPro
       {/* Navbar principal */}
       <nav className="container mx-auto flex justify-between items-center p-4 md:text-xl text-sm">
         <div className="flex items-center gap-8">
-          <Link
-            href="/music"
-            onClick={() => setSelected('/music')}
-            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/music' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
-          >
-            <FontAwesomeIcon icon={faMusic} />
-            Music
-          </Link>
-
-          <Link
-            href="/prog"
-            onClick={() => setSelected('/prog')}
-            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/prog' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
-          >
-            <FontAwesomeIcon icon={faTerminal} />
-            Programming
-          </Link>
-
-          <Link
-            href="/marketplace"
-            onClick={() => setSelected('/marketplace')}
-            className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === '/marketplace' ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
-          >
-            <FontAwesomeIcon icon={faStore} />
-            Marketplace
-          </Link>
+          {mainNavPages.map((page) => (
+            <Link
+              key={page.id}
+              href={page.slug}
+              onClick={() => setSelected(page.slug)}
+              className={`relative flex items-center gap-2 pb-1 transition-colors duration-200 hover:text-sky-600 ${selected === page.slug ? 'text-sky-600 font-bold after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-sky-600 after:content-[""]' : 'text-gray-800 font-medium'}`}
+            >
+              {iconMap[page.slug] && <FontAwesomeIcon icon={iconMap[page.slug]} />}
+              {!iconMap[page.slug] && page.name}
+            </Link>
+          ))}
         </div>
 
         <Link

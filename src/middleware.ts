@@ -16,8 +16,27 @@ function isMutatingApiRequest(req: NextRequest) {
   );
 }
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+
+  // Check for inactive pages
+  const publicPages = ['/music', '/prog', '/marketplace', '/guestbook', '/whoami', '/contact'];
+  const matchedPage = publicPages.find((page) => pathname === page || pathname.startsWith(page + '/'));
+
+  if (matchedPage) {
+    try {
+      const statusUrl = new URL('/api/public/pages-status', req.url);
+      const res = await fetch(statusUrl.toString());
+      if (res.ok) {
+        const { inactiveSlugs } = await res.json();
+        if (Array.isArray(inactiveSlugs) && inactiveSlugs.includes(matchedPage)) {
+          return NextResponse.redirect(new URL('/', req.url));
+        }
+      }
+    } catch (e) {
+      console.error("Middleware check failed:", e);
+    }
+  }
 
   if (isMutatingApiRequest(req)) {
     const token = req.cookies.get('near-auth')?.value;
@@ -40,7 +59,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith('/admin/su') || pathname.startsWith('/admin/studio')) {
+  if (pathname.startsWith('/admin/su') || pathname.startsWith('/admin/studio') || pathname.startsWith('/api/admin')) {
     const token = req.cookies.get('admin-auth')?.value;
 
     try {
@@ -48,6 +67,9 @@ export function middleware(req: NextRequest) {
       verifyToken(token);
       return NextResponse.next();
     } catch (err) {
+      if (pathname.startsWith('/api/admin')) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
       return NextResponse.redirect(
         new URL('/admin', req.url)
       );
@@ -87,5 +109,18 @@ export const config = {
     '/api/marketplace',
     '/api/collections',
     '/api/tokens',
+    '/api/admin/:path*',
+    '/music',
+    '/music/:path*',
+    '/prog',
+    '/prog/:path*',
+    '/marketplace',
+    '/marketplace/:path*',
+    '/guestbook',
+    '/guestbook/:path*',
+    '/whoami',
+    '/whoami/:path*',
+    '/contact',
+    '/contact/:path*',
   ],
 };

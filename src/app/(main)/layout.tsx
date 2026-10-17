@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import ClientLayout from '@/app/_components/ClientLayout';
 import { Analytics } from "@vercel/analytics/react";
+import prisma from 'lib/prisma';
 
 export const metadata: Metadata = {
   title: "Zanoth Independent Digital Artworks",
@@ -37,11 +38,25 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const pages = await prisma.page.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' },
+  });
+
+  const footerItems = await prisma.footerItem.findMany({
+    where: { isActive: true, deletedAt: null },
+    orderBy: { order: 'asc' },
+  });
+
+  const footerContent = await prisma.content.findFirst({
+    where: { page: { name: 'footer' }, deletedAt: null },
+    orderBy: { version: 'desc' },
+  });
 
   return (
     <>
-      <ClientLayout>
+      <ClientLayout pages={pages} footerItems={footerItems} footerText={footerContent?.body}>
         <Analytics />
         {children}
       </ClientLayout>

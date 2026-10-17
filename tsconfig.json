@@ -48,13 +48,13 @@
         "src/app/_components/*"
       ],
       "@/blog/components/*": [
-        "src/app/(alternatives)/blog/_components/*"
+        "src/app/(odds)/blog/_components/*"
       ],
       "@MyAlbuns": [
         "myalbuns.js"
       ],
       "@/admin/components/*": [
-			"src/app/(alternatives)/admin/_components/*"      
+			"src/app/(odds)/admin/_components/*"      
       ],
       "@near/*": [
         "./src/near-studio/*"

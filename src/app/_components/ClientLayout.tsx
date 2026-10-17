@@ -4,17 +4,22 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
-import Header from '@/app/_components/Header';
-import Footer from '@/app/_components/Footer';
-import Popup from '@/app/_components/PopUp';
+import Header, { HeaderPageItem } from '@/app/_components/Header';
+import Footer, { FooterItemType } from '@/app/_components/Footer';
 import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'], display: 'optional' });
 
 export default function ClientLayout({
   children,
+  pages,
+  footerItems,
+  footerText,
 }: {
   children: React.ReactNode;
+  pages?: HeaderPageItem[];
+  footerItems?: FooterItemType[];
+  footerText?: string | null;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -39,14 +44,13 @@ export default function ClientLayout({
 
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Header selected={selected} setSelected={setSelected} onOpenPopup={handleOpenPopup} />
+        <Header selected={selected} setSelected={setSelected} onOpenPopup={handleOpenPopup} pages={pages} />
         <div className="flex-grow">
           {children}
           <Analytics />
         </div>
 
-        <Footer setSelected={setSelected} />
-        <Popup isOpen={isPopupOpen} onClose={handleClosePopup} />
+        <Footer setSelected={setSelected} items={footerItems} text={footerText} />
       </body>
     </html >
   );

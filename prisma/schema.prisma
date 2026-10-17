@@ -115,4 +115,48 @@ model NftToken {
   @@index([collectionId])
 }
 
+model Page {
+  id        String    @id @default(cuid())
+  name      String    @unique // e.g., "whoami", "contact", "marketplace"
+  slug      String    @unique // URL path, e.g., "/whoami"
+  isActive  Boolean   @default(true)
+  order     Int       @default(0)
+  type      String    @default("main") // "main", "secondary", "footer"
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  contents  Content[]
+  footerItems FooterItem[]
+}
+
+model Content {
+  id        String    @id @default(cuid())
+  pageId    String
+  page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  locale    String    @default("en") // "en", "pt"
+  body      String    @db.Text
+  version   Int       @default(1)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
+  @@unique([pageId, locale, version])
+  @@index([pageId, locale, version])
+}
+
+model FooterItem {
+  id        String    @id @default(cuid())
+  pageId    String? // Optional, if a footer item is specific to a page
+  page      Page?     @relation(fields: [pageId], references: [id])
+  text      String
+  link      String?
+  iconClass String? // e.g., "bi bi-github"
+  order     Int       @default(0)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+}
+
+
+
 
