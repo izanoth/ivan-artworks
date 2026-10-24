@@ -70,7 +70,7 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
         {/* Logo */}
         <div className="flex flex-col items-center sm:items-start">
           <img
-            src="/images/zweb3v5.png"
+            src="/images/zweb3.png"
             className="h-[70px] w-auto"
             alt="Zanoth logo"
           />

@@ -12,15 +12,15 @@ export const metadata: Metadata = {
     url: "https://zanoth.vercel.app/",
     title: "Zanoth © Independent Digital Artworks",
     description:
-      "Fingerprints Album: New Release available now! Portfólio digital de Zanoth — música autoral, arte experimental e cultura independente.",
-    siteName: "Zanoth Independent Digital Artworks",
+      "Música autoral, arte experimental e cultura independente.",
+    siteName: "Zanoth - Independent Digital Artworks",
     locale: "pt_BR",
     images: [
       {
-        url: "https://zanoth.vercel.app/images/fingerprints.png",
+        url: "https://zanoth.vercel.app/images/zweb3.png",
         width: 1024,
         height: 1024,
-        alt: "Zanoth © Fingerprints Album New Release",
+        alt: "Zanoth © Independent Digital Artworks",
       },
     ],
   },
