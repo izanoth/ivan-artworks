@@ -1,8 +1,6 @@
 import "@/globals.css";
 import { Metadata } from "next";
-import Link from 'next/link';
-import PostPreview from '@/blog/components/PostPreview';
-import React, { useState } from 'react';
+import React from 'react';
 import ClientLayout from '@/blog/components/ClientLayout';
 import prisma from 'lib/prisma';
 
@@ -30,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "Zanoth Independent Digital Artworks",
     images: [
       {
-        url: "https://zanoth.vercel.app/images/zemag.png",
+        url: "https://zanoth.vercel.app/images/zemag-metadata.png",
         width: 1200,
         height: 630,
         alt: "Zanoth Independent Digital Artworks",
