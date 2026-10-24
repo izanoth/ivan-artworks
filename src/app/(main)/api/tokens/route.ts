@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import prisma from "@/prisma";
 
@@ -31,7 +33,7 @@ export async function GET(req: Request) {
 				ownerId: true,
 				status: true,
 				holders: true,
-				illustrationUrl: true,
+				illustrations: true,
 				mintTxHash: true,
 				buyTxHash: true,
 				copies: true,

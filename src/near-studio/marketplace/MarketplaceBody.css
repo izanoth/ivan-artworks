@@ -12,7 +12,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
   gap: 32px;
-  align-items: end;
+  text-align: left;
+  margin-bottom: 48px;  align-items: end;
   margin-bottom: 40px;
 }
 
@@ -40,12 +41,12 @@
 .marketplace-heading p {
   max-width: 680px;
   margin: 16px 0 0;
-  color: #aeb8c7;
+  color: #999;
   line-height: 1.7;
 }
 
 .marketplace-heading strong {
-  color: #e8edf5;
+  color: #666;
 }
 
 .security-note {
@@ -180,6 +181,66 @@
   object-fit: cover;
 }
 
+.nft-media-image {
+  animation: nft-image-fade 1000ms ease;
+}
+
+@keyframes nft-image-fade {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.nft-media-controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.nft-media-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.72);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  color: #f8fafc;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  pointer-events: auto;
+  transform: translateY(-50%);
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.nft-media-arrow:hover {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(125, 211, 252, 0.8);
+}
+
+.nft-media-arrow:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.nft-media-arrow-prev {
+  left: 12px;
+}
+
+.nft-media-arrow-next {
+  right: 12px;
+}
+
 .nft-media-placeholder {
   display: grid;
   width: 100%;
@@ -220,6 +281,7 @@
 
 .nft-card-topline {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   color: #64748b;
@@ -526,7 +588,7 @@
   grid-template-columns: 58px minmax(0, 1fr) auto;
   gap: 14px;
   align-items: center;
-  margin: 22px 28px 14px;
+  margin: 22px 28px 16px;
   padding: 14px;
   border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 12px;
@@ -598,7 +660,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0 28px 18px;
+  margin: 0 28px 16px;
   padding: 10px 12px;
   border-radius: 10px;
   background: rgba(34, 197, 94, 0.07);
@@ -653,7 +715,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  margin: 0 28px;
+  margin: 0 28px 16px;
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 12px;
@@ -703,7 +765,7 @@
 }
 
 .checkout-consent {
-  margin: 16px 28px;
+  margin: 0 28px 16px;
   color: #64748b;
   font-size: 0.68rem;
   line-height: 1.55;
@@ -711,13 +773,13 @@
 
 .checkout-submit {
   width: auto;
-  margin: 0 28px 10px;
+  margin: 0 28px 12px;
 }
 
 .secondary-button {
   width: calc(100% - 56px);
   min-height: 40px;
-  margin: 0 28px;
+  margin: 0 28px 14px;
   border: 1px solid #334155;
   border-radius: 9px;
   background: #1e293b;
@@ -741,6 +803,13 @@
   color: #bae6fd;
   font-size: 0.72rem;
   line-height: 1.5;
+}
+
+.modal-security {
+  margin: 16px 28px 24px;
+  color: #64748b;
+  font-size: 0.68rem;
+  line-height: 1.6;
 }
 
 .checkout-message-error {
@@ -772,14 +841,6 @@
   font-size: 0.62rem;
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.modal-security {
-  margin: 18px 28px 24px;
-  color: #475569;
-  font-size: 0.64rem;
-  line-height: 1.5;
-  text-align: center;
 }
 
 @media (max-width: 960px) {

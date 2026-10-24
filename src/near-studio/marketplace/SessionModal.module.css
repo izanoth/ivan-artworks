@@ -1,0 +1,272 @@
+.backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  overflow-y: auto;
+  place-items: center;
+  padding: 24px;
+  background: rgba(2, 6, 23, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.marketplaceModal {
+  position: relative;
+  width: min(100%, 540px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 20px;
+  background: #111827;
+  color: #e5e7eb;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sessionModal {
+  width: min(100%, 480px);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 26px 28px 0;
+}
+
+.modalIcon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(125, 211, 252, 0.1);
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 3px;
+  color: #7dd3fc;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.45rem;
+  letter-spacing: -0.025em;
+}
+
+.modalClose {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 9px;
+  background: #1e293b;
+  color: #cbd5e1;
+  cursor: pointer;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.modalClose:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.modalLead {
+  margin: 20px 28px;
+  color: #94a3b8;
+  font-size: 0.86rem;
+  text-align: left;
+  line-height: 1.65;
+}
+
+.modalLead strong {
+  color: #e2e8f0;
+}
+
+.sessionSummary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  text-align: left;
+  margin: 0 28px 20px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 12px;
+  background: #0f172a;
+}
+
+.sessionSummary span,
+.sessionSummary strong {
+  display: block;
+}
+
+.sessionSummary span {
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: 0.68rem;
+}
+
+.sessionSummary strong {
+  color: #e2e8f0;
+  font-size: 0.85rem;
+}
+
+.sessionSummary > div:last-child {
+  text-align: right;
+}
+
+.sessionSummary > div:last-child strong {
+  color: #7dd3fc;
+  font-size: 1rem;
+}
+
+.sessionForm {
+  display: grid;
+  gap: 16px;
+  padding: 0 28px 24px;
+}
+
+.sessionForm label {
+  display: grid;
+  gap: 7px;
+}
+
+.sessionForm label > span {
+  color: #cbd5e1;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.sessionForm input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #334155;
+  border-radius: 9px;
+  background: #0b1220;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.sessionForm input::placeholder {
+  color: #475569;
+}
+
+.sessionForm input:focus {
+  border-color: #7dd3fc;
+  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.1);
+}
+
+.checkoutWarning {
+  padding: 14px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 10px;
+  background: rgba(120, 53, 15, 0.2);
+}
+
+.checkoutWarning strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #fbbf24;
+  font-size: 0.78rem;
+}
+
+.checkoutWarning p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.checkoutMessage {
+  margin: 0;
+  padding: 11px 12px;
+  border-radius: 9px;
+  background: rgba(125, 211, 252, 0.08);
+  color: #bae6fd;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.checkoutMessageError {
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecaca;
+}
+
+.primaryButton {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: #7dd3fc;
+  color: #082f49;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.primaryButton:hover {
+  filter: brightness(1.06);
+}
+
+.primaryButton:active {
+  transform: translateY(1px);
+}
+
+.primaryButton:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.modalSecurity {
+  margin: 16px 28px 24px;
+  color: #64748b;
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .marketplaceModal {
+    width: 100%;
+    max-height: calc(100vh - 16px);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .modalHeader,
+  .sessionForm {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .modalLead,
+  .sessionSummary,
+  .modalSecurity,
+  .checkoutMessage {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

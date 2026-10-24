@@ -43,6 +43,28 @@ function normalizeStatus(status) {
 	return String(status || "").trim().toLowerCase();
 }
 
+function normalizeIllustrations(value) {
+	if (Array.isArray(value)) {
+		return value
+			.map((item) => String(item).trim())
+			.filter(Boolean);
+	}
+
+	if (typeof value === "string") {
+		return value
+			.split(/[\n,]/)
+			.map((item) => item.trim())
+			.filter(Boolean);
+	}
+
+	return [];
+}
+
+function getPrimaryIllustration(value) {
+	const normalized = normalizeIllustrations(value);
+	return normalized[0] || "";
+}
+
 function isActiveOwnedToken(token, ownerId) {
 	if (!token || !ownerId) return false;
 	if (token.ownerId !== ownerId) return false;
@@ -91,7 +113,7 @@ export default function StudioApp() {
 		title: "",
 		description: "",
 		media: "",
-		illustrationUrl: "",
+		illustrations: [],
 		mintTxHash: "",
 		buyTxHash: "",
 		priceNear: "",
@@ -383,6 +405,10 @@ export default function StudioApp() {
 					]),
 			);
 
+			const normalizedIllustrations = normalizeIllustrations(
+				tokenRecord?.illustrations ?? mint.illustrations,
+			);
+
 			const token_metadata = tokenRecord
 				? (
 					typeof tokenRecord.metadataJson === "string"
@@ -397,6 +423,9 @@ export default function StudioApp() {
 				};
 			if (!token_metadata || typeof token_metadata !== "object") {
 				throw new Error("Os metadados do NFT original são inválidos.");
+			}
+			if (!Array.isArray(token_metadata.illustrations)) {
+				token_metadata.illustrations = normalizedIllustrations;
 			}
 
 			const perpetual_royalties = tokenRecord
@@ -418,6 +447,7 @@ export default function StudioApp() {
 				{
 					token_id: mint.token_id,
 					price_yocto: priceYocto,
+					perpetual_royalties,
 				},
 				"0.000000000000000000000001",
 				"100000000000000",
@@ -446,11 +476,10 @@ export default function StudioApp() {
 							: null,
 					visible: true,
 					status: "for_sale",
-					illustrationUrl: tokenRecord
-						? tokenRecord.illustrationUrl ?? null
-						: mint.illustrationUrl || null,
+					illustrations: normalizedIllustrations,
 					ownerId: owner,
-					royalties: perpetual_royalties ? JSON.stringify(perpetual_royalties) : JSON.stringify({}),					holders: [],
+					royalties: perpetual_royalties ? JSON.stringify(perpetual_royalties) : JSON.stringify({}),
+					holders: [],
 					mintTxHash: mintTxHash || null,
 					metadataJson: token_metadata,
 				}),
@@ -633,7 +662,7 @@ export default function StudioApp() {
 									{dbTokens.map((tokenItem) => {
 										const remint = tokenItem.collection?.tokens?.length < tokenItem.collection?.maxCopies;
 										const currentOwned = isActiveOwnedToken(tokenItem, CONTRACT_ID);
-										const imageUrl = tokenItem.illustrationUrl || "";
+										const imageUrl = getPrimaryIllustration(tokenItem.illustrations || tokenItem.illustrationUrl || []);
 										const tokenStatus = normalizeStatus(tokenItem.status);
 										const label = currentOwned ? "Atual" : "Histórico";
 										return (
@@ -683,7 +712,7 @@ export default function StudioApp() {
 																	title: tokenItem.title || "",
 																	description: tokenItem.description || "",
 																	media: tokenItem.media || "",
-																	illustrationUrl: tokenItem.illustrationUrl || "",
+																	illustrations: normalizeIllustrations(tokenItem.illustrations || tokenItem.illustrationUrl || []),
 																	priceNear: tokenItem.priceYocto
 																		? utils.format.formatNearAmount(
 																			String(tokenItem.priceYocto)
@@ -802,11 +831,20 @@ export default function StudioApp() {
 									value={mint.priceNear}
 									onChange={(e) => setMint({ ...mint, priceNear: e.target.value })}
 								/>
-								<input
-									placeholder="URL ilustração da mídia"
-									value={mint.illustrationUrl}
-									onChange={(e) => setMint({ ...mint, illustrationUrl: e.target.value })}
-								/>
+								<label>
+									<span>Imagens do NFT (uma por linha)</span>
+									<textarea
+										rows={4}
+										placeholder="https://...\nhttps://..."
+										value={mint.illustrations.join("\n")}
+										onChange={(e) =>
+											setMint({
+												...mint,
+												illustrations: normalizeIllustrations(e.target.value),
+											})
+										}
+									/>
+								</label>
 
 								<div>
 									<label>Royalties</label>

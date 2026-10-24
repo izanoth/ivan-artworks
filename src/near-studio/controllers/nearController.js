@@ -1,6 +1,7 @@
 import { 
     call as nearCall, 
     yoctoToNear as _yoctoToNear,
+    nearToYocto as _nearToYocto,
 } from "../services/near";
 import {
     openSession as svcOpenSession,
@@ -29,6 +30,10 @@ export function yoctoToNear(yocto) {
     return _yoctoToNear(yocto);
 }
 
+export function nearToYocto(near) {
+    return _nearToYocto(near);
+}
+
 export async function purchase({ contractId, tokenId, marketplaceId, depositNear, gas, accountId }) {
     const result = await nearCall(
         "nft_buy",
@@ -46,7 +51,8 @@ export async function purchase({ contractId, tokenId, marketplaceId, depositNear
 }
 
 export default { 
-    yoctoToNear, 
+    yoctoToNear,
+    nearToYocto,
     purchase,
     openSession, 
     closeSession, 

@@ -2,15 +2,9 @@ import prisma from "@/prisma";
 import Link from "next/link";
 import LogoutButton from '@/admin/components/LogoutButton';
 import NewUserForm from "./_components/NewUserForm"; 
-import { cookies } from "next/headers";
-import { verifyToken } from "@/auth";
 
 export default async function Dashboard() {
   const commentsCount = await prisma.comment.count();
-  const cookieStore = cookies(); 
-    
-  const tokenObject = await verifyToken(cookieStore.get("admin-auth")?.value || "");
-
   const latestComments = await prisma.comment.findMany({
     orderBy: { createdAt: "desc" },
     take: 3,

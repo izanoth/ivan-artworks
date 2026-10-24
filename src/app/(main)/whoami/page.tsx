@@ -31,8 +31,6 @@ export default async function Whoami() {
                 <hr className="my-8" />
 
                 <div dangerouslySetInnerHTML={{ __html: ptContent?.body || '<p>Conteúdo não encontrado.</p>' }} />
-
-                <p className="mt-3">Itanhaém, 26 de agosto de 2024.</p>
             </div>
         </div>
     );

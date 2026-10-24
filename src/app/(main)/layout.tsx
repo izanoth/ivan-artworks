@@ -55,11 +55,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   });
 
   return (
-    <>
-      <ClientLayout pages={pages} footerItems={footerItems} footerText={footerContent?.body}>
-        <Analytics />
-        {children}
-      </ClientLayout>
-    </>
+    <ClientLayout pages={pages} footerItems={footerItems} footerText={footerContent?.body}>
+      <Analytics />
+      {children}
+    </ClientLayout>
   );
 }

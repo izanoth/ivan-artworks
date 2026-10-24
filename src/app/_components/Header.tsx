@@ -69,13 +69,13 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
         {/* Logo */}
         <div className="flex flex-col items-center sm:items-start">
           <img
-            src="/images/zemag.png"
+            src="/images/zweb3v5.png"
             className="h-[70px] w-auto"
             alt="Zanoth logo"
           />
-          <p className="font-bold text-[12px]">
+         {/*} <p className="font-bold text-[12px] tracking-[0.13em]">
             Independent Digital Artworks
-          </p>
+          </p>*/}
         </div>
 
         {/* Donation */}
@@ -112,6 +112,7 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
       <nav className="container mx-auto flex justify-between items-center p-4 md:text-xl text-sm">
         <div className="flex items-center gap-8">
           {mainNavPages.map((page) => (
+          
             <Link
               key={page.id}
               href={page.slug}
@@ -120,6 +121,7 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
             >
               {iconMap[page.slug] && <FontAwesomeIcon icon={iconMap[page.slug]} />}
               {!iconMap[page.slug] && page.name}
+              {page.name}
             </Link>
           ))}
         </div>

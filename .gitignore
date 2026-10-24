@@ -1,8 +1,12 @@
+smartcontract.rs
+prisma/seed*
 archieve/
 
 .*~
 .zanoth-e-magazine-firebase-adminsdk-fbsvc-3e06e8cbb3.json
 .env
+.env.remote
+.env.backup
 
 .gemini
 

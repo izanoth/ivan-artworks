@@ -18,9 +18,8 @@ function isMutatingApiRequest(req: NextRequest) {
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-
   // Check for inactive pages
-  const publicPages = ['/music', '/prog', '/marketplace', '/guestbook', '/whoami', '/contact'];
+  const publicPages = ['/music', '/prog', '/marketplace', '/blog', '/guestbook', '/whoami', '/contact'];
   const matchedPage = publicPages.find((page) => pathname === page || pathname.startsWith(page + '/'));
 
   if (matchedPage) {
@@ -97,6 +96,10 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/marketplace',
+    '/marketplace/:path*',
+    '/blog',
+    '/blog/:path*',
     '/admin/su/:path*',
     '/admin/su',
     '/admin/studio/:path*',
@@ -114,8 +117,6 @@ export const config = {
     '/music/:path*',
     '/prog',
     '/prog/:path*',
-    '/marketplace',
-    '/marketplace/:path*',
     '/guestbook',
     '/guestbook/:path*',
     '/whoami',

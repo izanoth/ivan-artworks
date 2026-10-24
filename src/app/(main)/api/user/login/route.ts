@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 import prisma from "@/prisma";
 import bcrypt from "bcryptjs";
 import { signToken } from "@/auth";
-import { cookies } from 'next/headers';
 
 export const runtime = "nodejs";
 
@@ -22,6 +21,7 @@ export async function POST(req: Request) {
     // Admin via env
     const adminUser = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
+
 	console.log('admPass: ', adminPassword);
     if (username === 'ivanzanoth@gmail.com' && password === adminPassword) {
       const token = await signToken({ username, role: 'admin' });

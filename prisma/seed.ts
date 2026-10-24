@@ -73,6 +73,7 @@ async function main() {
           <p>Tais incursões artísticas fizeram-me desenvolver alguma sensibilidade auditiva, que procurei explorar na produção de alguns trabalhos aqui publicados.</p>
           <p>Comecei a estudar programação e a desenvolver sistemas web full stack em meados de 2015, o que me possibilitou unir essas duas coisas nessa modesta aplicação, desenvolvida com Next.js, Node, React e Tailwind.</p>
           <p>Estarei satisfeito se puder fazer do dia de alguém um pouco melhor.</p>
+          <p className="mt-3">Itanhaém, 26 de agosto de 2024.</p>
         `,
       },
     });

@@ -2,6 +2,7 @@ const KEY = "near-nft-studio:operations";
 
 export function getLogs() {
 	try {
+		if (typeof window === "undefined") return [];
 		return JSON.parse(localStorage.getItem(KEY) || "[]");
 	} catch {
 		return [];
@@ -15,16 +16,28 @@ export function logOperation(entry) {
 		...entry,
 	};
 
-	const logs = [record, ...getLogs()].slice(0, 500);
-	localStorage.setItem(KEY, JSON.stringify(logs));
+	try {
+		if (typeof window !== "undefined") {
+			const logs = [record, ...getLogs()].slice(0, 500);
+			localStorage.setItem(KEY, JSON.stringify(logs));
+		}
+	} catch (e) {
+		// ignore storage errors on server
+	}
+
 	return record;
 }
 
 export function clearLogs() {
-	localStorage.removeItem(KEY);
+	try {
+		if (typeof window !== "undefined") {
+			localStorage.removeItem(KEY);
+		}
+	} catch {}
 }
 
 export function exportLogs() {
+	if (typeof window === "undefined") return;
 	const blob = new Blob([JSON.stringify(getLogs(), null, 2)], {
 		type: "application/json",
 	});

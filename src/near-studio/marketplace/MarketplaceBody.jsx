@@ -2,15 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { listMarketplaceNfts } from "./services/marketplace";
-import nearController from "@/near-studio/controllers/nearController";
+import nearController, { yoctoToNear } from "@/near-studio/controllers/nearController";
+import SessionModal from "./SessionModal";
+import CheckoutModal from "./CheckoutModal";
 import "./MarketplaceBody.css";
-import { yoctoToNear } from "@/near-studio/controllers/nearController";
 
 const API_URL = "";
 const NETWORK = process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet";
 const NFT_CONTRACT_ID = process.env.NEXT_PUBLIC_NFT_CONTRACT_ID || "nft.testnet";
 const BUY_GAS = "300000000000000";
-const SOURCE_URL = "#";
+const SOURCE_URL = "https://github.com/your-org/ivan-artworks";
 
 function formatDate(value) {
 	try {
@@ -20,6 +21,100 @@ function formatDate(value) {
 	} catch {
 		return value;
 	}
+}
+
+function normalizeTokenImages(token) {
+	if (!token) return [];
+
+	const images = [];
+	const candidates = [];
+
+	if (Array.isArray(token.illustrations)) {
+		candidates.push(...token.illustrations);
+	}
+
+	if (typeof token.illustrationUrl === "string" && token.illustrationUrl.trim()) {
+		candidates.push(token.illustrationUrl);
+	}
+
+	if (typeof token.media === "string" && token.media.trim()) {
+		candidates.push(token.media);
+	}
+
+	for (const candidate of candidates) {
+		if (typeof candidate !== "string") continue;
+		const value = candidate.trim();
+		if (!value || images.includes(value)) continue;
+		images.push(value);
+	}
+
+	return images;
+}
+
+function NftMediaCarousel({ images, title }) {
+	const [activeIndex, setActiveIndex] = useState(0);
+	const normalized = images.filter(Boolean);
+
+	if (!normalized.length) {
+		return (
+			<div className="nft-media-placeholder">
+				<span>NFT</span>
+			</div>
+		);
+	}
+
+	const currentImage = normalized[activeIndex] || normalized[0];
+	const canNavigate = normalized.length > 1;
+
+	const previousImage = () => {
+		setActiveIndex((current) =>
+			(current - 1 + normalized.length) % normalized.length,
+		);
+	};
+
+	const nextImage = () => {
+		setActiveIndex((current) => (current + 1) % normalized.length);
+	};
+
+	return (
+		<>
+			<img
+				key={currentImage}
+				className="nft-media-image"
+				src={currentImage}
+				alt={title || "NFT"}
+				loading="lazy"
+			/>
+
+			{canNavigate && (
+				<div className="nft-media-controls" aria-label={`Galeria do NFT ${title}`}>
+					<button
+						type="button"
+						className="nft-media-arrow nft-media-arrow-prev"
+						onClick={(event) => {
+							event.stopPropagation();
+							previousImage();
+						}}
+						aria-label="Ver imagem anterior"
+					>
+						‹
+					</button>
+
+					<button
+						type="button"
+						className="nft-media-arrow nft-media-arrow-next"
+						onClick={(event) => {
+							event.stopPropagation();
+							nextImage();
+						}}
+						aria-label="Ver próxima imagem"
+					>
+						›
+					</button>
+				</div>
+			)}
+		</>
+	);
 }
 
 export default function MarketplaceBody() {
@@ -187,10 +282,7 @@ export default function MarketplaceBody() {
 				<header className="marketplace-intro">
 					<div className="marketplace-heading">
 						<span className="eyebrow">NEAR NFT Marketplace</span>
-
-						<h1>NFTs disponíveis</h1>
-
-						<p>
+						<p className="text-dark">
 							Explore os ativos publicados na rede <strong>{NETWORK}</strong> e
 							compre diretamente através da sua conta NEAR.
 						</p>
@@ -202,18 +294,17 @@ export default function MarketplaceBody() {
 						</div>
 
 						<div>
-							<strong>Compra assinada localmente</strong>
+							<strong>Compra segura e código aberto</strong>
 
 							<span>
-								A sessão é efêmera. A chave privada permanece somente em memória
-								durante a sessão e não é enviada ao backend.
+								Este projeto é open-source e o código está disponível para
+								consulta em uma base pública. A transação é assinada localmente e
+								enviada diretamente ao RPC da rede NEAR.
 							</span>
 
-							{SOURCE_URL !== "#" && (
-								<a href={SOURCE_URL} target="_blank" rel="noreferrer">
-									Código-fonte aberto →
-								</a>
-							)}
+							<a href={SOURCE_URL} target="_blank" rel="noreferrer">
+								Código-fonte aberto →
+							</a>
 						</div>
 					</aside>
 				</header>
@@ -244,18 +335,10 @@ export default function MarketplaceBody() {
 						{tokens.map((token) => (
 							<article className="nft-card" key={token.id}>
 								<div className="nft-media">
-									{token.illustrationUrl || token.media ? (
-										<img
-											src={token.illustrationUrl || token.media}
-											alt={token.title || `NFT ${token.tokenId}`}
-											loading="lazy"
-										/>
-									) : (
-										<div className="nft-media-placeholder">
-											<span>NFT</span>
-										</div>
-									)}
-
+											<NftMediaCarousel
+												images={normalizeTokenImages(token)}
+												title={token.title || `NFT ${token.tokenId}`}
+											/>
 									<span className="nft-network">{token.network}</span>
 								</div>
 
@@ -269,6 +352,7 @@ export default function MarketplaceBody() {
 
 									<p className="nft-description">
 										{token.description || "Sem descrição disponível."}
+										{/*token.collection ?? "Coleção: "+token.collection*/}
 									</p>
 
 									<div className="nft-price">
@@ -303,287 +387,32 @@ export default function MarketplaceBody() {
 			</section>
 
 			{selected && !sessionInfo && (
-				<div
-					className="modal-backdrop"
-					role="presentation"
-				>
-					<section
-						className="marketplace-modal session-modal"
-						role="dialog"
-						aria-modal="true"
-						aria-labelledby="session-title"
-					>
-						<button
-							className="modal-close"
-							type="button"
-							onClick={close}
-							aria-label="Fechar"
-						>
-							×
-						</button>
-
-						<div className="modal-header">
-							<span className="modal-icon">↗</span>
-
-							<div>
-								<span className="eyebrow">Etapa 1 de 2</span>
-
-								<h2 id="session-title">Abrir sessão</h2>
-							</div>
-						</div>
-
-						<p className="modal-lead">
-							Para continuar a compra de{" "}
-							<strong>{selected.title || `NFT #${selected.tokenId}`}</strong>,
-							abra uma sessão temporária com sua conta NEAR.
-						</p>
-
-						<div className="session-summary">
-							<div>
-								<span>NFT</span>
-								<strong>{selected.title || `#${selected.tokenId}`}</strong>
-							</div>
-
-							<div>
-								<span>Valor</span>
-								<strong>{yoctoToNear(selected.priceYocto)} NEAR</strong>
-							</div>
-						</div>
-
-						<form className="session-form" onSubmit={authenticate}>
-							<div className="checkout-warning">
-								<strong>Sessão somente em memória</strong>
-
-								<p>
-									A chave privada é usada apenas para criar o assinador local da
-									sessão. Ela não é persistida nem enviada ao backend.
-								</p>
-							</div>
-
-							<label>
-								<span>Account ID</span>
-
-								<input
-									value={accountId}
-									onChange={(event) => setAccountId(event.target.value)}
-									placeholder="alice.testnet"
-									autoComplete="off"
-									required
-								/>
-							</label>
-
-							<label>
-								<span>Private Key</span>
-
-								<input
-									type="password"
-									value={privateKey}
-									onChange={(event) => setPrivateKey(event.target.value)}
-									placeholder="ed25519:…"
-									autoComplete="off"
-									spellCheck="false"
-									required
-								/>
-							</label>
-
-							{message && (
-								<p
-									className="checkout-message checkout-message-error"
-									role="alert"
-								>
-									{message}
-								</p>
-							)}
-
-							<button
-								className="primary-button"
-								type="submit"
-								disabled={authenticating}
-							>
-								{authenticating
-									? "Validando sessão…"
-									: "Abrir sessão e continuar"}
-							</button>
-						</form>
-
-						<p className="modal-security">
-							Use somente uma chave apropriada para este ambiente. Nunca informe
-							uma chave de uma conta com fundos relevantes em um site
-							experimental.
-						</p>
-					</section>
-				</div>
+				<SessionModal
+					selected={selected}
+					accountId={accountId}
+					setAccountId={setAccountId}
+					privateKey={privateKey}
+					setPrivateKey={setPrivateKey}
+					message={message}
+					authenticating={authenticating}
+					onSubmit={authenticate}
+					onClose={close}
+				/>
 			)}
 
 			{selected && sessionInfo && (
-				<div
-					className="modal-backdrop"
-					role="presentation"
-				>
-					<section
-						className="marketplace-modal checkout-modal"
-						role="dialog"
-						aria-modal="true"
-						aria-labelledby="checkout-title"
-					>
-						<button
-							className="modal-close"
-							type="button"
-							onClick={close}
-							aria-label="Fechar"
-						>
-							×
-						</button>
-
-						<div className="modal-header">
-							<span className="modal-icon">✓</span>
-
-							<div>
-								<span className="eyebrow">Etapa 2 de 2</span>
-
-								<h2 id="checkout-title">Confirmar compra</h2>
-							</div>
-						</div>
-
-						<div className="checkout-product">
-							<div className="checkout-product-media">
-								{selected.media ? (
-									<img src={selected.media} alt="" />
-								) : (
-									<span>NFT</span>
-								)}
-							</div>
-
-							<div>
-								<span className="checkout-product-label">NFT</span>
-
-								<strong>{selected.title || `NFT #${selected.tokenId}`}</strong>
-
-								<span>#{selected.tokenId}</span>
-							</div>
-
-							<div className="checkout-product-price">
-								<span>Total</span>
-
-								<strong>{yoctoToNear(selected.priceYocto)}</strong>
-
-								<small>NEAR</small>
-							</div>
-						</div>
-
-						<div className="checkout-session">
-							<span className="session-status-dot" />
-
-							<div>
-								<span>Sessão ativa</span>
-								<strong>{sessionInfo.accountId}</strong>
-							</div>
-
-							<button type="button" onClick={endSession}>
-								Trocar conta
-							</button>
-						</div>
-
-						<dl className="checkout-details">
-							<div>
-								<dt>Token</dt>
-								<dd>{selected.tokenId}</dd>
-							</div>
-
-							<div>
-								<dt>Vendedor</dt>
-								<dd>{selected.ownerId}</dd>
-							</div>
-
-							<div>
-								<dt>Contrato NFT</dt>
-								<dd>{selected.contractId}</dd>
-							</div>
-
-							<div>
-								<dt>Rede</dt>
-								<dd>{selected.network}</dd>
-							</div>
-
-							<div>
-								<dt>Método</dt>
-								<dd>nft_buy</dd>
-							</div>
-
-							<div>
-								<dt>Receiver</dt>
-								<dd>{sessionInfo.accountId}</dd>
-							</div>
-
-							<div>
-								<dt>Gas máximo</dt>
-								<dd>{BUY_GAS}</dd>
-							</div>
-							<div>
-								{selected.royalties && Object.entries(selected.royalties).length > 0 && (
-									<>
-										<dt>Royalties</dt>
-										{Object.entries(JSON.parse(selected.royalties)).map(([accountId, amount], i) => (
-											<dd key={i}>
-												<span>{accountId}</span>
-												<span style={{marginRight: "1rem"}}> {amount/100}%</span>
-											</dd>
-										))}
-									</>)
-								}
-							</div>
-
-							<div className="checkout-total">
-								<dt>Valor da compra</dt>
-								<dd>{yoctoToNear(selected.priceYocto)} NEAR</dd>
-							</div>
-						</dl>
-
-						<p className="checkout-consent">
-							Confira cuidadosamente o receiver, método, token, vendedor e valor
-							antes de autorizar a assinatura.
-						</p>
-
-						<button
-							className="primary-button checkout-submit"
-							type="button"
-							onClick={purchase}
-							disabled={buying}
-						>
-							{buying
-								? "Enviando transação…"
-								: `Assinar compra · ${yoctoToNear(selected.priceYocto)} NEAR`}
-						</button>
-
-						<button
-							className="secondary-button"
-							type="button"
-							onClick={endSession}
-							disabled={buying}
-						>
-							Encerrar sessão
-						</button>
-
-						{message && (
-							<p className="checkout-message" role="status">
-								{message}
-							</p>
-						)}
-
-						{transactionResult && (
-							<details className="tx-result">
-								<summary>Ver resposta da transação</summary>
-
-								<pre>{JSON.stringify(transactionResult, null, 2)}</pre>
-							</details>
-						)}
-
-						<p className="modal-security">
-							A assinatura é realizada localmente e enviada diretamente ao RPC
-							da rede NEAR.
-						</p>
-					</section>
-				</div>
+				<CheckoutModal
+					selected={selected}
+					sessionInfo={sessionInfo}
+					buying={buying}
+					message={message}
+					transactionResult={transactionResult}
+					coverImage={normalizeTokenImages(selected)[0]}
+					onClose={close}
+					onEndSession={endSession}
+					onPurchase={purchase}
+					gas={BUY_GAS}
+				/>
 			)}
 		</main>
 	);

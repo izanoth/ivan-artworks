@@ -34,7 +34,7 @@ export async function GET(req: Request) {
 				description: true,
 				media: true,
 				holders: true,
-				illustrationUrl: true,
+				illustrations: true,
 				visible: true,
 				ownerId: true,
 				royalties: true,
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
 			description,
 			media,
 			holders,
-			illustrationUrl,
+			illustrations,
 			visible,
 			ownerId,
 			royalties,
@@ -112,7 +112,14 @@ export async function POST(req: Request) {
 				description: description || null,
 				media: media || null,
 				holders: holders || null,
-				illustrationUrl: illustrationUrl || null,
+				illustrations: Array.isArray(illustrations)
+					? illustrations.filter((value) => typeof value === "string" && value.trim())
+					: illustrations
+						? String(illustrations)
+							.split(/\n|,/) 
+							.map((value) => value.trim())
+							.filter(Boolean)
+						: [],
 				ownerId: ownerId || null,
 				royalties: royalties || null,
 				status: status || "for_sale",

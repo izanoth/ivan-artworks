@@ -101,7 +101,7 @@ model NftToken {
   royalties       String?
   metadataJson    String?
   status          String?
-  illustrationUrl String?
+  illustrations   String[]
   copies          Int?
   mintTxHash      String?
   buyTxHash       String?
