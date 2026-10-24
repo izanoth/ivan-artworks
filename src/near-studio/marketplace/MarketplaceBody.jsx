@@ -7,11 +7,11 @@ import SessionModal from "./SessionModal";
 import CheckoutModal from "./CheckoutModal";
 import "./MarketplaceBody.css";
 
-const API_URL = "";
+const API_URL = process.env.API_URL ||"http://localhost:3000";
 const NETWORK = process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet";
 const NFT_CONTRACT_ID = process.env.NEXT_PUBLIC_NFT_CONTRACT_ID || "nft.testnet";
 const BUY_GAS = "300000000000000";
-const SOURCE_URL = "https://github.com/your-org/ivan-artworks";
+const SOURCE_URL = process.env.NEXT_PUBLIC_NEAR_NETWORK || "#";
 
 function formatDate(value) {
 	try {
@@ -277,12 +277,15 @@ export default function MarketplaceBody() {
 	};
 
 	return (
-		<main className="marketplace-body">
+		<main className="container marketplace-body">
 			<section className="marketplace-container">
-				<header className="marketplace-intro">
+				<div className="marketplace-intro">
 					<div className="marketplace-heading">
 						<span className="eyebrow">NEAR NFT Marketplace</span>
-						<p className="text-dark">
+
+						<h1>NFTs disponíveis</h1>
+
+						<p>
 							Explore os ativos publicados na rede <strong>{NETWORK}</strong> e
 							compre diretamente através da sua conta NEAR.
 						</p>
@@ -294,20 +297,22 @@ export default function MarketplaceBody() {
 						</div>
 
 						<div>
-							<strong>Compra segura e código aberto</strong>
+							<strong>Compra assinada localmente</strong>
 
 							<span>
-								Este projeto é open-source e o código está disponível para
-								consulta em uma base pública. A transação é assinada localmente e
-								enviada diretamente ao RPC da rede NEAR.
+								A sessão é efêmera. A chave privada permanece somente em memória
+								durante a sessão e não é enviada ao backend.
+								O trabalho é open-source e pode ser consultado livremente
 							</span>
 
-							<a href={SOURCE_URL} target="_blank" rel="noreferrer">
-								Código-fonte aberto →
-							</a>
+							{SOURCE_URL !== "#" && (
+								<a href={SOURCE_URL} target="_blank" rel="noreferrer">
+									Código-fonte aberto →
+								</a>
+							)}
 						</div>
 					</aside>
-				</header>
+				</div>
 
 				{loading && (
 					<div className="marketplace-state">
@@ -335,10 +340,10 @@ export default function MarketplaceBody() {
 						{tokens.map((token) => (
 							<article className="nft-card" key={token.id}>
 								<div className="nft-media">
-											<NftMediaCarousel
-												images={normalizeTokenImages(token)}
-												title={token.title || `NFT ${token.tokenId}`}
-											/>
+									<NftMediaCarousel
+										images={normalizeTokenImages(token)}
+										title={token.title || `NFT ${token.tokenId}`}
+									/>
 									<span className="nft-network">{token.network}</span>
 								</div>
 

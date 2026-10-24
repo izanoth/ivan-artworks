@@ -45,6 +45,7 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
   return (
     <header className="text-gray-600">
       {/* Navbar secundária */}
+      { secondaryNavPages.length > 0 && (
       <nav className="w-full bg-black">
         <div className="container mx-auto flex justify-end items-center px-4 py-2 gap-6">
           {secondaryNavPages.map((page) => (
@@ -61,7 +62,7 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
             </Link>
           ))}
         </div>
-      </nav>
+      </nav>)}
 
       {/* Container com logo e donation */}
       <div className="container mx-auto flex flex-col gap-4 p-4 sm:flex-row sm:items-end sm:justify-between">
@@ -111,7 +112,7 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
       {/* Navbar principal */}
       <nav className="container mx-auto flex justify-between items-center p-4 md:text-xl text-sm">
         <div className="flex items-center gap-8">
-          {mainNavPages.map((page) => (
+          {mainNavPages.length > 1 && mainNavPages.map((page) => (
           
             <Link
               key={page.id}
