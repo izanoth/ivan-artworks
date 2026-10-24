@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Zanoth Independent Digital Artworks",
     images: [
       {
-        url: "https://zanoth.vercel.app/images/logo-metadata.png",
+        url: "https://zanoth.vercel.app/images/zemag.png",
         width: 1200,
         height: 630,
         alt: "Zanoth Independent Digital Artworks",

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     images: [
       {
-        url: "https://zanoth.vercel.app/images/zweb3.png",
+        url: "https://zanoth.vercel.app/images/zweb3-metadata.png",
         width: 1024,
         height: 1024,
         alt: "Zanoth © Independent Digital Artworks",
