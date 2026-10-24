@@ -1,7 +1,7 @@
 smartcontract.rs
 prisma/seed*
 archieve/
-
+remote-artworks.sql*
 .*~
 .zanoth-e-magazine-firebase-adminsdk-fbsvc-3e06e8cbb3.json
 .env
