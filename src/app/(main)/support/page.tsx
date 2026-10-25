@@ -37,35 +37,7 @@ export default function SupportPage() {
                <Image src="/images/raffle.png" alt="Raffle Image" width={80} height={80} />
              </button>
            </Link>	
-	        {/* NEAR */}
-	        <Link href="/donation" passHref legacyBehavior>
-	          <button className="bg-black text-white hover:bg-gray-400 font-bold py-2 px-4 rounded flex flex-col items-center w-36 sm:w-40">
-	            <p className="text-xs sm:text-sm tracking-[.20em] mb-1">Usar carteira Ⓝ</p>
-	            <Image src="/near.svg" alt="NEAR" width={80} height={80} className="invert" />
-	          </button>
-	        </Link>
-	      </div>
-	
-	      {/* Outras opções */}
-	      <div className="text-sm sm:text-base mb-2">Outras opções:</div>
-	      <div className="flex flex-wrap justify-center items-center gap-4">
-	        {/* Buy Me a Coffee */}
-	        <Link href="https://www.buymeacoffee.com/ivanzanothw" target="_blank" rel="noopener noreferrer">
-	          <Image
-	            src="https://img.buymeacoffee.com/button-api/?text=&emoji=&slug=ivanzanothw&button_colour=555&font_colour=ddd&font_family=Cookie&outline_colour=aaa&coffee_colour=fff"
-	            alt="Buy Me a Coffee"
-	            width={240}
-	            height={60}
-	            className="h-auto w-auto"
-	          />
-	        </Link>
-	
-	        {/* WiseTag */}
-	        <div className="flex flex-col items-center justify-items-center gap-2">
-	          <Image src="/images/wisetag.png" alt="WiseTag" width={140} height={28} className="invert" />
-	          <Image src="/images/ivanc2874-wisetag.png" alt="WiseTag 2" width={140} height={140} />
-	        </div>
-	      </div>
+	      </div>	
       </div>      
     </div>
   );

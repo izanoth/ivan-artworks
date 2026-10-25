@@ -157,6 +157,36 @@ model FooterItem {
   deletedAt DateTime? // Soft delete
 }
 
+model Album {
+  id          String    @id @default(cuid())
+  title       String    @unique
+  year        Int
+  genre       String
+  composer    String
+  coverImage  String
+  tracks      Track[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("albums")
+}
+
+model Track {
+  id          String    @id @default(cuid())
+  albumId     String    @map("album_id")
+  album       Album     @relation(fields: [albumId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  title       String
+  src         String?
+  software    String[]
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("tracks")
+}
+
 
 
 
