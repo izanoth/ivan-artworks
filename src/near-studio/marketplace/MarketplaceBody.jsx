@@ -9,7 +9,7 @@ import "./MarketplaceBody.css";
 
 const API_URL = process.env.API_URL ||"http://localhost:3000";
 const NETWORK = process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet";
-const NFT_CONTRACT_ID = process.env.CONTRACT_ID || "nft.testnet";
+const NFT_CONTRACT_ID = process.env.NEXT_PUBLIC_NFT_CONTRACT_ID || "nft.testnet";
 const BUY_GAS = "300000000000000";
 const SOURCE_URL = process.env.NEXT_PUBLIC_NEAR_NETWORK || "#";
 

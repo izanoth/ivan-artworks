@@ -122,6 +122,10 @@ export default function StudioApp() {
 		visible: true,
 		status: "for_sale",
 	});
+	const [nftListForm, setNftListForm] = useState({
+		token_id: "",
+		priceNear: "",
+	});
 	const [network, setNetwork] = useState(
 		process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet"
 	);
@@ -548,6 +552,68 @@ export default function StudioApp() {
 		} finally { endLoading(); }
 	};
 
+	const handleNftList = async () => {
+		if (loading) return;
+		if (!nftListForm.token_id || !nftListForm.priceNear) {
+			return setMessage("Informe o Token ID e o preço em NEAR para listar.");
+		}
+		beginLoading();
+		try {
+			const priceYocto = utils.format.parseNearAmount(String(nftListForm.priceNear).trim());
+			if (priceYocto == null || BigInt(priceYocto) <= 0n) {
+				throw new Error("Preço inválido.");
+			}
+
+			let perpetual_royalties = {};
+			try {
+				const fetchedToken = await view("nft_token", { token_id: nftListForm.token_id });
+				if (fetchedToken && fetchedToken.perpetual_royalties) {
+					perpetual_royalties = fetchedToken.perpetual_royalties;
+				}
+			} catch (e) {
+				// ignore
+			}
+
+			await call(
+				"nft_list",
+				{
+					token_id: nftListForm.token_id,
+					price_yocto: priceYocto,
+					perpetual_royalties,
+				},
+				"0.000000000000000000000001",
+				"100000000000000",
+			);
+
+			try {
+				await fetch(`${API_URL}/api/marketplace`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						network: sessionInfo?.network || NETWORK,
+						contractId: CONTRACT_ID,
+						tokenId: nftListForm.token_id,
+						priceYocto,
+						visible: true,
+						status: "for_sale",
+						ownerId: sessionInfo?.accountId || account,
+					}),
+				});
+			} catch (err) {
+				console.error("Failed to sync marketplace DB:", err);
+			}
+
+			setMessage(`NFT ${nftListForm.token_id} listado com sucesso para venda por ${nftListForm.priceNear} Ⓝ!`);
+			setNftListForm({ token_id: "", priceNear: "" });
+			await refreshTokens();
+			await loadContractDbTokens();
+		} catch (e) {
+			setMessage(e.message);
+		} finally {
+			endLoading();
+		}
+	};
+
 	const logRows = useMemo(() => logs.slice(0, 30), [logs]);
 
 	useEffect(() => {
@@ -970,6 +1036,26 @@ export default function StudioApp() {
 							<p>O contrato restringe o burn ao proprietário atual do NFT.</p>
 							<button className="danger" onClick={burn} disabled={loading}>
 								burn
+							</button>
+						</Card>
+
+						<Card title="Listar Ativo à Venda (nft_list)">
+							<p>Lista um ativo NFT existente para venda no marketplace (método <code>nft_list</code> com 1 yoctoNEAR de depósito).</p>
+							<input
+								placeholder="Token ID"
+								value={nftListForm.token_id}
+								onChange={(e) => setNftListForm((current) => ({ ...current, token_id: e.target.value }))}
+							/>
+							<input
+								placeholder="Preço em NEAR (ex: 1.5)"
+								type="number"
+								step="0.01"
+								min="0"
+								value={nftListForm.priceNear}
+								onChange={(e) => setNftListForm((current) => ({ ...current, priceNear: e.target.value }))}
+							/>
+							<button onClick={handleNftList} disabled={loading}>
+								{loading ? "Listando..." : "Listar Ativo (nft_list)"}
 							</button>
 						</Card>
 

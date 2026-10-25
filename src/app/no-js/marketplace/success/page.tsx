@@ -26,7 +26,7 @@ export default async function StaticSuccessPage({
                 privateKey,
             });
 
-            const NFT_CONTRACT_ID = process.env.CONTRACT_ID || token.contractId || "nft.testnet";
+            const NFT_CONTRACT_ID = process.env.NEXT_PUBLIC_NFT_CONTRACT_ID || token.contractId || "nft.testnet";
             const BUY_GAS = "300000000000000";
 
             // Convert yocto to NEAR string correctly using nearController.yoctoToNear

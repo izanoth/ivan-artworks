@@ -9,7 +9,7 @@ import { logOperation } from "./logger";
 import { getSession } from "./session";
 
 const NETWORK = process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet";
-const CONTRACT_ID = process.env.CONTRACT_ID || "nft.testnet";
+const CONTRACT_ID = process.env.NEXT_PUBLIC_NFT_CONTRACT_ID || "nft.testnet";
 
 const RPC = {
 	testnet: "https://rpc.testnet.near.org",
