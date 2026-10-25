@@ -50,9 +50,6 @@
       "@/blog/components/*": [
         "src/app/(odds)/blog/_components/*"
       ],
-      "@MyAlbuns": [
-        "myalbuns.js"
-      ],
       "@/admin/components/*": [
 			"src/app/(odds)/admin/_components/*"      
       ],

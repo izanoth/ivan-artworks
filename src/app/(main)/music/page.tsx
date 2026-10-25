@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import albuns from '@MyAlbuns';
 import AudioPlayerController from './_components/AudioPlayerController';
 
 export default function Music() {

@@ -7,7 +7,6 @@ import AudioBarFix from './AudioBarFix';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { Carousel } from 'react-bootstrap';
-import staticAlbuns from '@MyAlbuns';
 
 interface Track {
   title: string;
@@ -33,7 +32,7 @@ export default function AudioPlayerController() {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [albuns, setAlbuns] = useState<Album[]>(staticAlbuns);
+    const [albuns, setAlbuns] = useState<Album[] | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -111,7 +110,7 @@ export default function AudioPlayerController() {
         <>
         <div className="w-full mb-4">
                 <ul className="flex items-center justify-center space-x-4 p-4 overflow-x-auto">
-                  {albuns.map((album, index) => (
+                  {albuns?.map((album, index) => (
                     <li
                       key={album.id || index}
                       className={`cursor-pointer p-2 flex-shrink-0`}
@@ -140,7 +139,7 @@ export default function AudioPlayerController() {
                 onSeek={handleSeek}
             />
             <Carousel interval={null} controls={false} indicators={false} activeIndex={activeIndex} onSelect={handleSelect}>
-            {albuns.map((album, albumIndex) => (
+            {albuns?.map((album, albumIndex) => (
                 <Carousel.Item key={album.id || albumIndex}>
                   <div className="flex flex-col md:flex-row lg:space-x-4 lg:px-4 lg:mb-0">
                     <div className="flex-1 md:p-6 lg:mb-0 mb-4 bg-white border text-dark w-full md:w-[400px] rounded text-left">
