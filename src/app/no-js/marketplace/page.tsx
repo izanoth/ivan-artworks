@@ -7,26 +7,39 @@ function normalizeTokenImages(token: any): string[] {
     const images: string[] = [];
     const candidates: any[] = [];
 
+    // 1. Extrai as URLs do array de ilustrações
     if (Array.isArray(token.illustrations)) {
-        candidates.push(...token.illustrations);
-    }
-    if (typeof token.illustrationUrl === "string" && token.illustrationUrl.trim()) {
-        candidates.push(token.illustrationUrl);
-    }
-    if (typeof token.media === "string" && token.media.trim()) {
-        candidates.push(token.media);
+        for (const item of token.illustrations) {
+            if (!item) continue;
+            // Se for string, adiciona direto. Se for objeto, tenta buscar a propriedade de URL.
+            if (typeof item === "string") {
+                candidates.push(item);
+            } else if (typeof item === "object") {
+                const url = item.url || item.media || item.illustrationUrl || item.cid;
+                if (url) candidates.push(url);
+            }
+        }
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zanoth.vercel.app";
 
-    for (const candidate of candidates) {
+    // 3. Normaliza e remove duplicatas
+for (const candidate of candidates) {
         if (typeof candidate !== "string") continue;
+        
         let value = candidate.trim();
-        if (!value || images.includes(value)) continue;
-        if (value.startsWith('/')) {
-            value = `${baseUrl}${value}`;
+        if (!value) continue;
+        if (!value.startsWith('http://') && !value.startsWith('https://')) {
+            // Remove a barra inicial do valor (se houver) e a barra final da baseUrl (se houver) para evitar "//"
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+            const cleanValue = value.startsWith('/') ? value : `/${value}`;
+            value = `${cleanBase}${cleanValue}`;
         }
-        images.push(value);
+        
+        // Evita adicionar duplicados no array final
+        if (!images.includes(value)) {
+            images.push(value);
+        }
     }
 
     return images;
@@ -47,6 +60,7 @@ async function getMarketplaceTokens() {
 
 export default async function StaticMarketplacePage() {
     const tokens = await getMarketplaceTokens();
+    console.log(tokens);
     const NETWORK = process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet";
     const SOURCE_URL = process.env.SOURCE_URL;
 
@@ -74,7 +88,7 @@ export default async function StaticMarketplacePage() {
                     </div>
                 ) : (
                     <section className="nft-grid flex flex-col gap-6" aria-label="NFTs disponíveis">
-                        {tokens.map((token) => {
+                        {tokens.map((token) => {                            
                             const images = normalizeTokenImages(token);
                             const price = yoctoToNear(token.priceYocto);
                             return (
