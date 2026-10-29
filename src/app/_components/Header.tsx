@@ -66,9 +66,8 @@ export default function Header({ selected, setSelected, onOpenPopup, pages = [] 
 
       {/* Container com logo e donation */}
       <div className="container mx-auto flex flex-col gap-4 p-4 sm:flex-row sm:items-end sm:justify-between">
-
         {/* Logo */}
-        <div className="flex flex-col items-center sm:items-start">
+        <div className="flex flex-col items-center sm:items-start logo">
           <img
             src="/images/zweb3.png"
             className="h-[70px] w-auto"

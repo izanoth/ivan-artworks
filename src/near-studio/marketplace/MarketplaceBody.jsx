@@ -1,13 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { listMarketplaceNfts } from "./services/marketplace";
 import nearController, { yoctoToNear } from "@/near-studio/controllers/nearController";
 import SessionModal from "./SessionModal";
 import CheckoutModal from "./CheckoutModal";
+import CollectionIcon from "../components/CollectionIcon";
+import Wavesurfer from "wavesurfer.js";
+import NftMediaCarousel from './NftMediaCarousel';
 import "./MarketplaceBody.css";
 
-const API_URL = process.env.API_URL ||"http://localhost:3000";
+const API_URL = process.env.API_URL || "http://localhost:3000";
 const NETWORK = process.env.NEXT_PUBLIC_NEAR_NETWORK || "testnet";
 const NFT_CONTRACT_ID = process.env.NEXT_PUBLIC_NFT_CONTRACT_ID || "nft.testnet";
 const BUY_GAS = "300000000000000";
@@ -21,100 +25,6 @@ function formatDate(value) {
 	} catch {
 		return value;
 	}
-}
-
-function normalizeTokenImages(token) {
-	if (!token) return [];
-
-	const images = [];
-	const candidates = [];
-
-	if (Array.isArray(token.illustrations)) {
-		candidates.push(...token.illustrations);
-	}
-
-	if (typeof token.illustrationUrl === "string" && token.illustrationUrl.trim()) {
-		candidates.push(token.illustrationUrl);
-	}
-
-	if (typeof token.media === "string" && token.media.trim()) {
-		candidates.push(token.media);
-	}
-
-	for (const candidate of candidates) {
-		if (typeof candidate !== "string") continue;
-		const value = candidate.trim();
-		if (!value || images.includes(value)) continue;
-		images.push(value);
-	}
-
-	return images;
-}
-
-function NftMediaCarousel({ images, title }) {
-	const [activeIndex, setActiveIndex] = useState(0);
-	const normalized = images.filter(Boolean);
-
-	if (!normalized.length) {
-		return (
-			<div className="nft-media-placeholder">
-				<span>NFT</span>
-			</div>
-		);
-	}
-
-	const currentImage = normalized[activeIndex] || normalized[0];
-	const canNavigate = normalized.length > 1;
-
-	const previousImage = () => {
-		setActiveIndex((current) =>
-			(current - 1 + normalized.length) % normalized.length,
-		);
-	};
-
-	const nextImage = () => {
-		setActiveIndex((current) => (current + 1) % normalized.length);
-	};
-
-	return (
-		<>
-			<img
-				key={currentImage}
-				className="nft-media-image"
-				src={currentImage}
-				alt={title || "NFT"}
-				loading="lazy"
-			/>
-
-			{canNavigate && (
-				<div className="nft-media-controls" aria-label={`Galeria do NFT ${title}`}>
-					<button
-						type="button"
-						className="nft-media-arrow nft-media-arrow-prev"
-						onClick={(event) => {
-							event.stopPropagation();
-							previousImage();
-						}}
-						aria-label="Ver imagem anterior"
-					>
-						‹
-					</button>
-
-					<button
-						type="button"
-						className="nft-media-arrow nft-media-arrow-next"
-						onClick={(event) => {
-							event.stopPropagation();
-							nextImage();
-						}}
-						aria-label="Ver próxima imagem"
-					>
-						›
-					</button>
-				</div>
-			)}
-		</>
-	);
 }
 
 export default function MarketplaceBody() {
@@ -169,6 +79,7 @@ export default function MarketplaceBody() {
 
 	const openCheckout = (token) => {
 		setSelected(token);
+		console.log('selected: ', token.illustrations);
 		setMessage("");
 		setTx(null);
 		setPrivateKey("");
@@ -339,10 +250,11 @@ export default function MarketplaceBody() {
 					<section className="nft-grid" aria-label="NFTs disponíveis">
 						{tokens.map((token) => (
 							<article className="nft-card" key={token.id}>
-								<div className="nft-media">
+								<div className="nft-media bg-white">
+
 									<NftMediaCarousel
-										images={normalizeTokenImages(token)}
-										title={token.title || `NFT ${token.tokenId}`}
+										images={JSON.stringify(token.illustrations)}
+										title={token.title}
 									/>
 									<span className="nft-network">{token.network}</span>
 								</div>
@@ -353,17 +265,21 @@ export default function MarketplaceBody() {
 										<span>{formatDate(token.createdAt)}</span>
 									</div>
 
-									<h2>{token.title || "NFT sem título"}</h2>
+									<h2>
+										<Link href={`/marketplace/nft/${token.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+											{token.title || "NFT sem título"}
+										</Link>
+									</h2>
 
 									<p className="nft-description">
 										{token.description || "Sem descrição disponível."}
-										{/*token.collection ?? "Coleção: "+token.collection*/}
 									</p>
 
 									<div className="nft-price">
 										<span>Preço</span>
 										<strong>{yoctoToNear(token.priceYocto)} Ⓝ</strong>
 									</div>
+
 
 									<dl className="nft-meta">
 										<div>
@@ -377,13 +293,33 @@ export default function MarketplaceBody() {
 										</div>
 									</dl>
 
-									<button
-										className="nft-buy-button"
-										type="button"
-										onClick={() => openCheckout(token)}
-									>
-										Comprar NFT
-									</button>
+									<div style={{ display: "flex", gap: "8px" }}>
+										<Link
+											href={`/marketplace/nft/${token.id}`}
+											className="nft-detail-button"
+											style={{
+												flex: 1,
+												display: "flex",
+												alignItems: "center",
+												justifyContent: "center",
+												textAlign: "center",
+												textDecoration: "none",
+												background: "rgba(125, 211, 252, 0.1)",
+												color: "#7dd3fc",
+												border: "1px solid rgba(125, 211, 252, 0.3)",
+											}}
+										>
+											Detalhes
+										</Link>
+										<button
+											className="nft-buy-button"
+											type="button"
+											onClick={() => openCheckout(token)}
+											style={{ flex: 1 }}
+										>
+											Comprar
+										</button>
+									</div>
 								</div>
 							</article>
 						))}
@@ -412,7 +348,7 @@ export default function MarketplaceBody() {
 					buying={buying}
 					message={message}
 					transactionResult={transactionResult}
-					coverImage={normalizeTokenImages(selected)[0]}
+					coverImage={selected.illustrations[1]}
 					onClose={close}
 					onEndSession={endSession}
 					onPurchase={purchase}

@@ -69,15 +69,15 @@ export default async function StaticMarketplacePage() {
             <section className="marketplace-container max-w-5xl mx-auto">
                 <header className="marketplace-intro mb-8 border-b pb-6">
                     <div className="marketplace-heading">
-                        <span className="eyebrow text-xs uppercase font-bold tracking-wider text-gray-500">NEAR NFT Marketplace (Modo Estático / Rudimentar)</span>
+                        <span className="eyebrow text-xs uppercase font-bold tracking-wider text-gray-500">NEAR NFT Marketplace</span>
                         <h1 className="text-3xl font-bold mt-2">Galeria de Ativos</h1>
                         <p className="text-gray-700 mt-1">
-                            Explore os ativos publicados na rede <strong>{NETWORK}</strong>. Navegação simplificada sem JavaScript.
+                            Explore os ativos publicados na rede <strong>{NETWORK}</strong>.
                         </p>
                     </div>
 
                     <aside className="security-note mt-4 p-4 bg-gray-50 border rounded text-sm" role="note">
-                        <strong>Informação:</strong> Modo estático sem JS. <a href={SOURCE_URL} target="_blank" rel="noreferrer" className="text-blue-600 underline">Código-fonte aberto →</a>
+                        <strong>Informação:</strong> Modo estático. <a href={SOURCE_URL} target="_blank" rel="noreferrer" className="text-blue-600 underline">Código-fonte aberto →</a>
                     </aside>
                 </header>
 
@@ -92,7 +92,7 @@ export default async function StaticMarketplacePage() {
                             const images = normalizeTokenImages(token);
                             const price = yoctoToNear(token.priceYocto);
                             return (
-                                <article className="nft-card w-full border border-gray-200 rounded p-6 bg-white shadow-sm flex flex-col md:flex-row gap-6 items-center justify-between" key={token.id}>
+                                <article className="nft-card w-full border border-gray-200 rounded p-6 bg-white shadow-sm flex flex-col gap-6 items-center justify-between" key={token.id}>
                                     <div className="nft-media w-full md:w-1/2">
                                         {images.length === 0 ? (
                                             <div className="bg-gray-100 h-40 flex items-center justify-center border text-gray-400 rounded">Sem imagem</div>

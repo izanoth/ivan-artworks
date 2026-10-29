@@ -95,6 +95,7 @@ model NftToken {
   visible         Boolean?
   title           String?
   description     String?
+  memo            String?
   media           String?
   ownerId         String?
   holders         String[]

@@ -13,7 +13,8 @@
   grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
   gap: 32px;
   text-align: left;
-  margin-bottom: 48px;  align-items: end;
+  margin-bottom: 48px;
+  align-items: end;
   margin-bottom: 40px;
 }
 
@@ -247,11 +248,9 @@
   height: 100%;
   place-items: center;
   background:
-    radial-gradient(
-      circle at center,
+    radial-gradient(circle at center,
       rgba(125, 211, 252, 0.12),
-      transparent 55%
-    );
+      transparent 55%);
 }
 
 .nft-media-placeholder span {
@@ -286,6 +285,33 @@
   gap: 12px;
   color: #64748b;
   font-size: 0.7rem;
+}
+
+.nft-card-bottomline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #64748b;
+  font-size: 0.72rem;
+  margin: 10px 0;
+  padding-top: 8px;
+  border-top: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.nft-collection-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nft-copies-info {
+  white-space: nowrap;
+  font-weight: 500;
+  color: #94a3b8;
 }
 
 .nft-card h2 {
@@ -357,6 +383,7 @@
 
 .nft-buy-button,
 .primary-button {
+  flex: 1;
   width: 100%;
   min-height: 44px;
   border: 0;
@@ -386,6 +413,27 @@
 .primary-button:disabled {
   cursor: wait;
   opacity: 0.55;
+}
+
+.nft-detail-button {
+  flex: 1;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  background: "rgba(125, 211, 252, 0.1)";
+  color: "#7dd3fc";
+  border: "1px solid rgba(125, 211, 252, 0.3)";
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+
 }
 
 .modal-backdrop {
@@ -513,11 +561,11 @@
   font-size: 0.85rem;
 }
 
-.session-summary > div:last-child {
+.session-summary>div:last-child {
   text-align: right;
 }
 
-.session-summary > div:last-child strong {
+.session-summary>div:last-child strong {
   color: #7dd3fc;
   font-size: 1rem;
 }
@@ -533,7 +581,7 @@
   gap: 7px;
 }
 
-.session-form label > span {
+.session-form label>span {
   color: #cbd5e1;
   font-size: 0.76rem;
   font-weight: 600;
@@ -615,7 +663,7 @@
 
 .checkout-product-label,
 .checkout-product strong,
-.checkout-product > div:nth-child(2) > span:last-child {
+.checkout-product>div:nth-child(2)>span:last-child {
   display: block;
 }
 
@@ -634,7 +682,7 @@
   white-space: nowrap;
 }
 
-.checkout-product > div:nth-child(2) > span:last-child {
+.checkout-product>div:nth-child(2)>span:last-child {
   margin-top: 3px;
   color: #64748b;
   font-size: 0.68rem;
@@ -675,7 +723,7 @@
   box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.08);
 }
 
-.checkout-session > div {
+.checkout-session>div {
   min-width: 0;
   flex: 1;
 }
@@ -722,7 +770,7 @@
   background: rgba(148, 163, 184, 0.08);
 }
 
-.checkout-details > div {
+.checkout-details>div {
   min-width: 0;
   padding: 11px 13px;
   background: #111827;
@@ -920,4 +968,9 @@
     grid-column: 2;
     text-align: left;
   }
+}
+
+
+.bg-gradient-radial-custom {
+  background-image: radial-gradient(circle at center, #3b82f6, #a855f7);
 }

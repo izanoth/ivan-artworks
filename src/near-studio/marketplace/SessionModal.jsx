@@ -107,8 +107,7 @@ export default function SessionModal({
         </form>
 
         <p className={styles.modalSecurity}>
-          Use somente uma chave apropriada para este ambiente. Nunca informe uma
-          chave de uma conta com fundos relevantes em um site experimental.
+          Use somente uma chave apropriada para este ambiente.
         </p>
       </section>
     </div>

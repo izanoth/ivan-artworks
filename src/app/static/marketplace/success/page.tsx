@@ -87,7 +87,7 @@ export default async function StaticSuccessPage({
             )}
 
             <a
-                href="/no-js/marketplace"
+                href="/static/marketplace"
                 className="bg-black text-white py-2 px-6 rounded font-semibold hover:bg-gray-800 transition"
             >
                 Voltar ao Marketplace

@@ -154,7 +154,7 @@ export async function call(
 ) {
 	const session = requireSession();
 	if (!CONTRACT_ID)
-		throw new Error("CONTRACT_ID não está configurado.");
+		throw new Error("NEXT_PUBLIC_NFT_CONTRACT_ID não está configurado.");
 
 	const started = performance.now();
 

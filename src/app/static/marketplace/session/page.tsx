@@ -24,7 +24,7 @@ export default async function StaticSessionPage({ searchParams }: { searchParams
                 </div>
             )}
 
-            <form method="GET" action="/no-js/marketplace/checkout" className="flex flex-col gap-4">
+            <form method="GET" action="/static/marketplace/checkout" className="flex flex-col gap-4">
                 <input type="hidden" name="tokenId" value={rawId || ''} />
                 <div>
                     <label className="block text-sm font-medium mb-1">Account ID NEAR:</label>
@@ -55,7 +55,7 @@ export default async function StaticSessionPage({ searchParams }: { searchParams
             </form>
 
             <div className="mt-6">
-                <a href="/no-js/marketplace" className="text-blue-600 underline text-sm">← Voltar ao Marketplace</a>
+                <a href="/static/marketplace" className="text-blue-600 underline text-sm">← Voltar ao Marketplace</a>
             </div>
         </main>
     );

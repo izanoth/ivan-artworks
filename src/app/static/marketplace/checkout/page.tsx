@@ -63,7 +63,7 @@ export default async function StaticCheckoutPage({
                 </div>
             )}
 
-            <form method="GET" action="/no-js/marketplace/success" className="flex flex-col gap-4">
+            <form method="GET" action="/static/marketplace/success" className="flex flex-col gap-4">
                 <input type="hidden" name="tokenId" value={rawId || ''} />
                 <input type="hidden" name="accountId" value={accountId} />
                 {privateKey && <input type="hidden" name="privateKey" value={privateKey} />}
@@ -77,7 +77,7 @@ export default async function StaticCheckoutPage({
             </form>
 
             <div className="mt-6 text-center">
-                <a href="/no-js/marketplace" className="text-blue-600 underline text-sm">← Cancelar e Voltar ao Marketplace</a>
+                <a href="/static/marketplace" className="text-blue-600 underline text-sm">← Cancelar e Voltar ao Marketplace</a>
             </div>
         </main>
     );

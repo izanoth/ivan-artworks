@@ -42,9 +42,9 @@ export default async function StaticBlogPage() {
     return (
         <main className="p-8 font-sans max-w-4xl mx-auto bg-white text-gray-900 min-h-screen">
             <header className="mb-12 border-b pb-6">
-                <span className="text-xs uppercase font-bold tracking-wider text-gray-500">Blog (Modo Estático / Rudimentar)</span>
+                <span className="text-xs uppercase font-bold tracking-wider text-gray-500">Blog</span>
                 <h1 className="text-4xl font-bold mt-2">Publicações</h1>
-                <p className="text-gray-600 mt-1">Leitura integral de artigos e posts em página única, sem necessidade de JavaScript.</p>
+                <p className="text-gray-600 mt-1">Leitura integral de artigos e posts.</p>
             </header>
 
             {posts.length === 0 ? (

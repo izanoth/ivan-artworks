@@ -23,29 +23,9 @@ export async function GET(req: Request) {
 		const tokens = await prisma.nftToken.findMany({
 			where,
 			orderBy: { createdAt: "desc" },
-			select: {
-				id: true,
-				network: true,
-				contractId: true,
-				collectionId: true,
-				tokenId: true,
-				priceYocto: true,
-				title: true,
-				description: true,
-				media: true,
-				holders: true,
-				illustrations: true,
-				visible: true,
-				ownerId: true,
-				royalties: true,
-				status: true,
-				copies: true,
-				mintTxHash: true,
-				buyTxHash: true,
-				metadataJson: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			include: {
+				collection: true,
+			}
 		});
 
 		return NextResponse.json(tokens, {

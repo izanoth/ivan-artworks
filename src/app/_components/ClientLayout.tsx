@@ -40,7 +40,7 @@ export default function ClientLayout({
         />
 
         <noscript>
-          <meta httpEquiv="refresh" content="0; url=/no-js/marketplace" />
+          <meta httpEquiv="refresh" content="0; url=/static/marketplace" />
         </noscript>
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
