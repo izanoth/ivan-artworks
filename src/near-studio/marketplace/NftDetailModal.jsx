@@ -514,7 +514,7 @@ export default function NftDetailModal({ token, onClose, onPurchased }) {
 						{/* Botão de Compra / Aviso de Indisponibilidade */}
 						{currentToken.status === "for_sale" ? (
 							<button
-								className={styles.primaryButton ``}
+								className={styles.primaryButton}
 								
 								type="button"
 								onClick={openCheckout}
