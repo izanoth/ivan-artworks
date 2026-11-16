@@ -16,8 +16,15 @@ export async function PUT(
 			network,
 			contractId,
 			name,
+			title,
 			description,
+			media,
+			mediaHash,
+			copies,
 			maxCopies,
+			extra,
+			reference,
+			referenceHash,
 		} = body;
 
 		const collection = await prisma.nftCollection.update({
@@ -26,9 +33,16 @@ export async function PUT(
 				network,
 				contractId,
 				name,
-				description,
-				maxCopies: maxCopies ? Number(maxCopies) : undefined,
-			},
+				title: title || null,
+				description: description || null,
+				media: media || null,
+				mediaHash: mediaHash || null,
+				copies: copies ? Number(copies) : null,
+				maxCopies: maxCopies ? Number(maxCopies) : 1,
+				extra: extra || null,
+				reference: reference || null,
+				referenceHash: referenceHash || null,
+			} as any,
 		});
 
 		return NextResponse.json({ ok: true, collection });

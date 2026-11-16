@@ -6,6 +6,7 @@ import { listMarketplaceNfts } from "./services/marketplace";
 import nearController, { yoctoToNear } from "@/near-studio/controllers/nearController";
 import SessionModal from "./SessionModal";
 import CheckoutModal from "./CheckoutModal";
+import NftDetailModal from "./NftDetailModal";
 import CollectionIcon from "../components/CollectionIcon";
 import Wavesurfer from "wavesurfer.js";
 import NftMediaCarousel from './NftMediaCarousel';
@@ -47,6 +48,7 @@ export default function MarketplaceBody() {
 	const [message, setMessage] = useState("");
 	const [tx, setTx] = useState(null);
 	const [transactionResult, setTransactionResult] = useState(null);
+	const [detailToken, setDetailToken] = useState(null);
 
 	useEffect(() => {
 		let active = true;
@@ -277,9 +279,9 @@ export default function MarketplaceBody() {
 									</div>
 
 									<h2>
-										<Link href={`/marketplace/nft/${token.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+										<a href="#details" onClick={(e) => { e.preventDefault(); setDetailToken(token); }} style={{ color: "inherit", textDecoration: "none", cursor: "pointer" }}>
 											{token.title || "NFT sem título"}
-										</Link>
+										</a>
 									</h2>
 
 									<p className="nft-description">
@@ -305,8 +307,9 @@ export default function MarketplaceBody() {
 									</dl>
 
 									<div style={{ display: "flex", gap: "8px" }}>
-										<Link
-											href={`/marketplace/nft/${token.id}`}
+										<button
+											type="button"
+											onClick={() => setDetailToken(token)}
 											className="nft-detail-button"
 											style={{
 												flex: 1,
@@ -314,14 +317,17 @@ export default function MarketplaceBody() {
 												alignItems: "center",
 												justifyContent: "center",
 												textAlign: "center",
-												textDecoration: "none",
 												background: "rgba(125, 211, 252, 0.1)",
 												color: "#7dd3fc",
 												border: "1px solid rgba(125, 211, 252, 0.3)",
+												cursor: "pointer",
+												borderRadius: "8px",
+												padding: "10px",
+												fontWeight: "650",
 											}}
 										>
 											Detalhes
-										</Link>
+										</button>
 										<button
 											className="nft-buy-button"
 											type="button"
@@ -337,6 +343,19 @@ export default function MarketplaceBody() {
 					</section>
 				)}
 			</section>
+
+			{detailToken && (
+				<NftDetailModal
+					token={detailToken}
+					onClose={() => setDetailToken(null)}
+					onPurchased={() => {
+						listMarketplaceNfts(NETWORK).then((data) => {
+							const parsed = typeof data === "string" ? JSON.parse(data) : data;
+							setTokens(Array.isArray(parsed) ? parsed : []);
+						});
+					}}
+				/>
+			)}
 
 			{selected && !sessionInfo && (
 				<SessionModal

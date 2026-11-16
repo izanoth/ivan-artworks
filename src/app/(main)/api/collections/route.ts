@@ -12,13 +12,21 @@ export async function GET(req: Request) {
 		const collections = await prisma.nftCollection.findMany({
 			where: { network },
 			orderBy: { createdAt: "desc" },
-			select: {
+			include: { tokens: true },
+			/*select: {
 				id: true,
 				network: true,
 				contractId: true,
 				name: true,
+				title: true,
 				description: true,
+				media: true,
+				mediaHash: true,
+				copies: true,
 				maxCopies: true,
+				extra: true,
+				reference: true,
+				referenceHash: true,
 				createdAt: true,
 				updatedAt: true,
 				tokens: {
@@ -28,7 +36,7 @@ export async function GET(req: Request) {
 						title: true,
 					},
 				},
-			},
+			} as any,*/
 		});
 
 		return NextResponse.json(collections, {
@@ -51,8 +59,15 @@ export async function POST(req: Request) {
 			network,
 			contractId,
 			name,
+			title,
 			description,
+			media,
+			mediaHash,
+			copies,
 			maxCopies,
+			extra,
+			reference,
+			referenceHash,
 		} = body;
 
 		if (!contractId) {
@@ -64,8 +79,15 @@ export async function POST(req: Request) {
 				network,
 				contractId,
 				name,
-				description,
+				title: title || null,
+				description: description || null,
+				media: media || null,
+				mediaHash: mediaHash || null,
+				copies: copies ? Number(copies) : null,
 				maxCopies: maxCopies ? Number(maxCopies) : 1,
+				extra: extra || null,
+				reference: reference || null,
+				referenceHash: referenceHash || null,
 			},
 		});
 

@@ -20,14 +20,29 @@ const CONTRACT_ID = getContractId() || "(não configurado)";
 const NETWORK = getNetwork();
 const API_URL = "";
 
-function Card({ title, children }) {
+function Card({ title, children, style }) {
 	return (
-		<section className="card">
-			<h2>{title}</h2>
+		<section className="card" style={style}>
+		<h1 style={{ fontSize: "22px", fontWeight: "500", paddingBottom: "20px"}}>{title}</h1>
 			{children}
 		</section>
 	);
 }
+
+const mintFieldStyle = {
+	width: "100%",
+	boxSizing: "border-box",
+	padding: "10px 12px",
+	borderRadius: "10px",
+	background: "#0f172a",
+	border: "1px solid rgba(125, 211, 252, 0.35)",
+	color: "#e2e8f0",
+	fontSize: "0.95rem",
+	lineHeight: 1.4,
+	marginBottom: "12px",
+	outline: "none",
+	boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
+};
 
 const HISTORICAL_STATUS = new Set([
 	"sold",
@@ -87,7 +102,19 @@ export default function StudioApp() {
 	const beginLoading = () => { loadingCount.current += 1; setLoading(true); };
 	const endLoading = () => { loadingCount.current = Math.max(0, loadingCount.current - 1); setLoading(loadingCount.current > 0); };
 	const [collections, setCollections] = useState([]);
-	const [collectionForm, setCollectionForm] = useState({ id: null, name: "", description: "", maxCopies: "" });
+	const [collectionForm, setCollectionForm] = useState({
+		id: null,
+		name: "",
+		title: "",
+		description: "",
+		media: "",
+		mediaHash: "",
+		copies: "",
+		maxCopies: "",
+		extra: "",
+		reference: "",
+		referenceHash: "",
+	});
 	const [selectedCollectionId, setSelectedCollectionId] = useState("");
 	const [message, setMessage] = useState("");
 	const [metadata, setMetadata] = useState(null);
@@ -113,12 +140,16 @@ export default function StudioApp() {
 		title: "",
 		description: "",
 		media: "",
+		mediaHash: "",
+		copies: 1,
+		extra: "",
+		reference: "",
+		referenceHash: "",
 		illustrations: [],
 		mintTxHash: "",
 		buyTxHash: "",
 		priceNear: "",
 		royalties: {},
-		copies: 1,
 		visible: true,
 		status: "for_sale",
 	});
@@ -299,15 +330,34 @@ export default function StudioApp() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					name: collectionForm.name.trim(),
-					description: collectionForm.description.trim(),
-					network: network,
+					title: collectionForm.title.trim() || null,
+					description: collectionForm.description.trim() || null,
+					media: collectionForm.media.trim() || null,
+					mediaHash: collectionForm.mediaHash.trim() || null,
+					copies: collectionForm.copies !== "" ? Number(collectionForm.copies) : null,
 					maxCopies: Number(collectionForm.maxCopies) || 1,
+					extra: collectionForm.extra.trim() || null,
+					reference: collectionForm.reference.trim() || null,
+					referenceHash: collectionForm.referenceHash.trim() || null,
+					network: network,
 					contractId: CONTRACT_ID
 				}),
 			});
 			const data = await response.json();
 			if (!response.ok) throw new Error(data?.error || "Não foi possível salvar a coleção.");
-			setCollectionForm({ id: null, name: "", description: "", maxCopies: "" });
+			setCollectionForm({
+				id: null,
+				name: "",
+				title: "",
+				description: "",
+				media: "",
+				mediaHash: "",
+				copies: "",
+				maxCopies: "",
+				extra: "",
+				reference: "",
+				referenceHash: "",
+			});
 			setMessage(editing ? "Coleção atualizada." : "Coleção criada.");
 			await loadCollections();
 		} catch (error) { setMessage(error.message); }
@@ -423,7 +473,11 @@ export default function StudioApp() {
 					title: mint.title || null,
 					description: mint.description || null,
 					media: mint.media || null,
+					media_hash: mint.mediaHash || null,
 					copies: Number(mint.copies) || 1,
+					extra: mint.extra || null,
+					reference: mint.reference || null,
+					reference_hash: mint.referenceHash || null,
 				};
 			if (!token_metadata || typeof token_metadata !== "object") {
 				throw new Error("Os metadados do NFT original são inválidos.");
@@ -687,11 +741,7 @@ export default function StudioApp() {
 
 				{page === "studio" ? (
 					<div className="grid">
-						<Card title="Contrato">
-							<button onClick={refreshMetadata} disabled={loading}>nft_metadata</button>
-							{metadata && <dl>{Object.entries(metadata).map(([key, value]) => <React.Fragment key={key}><dt>{key}</dt><dd>{typeof value === "object" ? JSON.stringify(value) : String(value ?? "—")}</dd></React.Fragment>)}</dl>}
-						</Card>
-
+						
 						<Card title="Índices e estatísticas">
 							<div className="stats-grid">
 								<div className="stat-box">
@@ -709,7 +759,819 @@ export default function StudioApp() {
 							</div>
 						</Card>
 
-						<Card title="List">
+						<Card
+							title="Coleções NFT (Padrão NEP-177)"
+							style={{
+								color: "#f8fafc",
+								backgroundColor: "#020617",
+								border: "1px solid rgba(125, 211, 252, 0.25)",
+								borderRadius: "14px",
+								width: "100%",
+								boxSizing: "border-box",
+							}}
+						>
+							<div
+								style={{
+									background: "rgba(15, 23, 42, 0.95)",
+									border: "1px solid rgba(125, 211, 252, 0.3)",
+									borderRadius: "12px",
+									padding: "20px",
+									marginBottom: "20px",
+									width: "100%",
+									boxSizing: "border-box",
+								}}
+							>
+								<div style={{ marginBottom: "16px" }}>
+									<span
+										style={{
+											display: "block",
+											fontWeight: 700,
+											fontSize: "0.95rem",
+											color: "#7dd3fc",
+											marginBottom: "4px",
+										}}
+									>
+										{collectionForm.id ? "Editar Coleção Existente" : "Nova Coleção NEP-177"}
+									</span>
+									<span style={{ display: "block", fontSize: "0.82rem", color: "#94a3b8" }}>
+										Preencha os metadados padrão da coleção na rede NEAR.
+									</span>
+								</div>
+
+								<form
+									onSubmit={saveCollection}
+									style={{
+										display: "flex",
+										flexDirection: "column",
+										gap: "14px",
+										width: "100%",
+									}}
+								>
+									<label
+										htmlFor="network"
+										style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}
+									>
+										Rede NEAR
+										<select
+											id="network"
+											value={network}
+											onChange={(e) => setNetwork(e.target.value)}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										>
+											<option value="testnet">Testnet</option>
+											<option value="mainnet">Mainnet</option>
+										</select>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Nome da coleção (único) *
+										<input
+											value={collectionForm.name}
+											onChange={(e) => setCollectionForm({ ...collectionForm, name: e.target.value })}
+											required
+											placeholder="Ex: minha-colecao-nft"
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Título padrão (title)
+										<input
+											placeholder="Ex. Arch Nemesis: Mail Carrier"
+											value={collectionForm.title}
+											onChange={(e) => setCollectionForm({ ...collectionForm, title: e.target.value })}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Descrição (description)
+										<textarea
+											value={collectionForm.description}
+											onChange={(e) => setCollectionForm({ ...collectionForm, description: e.target.value })}
+											rows={2}
+											placeholder="Descreva os detalhes da coleção..."
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												resize: "vertical",
+												fontFamily: "inherit",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Mídia (media URL)
+										<input
+											placeholder="https://..."
+											value={collectionForm.media}
+											onChange={(e) => setCollectionForm({ ...collectionForm, media: e.target.value })}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Hash da Mídia (media_hash)
+										<input
+											placeholder="Base64 sha256"
+											value={collectionForm.mediaHash}
+											onChange={(e) => setCollectionForm({ ...collectionForm, mediaHash: e.target.value })}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<div style={{ display: "flex", gap: "12px", flexWrap: "wrap", width: "100%" }}>
+										<label style={{ display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 140px", minWidth: 0, fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+											Cópias padrão (copies)
+											<input
+												type="number"
+												placeholder="1"
+												value={collectionForm.copies}
+												onChange={(e) => setCollectionForm({ ...collectionForm, copies: e.target.value })}
+												style={{
+													width: "100%",
+													minWidth: 0,
+													padding: "10px 12px",
+													fontSize: "0.92rem",
+													backgroundColor: "rgba(2, 6, 23, 0.8)",
+													border: "1px solid rgba(148, 163, 184, 0.35)",
+													borderRadius: "8px",
+													color: "#f1f5f9",
+													outline: "none",
+													boxSizing: "border-box",
+												}}
+											/>
+										</label>
+
+										<label style={{ display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 140px", minWidth: 0, fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+											Máx. de cópias (maxCopies) *
+											<input
+												type="number"
+												value={collectionForm.maxCopies}
+												onChange={(e) => setCollectionForm({ ...collectionForm, maxCopies: Number(e.target.value) })}
+												required
+												style={{
+													width: "100%",
+													minWidth: 0,
+													padding: "10px 12px",
+													fontSize: "0.92rem",
+													backgroundColor: "rgba(2, 6, 23, 0.8)",
+													border: "1px solid rgba(148, 163, 184, 0.35)",
+													borderRadius: "8px",
+													color: "#f1f5f9",
+													outline: "none",
+													boxSizing: "border-box",
+												}}
+											/>
+										</label>
+									</div>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Extra (extra JSON)
+										<input
+											placeholder='{"attributes": []}'
+											value={collectionForm.extra}
+											onChange={(e) => setCollectionForm({ ...collectionForm, extra: e.target.value })}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												fontFamily: "monospace",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Referência (reference URL)
+										<input
+											placeholder="https://..."
+											value={collectionForm.reference}
+											onChange={(e) => setCollectionForm({ ...collectionForm, reference: e.target.value })}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<label style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", fontSize: "0.88rem", fontWeight: 600, color: "#e2e8f0" }}>
+										Hash da Referência (reference_hash)
+										<input
+											placeholder="Base64 sha256"
+											value={collectionForm.referenceHash}
+											onChange={(e) => setCollectionForm({ ...collectionForm, referenceHash: e.target.value })}
+											style={{
+												width: "100%",
+												minWidth: 0,
+												padding: "10px 12px",
+												fontSize: "0.92rem",
+												backgroundColor: "rgba(2, 6, 23, 0.8)",
+												border: "1px solid rgba(148, 163, 184, 0.35)",
+												borderRadius: "8px",
+												color: "#f1f5f9",
+												outline: "none",
+												boxSizing: "border-box",
+											}}
+										/>
+									</label>
+
+									<div
+										style={{
+											display: "flex",
+											gap: "10px",
+											flexWrap: "wrap",
+											marginTop: "6px",
+											width: "100%",
+										}}
+									>
+										<button
+											type="submit"
+											disabled={loading}
+											style={{
+												flex: "1 1 160px",
+												background: "#0369a1",
+												border: "1px solid #0284c7",
+												color: "#f8fafc",
+												borderRadius: "8px",
+												padding: "11px 16px",
+												fontSize: "0.9rem",
+												fontWeight: 600,
+												cursor: loading ? "not-allowed" : "pointer",
+												opacity: loading ? 0.65 : 1,
+											}}
+										>
+											{loading ? "Salvando..." : collectionForm.id ? "Salvar alterações" : "Criar coleção"}
+										</button>
+
+										<button
+											type="button"
+											disabled={loading}
+											onClick={() =>
+												setCollectionForm({
+													id: null,
+													name: "",
+													title: "",
+													description: "",
+													media: "",
+													mediaHash: "",
+													copies: "",
+													maxCopies: "",
+													extra: "",
+													reference: "",
+													referenceHash: "",
+												})
+											}
+											style={{
+												flex: "0 1 auto",
+												background: "rgba(15, 23, 42, 0.9)",
+												border: "1px solid rgba(125, 211, 252, 0.35)",
+												color: "#e2e8f0",
+												borderRadius: "8px",
+												padding: "11px 16px",
+												fontSize: "0.9rem",
+												fontWeight: 500,
+												cursor: loading ? "not-allowed" : "pointer",
+												opacity: loading ? 0.65 : 1,
+											}}
+										>
+											Limpar
+										</button>
+
+										<button
+											type="button"
+											disabled={loading}
+											onClick={loadCollections}
+											style={{
+												flex: "0 1 auto",
+												background: "rgba(15, 23, 42, 0.9)",
+												border: "1px solid rgba(125, 211, 252, 0.35)",
+												color: "#7dd3fc",
+												borderRadius: "8px",
+												padding: "11px 16px",
+												fontSize: "0.9rem",
+												fontWeight: 500,
+												cursor: loading ? "not-allowed" : "pointer",
+												opacity: loading ? 0.65 : 1,
+											}}
+										>
+											Atualizar
+										</button>
+									</div>
+								</form>
+							</div>
+
+							{collections.length === 0 ? (
+								<div
+									style={{
+										padding: "20px",
+										textAlign: "center",
+										background: "rgba(15, 23, 42, 0.6)",
+										border: "1px dashed rgba(148, 163, 184, 0.3)",
+										borderRadius: "10px",
+										color: "#94a3b8",
+										fontSize: "0.9rem",
+									}}
+								>
+									Nenhuma coleção cadastrada.
+								</div>
+							) : (
+								<div style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
+									{collections.map((collection) => (
+										<article
+											key={collection.id}
+											style={{
+												display: "flex",
+												justifyContent: "space-between",
+												alignItems: "center",
+												gap: "12px",
+												flexWrap: "wrap",
+												background: "rgba(15, 23, 42, 0.85)",
+												border: "1px solid rgba(125, 211, 252, 0.25)",
+												borderRadius: "10px",
+												padding: "14px 16px",
+												width: "100%",
+												boxSizing: "border-box",
+											}}
+										>
+											<div style={{ flex: "1 1 200px", minWidth: 0 }}>
+												<h3 style={{ margin: "0 0 4px 0", fontSize: "1rem", fontWeight: 700, color: "#f8fafc", wordBreak: "break-word" }}>
+													{collection.name}
+												</h3>
+												<p style={{ margin: "0 0 6px 0", fontSize: "0.86rem", color: "#cbd5e1", wordBreak: "break-word" }}>
+													{collection.description || collection.title || "Sem descrição"}
+												</p>
+												<small style={{ display: "block", fontSize: "0.78rem", color: "#7dd3fc" }}>
+													ID: {collection.id} · Máx Cópias: {collection.maxCopies}
+												</small>
+											</div>
+
+											<div style={{ display: "flex", gap: "8px", flex: "0 0 auto", alignItems: "center" }}>
+												<button
+													type="button"
+													disabled={loading}
+													onClick={() =>
+														setCollectionForm({
+															id: collection.id,
+															name: collection.name || "",
+															title: collection.title || "",
+															description: collection.description || "",
+															media: collection.media || "",
+															mediaHash: collection.mediaHash || "",
+															copies: collection.copies ?? "",
+															maxCopies: collection.maxCopies || 1,
+															extra: collection.extra || "",
+															reference: collection.reference || "",
+															referenceHash: collection.referenceHash || "",
+														})
+													}
+													style={{
+														background: "rgba(3, 105, 161, 0.25)",
+														border: "1px solid rgba(125, 211, 252, 0.45)",
+														color: "#e0f2fe",
+														borderRadius: "8px",
+														padding: "8px 14px",
+														fontSize: "0.85rem",
+														fontWeight: 500,
+														cursor: loading ? "not-allowed" : "pointer",
+														whiteSpace: "nowrap",
+													}}
+												>
+													Editar
+												</button>
+
+												<button
+													type="button"
+													disabled={loading}
+													onClick={() => deleteCollection(collection.id)}
+													style={{
+														background: "rgba(239, 68, 68, 0.14)",
+														border: "1px solid rgba(248, 113, 113, 0.45)",
+														color: "#fecaca",
+														borderRadius: "8px",
+														padding: "8px 14px",
+														fontSize: "0.85rem",
+														fontWeight: 500,
+														cursor: loading ? "not-allowed" : "pointer",
+														whiteSpace: "nowrap",
+													}}
+												>
+													Excluir
+												</button>
+											</div>
+										</article>
+									))}
+								</div>
+							)}
+						</Card>
+
+						<Card title="Mint" style={{ color: "white", backgroundColor: "#000" }}>
+							<form onSubmit={mintToken}>
+								<div style={{ background: "rgba(125, 211, 252, 0.08)", border: "1px solid rgba(125, 211, 252, 0.3)", borderRadius: "12px", padding: "16px", marginBottom: "16px" }}>
+									<label style={{ display: "block", marginBottom: "4px", fontWeight: "750", color: "#7dd3fc" }}>
+										Coleção NFT (Opcional - NEP-177) ★
+									</label>
+									<select
+										value={selectedCollectionId}
+										onChange={(e) => {
+											const collectionId = e.target.value;
+											setSelectedCollectionId(collectionId);
+											const collection = collections.find((col) => String(col.id) === String(collectionId));
+											if (collection) {
+												setMint((current) => ({
+													...current,
+													collectionId: collectionId ? Number(collectionId) : null,
+													title: collection.title || collection.name || "",
+													description: collection.description || "",
+													media: collection.media || "",
+													mediaHash: collection.mediaHash || "",
+													copies: collection.copies || collection.maxCopies || 1,
+													extra: collection.extra || "",
+													reference: collection.reference || "",
+													referenceHash: collection.referenceHash || "",
+													illustrations: collection.media ? [collection.media] : current.illustrations,
+												}));
+											} else {
+												setMint((current) => ({
+													...current,
+													collectionId: null,
+												}));
+											}
+										}}
+										style={{ width: "100%", padding: "10px", borderRadius: "8px", background: "#1e293b", color: "#fff", border: "1px solid rgba(125, 211, 252, 0.4)" }}
+									>
+										<option value="">Sem coleção (NFT Individual)</option>
+										{collections.map((collection) =>
+											<option
+												key={Number(collection.id)}
+												value={collection.id}
+												disabled={(collection.tokens?.length ?? 0) >= collection.maxCopies}
+											>
+												{collection.name}  {(collection.tokens?.length ?? 0) >= collection.maxCopies && " (Coleção cheia)"}
+											</option>
+										)}
+									</select>
+									{selectedCollectionId && (
+										<div style={{ marginTop: "8px", fontSize: "0.85rem", color: "#93c5fd" }}>
+											Coleção selecionada: <strong>{collections.find(c => String(c.id) === String(selectedCollectionId))?.name}</strong> (Cópias: {collections.find(c => String(c.id) === String(selectedCollectionId))?.tokens?.length ?? 0} / {collections.find(c => String(c.id) === String(selectedCollectionId))?.maxCopies})
+										</div>
+									)}
+								</div>
+
+								<input
+									placeholder="Token ID"
+									value={mint.token_id}
+									onChange={(e) => setMint({ ...mint, token_id: e.target.value })}
+									required
+									style={mintFieldStyle}
+								/>
+								<input
+									placeholder="Owner ID"
+									value={mint.owner_id}
+									onChange={(e) => setMint({ ...mint, owner_id: e.target.value })}
+									style={mintFieldStyle}
+								/>
+								<input
+									placeholder="Preço em NEAR"
+									value={mint.priceNear}
+									onChange={(e) => setMint({ ...mint, priceNear: e.target.value })}
+									style={mintFieldStyle}
+								/>
+								<div style={{
+									backgroundColor: "#0369a1"
+								}}>
+									<div
+										style={{
+											background: selectedCollectionId ? "rgba(125, 211, 252, 0.03)" : "rgba(255,255,255,0.02)",
+											border: selectedCollectionId ? "1px solid rgba(125, 211, 252, 0.25)" : "1px dashed rgba(255,255,255,0.15)",
+											borderRadius: "12px",
+											padding: "16px",
+											margin: "16px 0",
+										}}
+									>
+										<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+											<strong style={{ fontSize: "0.9rem", color: selectedCollectionId ? "#7dd3fc" : "#cbd5e1" }}>
+												{selectedCollectionId ? "Metadados herdados da Coleção (Inativos)" : "Metadados do NFT (NEP-177)"}
+											</strong>
+											{selectedCollectionId && <span style={{ fontSize: "0.75rem", background: "rgba(125, 211, 252, 0.2)", color: "#7dd3fc", padding: "2px 8px", borderRadius: "4px" }}>Vinculado à Coleção</span>}
+										</div>
+
+										<input
+											placeholder="Título"
+											value={mint.title}
+											onChange={(e) => setMint({ ...mint, title: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											required
+											style={mintFieldStyle}
+										/>
+										<input
+											placeholder="Descrição"
+											value={mint.description}
+											onChange={(e) => setMint({ ...mint, description: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											required
+											style={mintFieldStyle}
+										/>
+										<input
+											placeholder="URL da Mídia (media)"
+											value={mint.media}
+											onChange={(e) => setMint({ ...mint, media: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											style={mintFieldStyle}
+										/>
+										<input
+											placeholder="Hash da Mídia (media_hash)"
+											value={mint.mediaHash}
+											onChange={(e) => setMint({ ...mint, mediaHash: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											style={mintFieldStyle}
+										/>
+										<input
+											type="number"
+											placeholder="Cópias (copies)"
+											value={mint.copies}
+											onChange={(e) => setMint({ ...mint, copies: Number(e.target.value) })}
+											disabled={Boolean(selectedCollectionId)}
+											style={mintFieldStyle}
+										/>
+										<input
+											placeholder="Extra JSON (extra)"
+											value={mint.extra}
+											onChange={(e) => setMint({ ...mint, extra: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											style={mintFieldStyle}
+										/>
+										<input
+											placeholder="Referência URL (reference)"
+											value={mint.reference}
+											onChange={(e) => setMint({ ...mint, reference: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											style={mintFieldStyle}
+										/>
+										<input
+											placeholder="Hash de Referência (reference_hash)"
+											value={mint.referenceHash}
+											onChange={(e) => setMint({ ...mint, referenceHash: e.target.value })}
+											disabled={Boolean(selectedCollectionId)}
+											style={mintFieldStyle}
+										/>
+									</div>
+								</div>
+
+								<div
+									style={{
+										background: "rgba(15, 23, 42, 0.95)",
+										border: "1px solid rgba(125, 211, 252, 0.32)",
+										borderRadius: "12px",
+										padding: "20px",
+										marginTop: "16px",
+										width: "100%",
+										boxSizing: "border-box",
+									}}
+								>
+									<div style={{ marginBottom: "14px" }}>
+										<label
+											style={{
+												display: "block",
+												fontWeight: 600,
+												fontSize: "0.95rem",
+												color: "#f8fafc",
+												marginBottom: "4px",
+											}}
+										>
+											Ilustrações / Arquivos do NFT
+										</label>
+										<span style={{ display: "block", fontSize: "0.82rem", color: "#94a3b8" }}>
+											Adicione caminhos locais (file paths) ou URLs completas das mídias.
+										</span>
+									</div>
+
+									<div style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
+										{(mint.illustrations || []).map((ill, idx) => (
+											<div
+												key={`illustration-item-${idx}`}
+												style={{
+													display: "flex",
+													gap: "8px",
+													alignItems: "stretch",
+													width: "100%",
+													boxSizing: "border-box",
+												}}
+											>
+												<input
+													type="text"
+													placeholder="Ex: media/nfts/boot/boot.png ou https://..."
+													value={ill}
+													onChange={(e) => {
+														const updated = [...(mint.illustrations || [])];
+														updated[idx] = e.target.value;
+														setMint({ ...mint, illustrations: updated });
+													}}
+													style={{
+														...mintFieldStyle,
+														flex: "1 1 0%",
+														width: "auto",
+														minWidth: 0,
+														padding: "10px 12px",
+														fontSize: "0.9rem",
+														backgroundColor: "rgba(2, 6, 23, 0.7)",
+														border: "1px solid rgba(148, 163, 184, 0.35)",
+														borderRadius: "8px",
+														color: "#f1f5f9",
+														outline: "none",
+														boxSizing: "border-box",
+													}}
+												/>
+												<button
+													type="button"
+													title="Remover este item"
+													onClick={() => {
+														const updated = (mint.illustrations || []).filter((_, i) => i !== idx);
+														setMint({ ...mint, illustrations: updated });
+													}}
+													style={{
+														flex: "0 0 auto",
+														width: "auto",
+														minWidth: "fit-content",
+														whiteSpace: "nowrap",
+														background: "rgba(239, 68, 68, 0.14)",
+														border: "1px solid rgba(248, 113, 113, 0.45)",
+														color: "#fecaca",
+														borderRadius: "8px",
+														padding: "0 12px",
+														fontSize: "0.85rem",
+														fontWeight: 500,
+														cursor: "pointer",
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													Remover
+												</button>
+											</div>
+										))}
+
+										<div style={{ marginTop: "4px", width: "100%" }}>
+											<button
+												type="button"
+												className="secondary"
+												onClick={() => setMint({ ...mint, illustrations: [...(mint.illustrations || []), ""] })}
+												style={{
+													width: "100%",
+													background: "rgba(56, 189, 248, 0.1)",
+													border: "1px dashed rgba(125, 211, 252, 0.5)",
+													color: "#7dd3fc",
+													borderRadius: "8px",
+													padding: "12px 16px",
+													fontSize: "0.9rem",
+													fontWeight: 600,
+													cursor: "pointer",
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+													gap: "6px",
+													boxSizing: "border-box",
+												}}
+											>
+												+ Adicionar Caminho / URL
+											</button>
+										</div>
+									</div>
+								</div>
+
+
+								<div style={{ marginTop: "12px" }}>
+									<label style={{ marginTop: "12px", display: "block", fontWeight: "650", color: "#e2e8f0" }}>Royalties</label>
+
+									{royalties.map((royalty, index) => (
+										<div
+											key={index}
+											style={{
+												display: "flex",
+												gap: "8px",
+												alignItems: "center",
+												marginBottom: "8px",
+											}}
+										>
+											<input
+												type="text"
+												placeholder="Account ID"
+												value={royalty.accountId}
+												onChange={(e) => updateRoyalty(index, "accountId", e.target.value)}
+												style={{ ...mintFieldStyle, flex: 1 }}
+											/>
+
+											<input
+												type="number"
+												min="0"
+												max="100"
+												step="0.01"
+												placeholder="Percentual"
+												value={royalty.basisPoints}
+												onChange={(e) => updateRoyalty(index, "basisPoints", e.target.value)}
+												style={{ ...mintFieldStyle, width: "120px" }}
+											/>
+											<span style={{ color: "#cbd5e1" }}>%</span>
+										</div>
+									))}
+
+									<button
+										type="button"
+										onClick={addRoyalty}
+										style={{ background: "rgba(15, 23, 42, 0.9)", border: "1px solid rgba(125, 211, 252, 0.4)", color: "#e2e8f0", borderRadius: "8px", padding: "10px 12px", marginTop: "8px" }}
+									>
+										+ Concedente
+									</button>
+								</div>
+
+								<button type="submit" disabled={loading} style={{ marginTop: "16px", width: "100%", borderRadius: "8px", background: "linear-gradient(135deg, #38bdf8, #2563eb)", color: "#f8fafc", border: "none", padding: "12px 16px", fontWeight: 700 }}>{loading ? "Realizando mint..." : "Mint NFT"}</button>
+							</form>
+						</Card>
+
+						<Card title="Contrato" style={{ color: "white", backgroundColor: "#000" }}>
+							<button onClick={refreshMetadata} disabled={loading}>nft_metadata</button>
+							{metadata && <dl>{Object.entries(metadata).map(([key, value]) => <React.Fragment key={key}><dt>{key}</dt><dd>{typeof value === "object" ? JSON.stringify(value) : String(value ?? "—")}</dd></React.Fragment>)}</dl>}
+						</Card>
+
+						<Card title="List" style={{ color: "white", backgroundColor: "#000" }}>
 							<div className="actions" style={{ marginBottom: 12 }}>
 								<button
 									onClick={loadContractDbTokens}
@@ -807,208 +1669,14 @@ export default function StudioApp() {
 							)}
 						</Card>
 
-						<Card title="Coleções NFT">
-							<form onSubmit={saveCollection}>
-								<label htmlFor="network">Rede NEAR
-									<select
-										id="network"
-										value={network}
-										onChange={(e) => setNetwork(e.target.value)}
-									>
-										<option value="testnet">Testnet</option>
-										<option value="mainnet">Mainnet</option>
-									</select>
-								</label>
-								<label>Cópias<input type="number" value={collectionForm.maxCopies} onChange={(e) => setCollectionForm({ ...collectionForm, maxCopies: Number(e.target.value) })} required /></label>
-								<label>Nome da coleção<input value={collectionForm.name} onChange={(e) => setCollectionForm({ ...collectionForm, name: e.target.value })} required /></label>
-								<label>Descrição<textarea value={collectionForm.description} onChange={(e) => setCollectionForm({ ...collectionForm, description: e.target.value })} rows={3} /></label>
-								<div className="actions"><button type="submit" disabled={loading}>{loading ? "Salvando..." : collectionForm.id ? "Salvar alterações" : "Criar coleção"}</button><button type="button" className="secondary" disabled={loading} onClick={() => setCollectionForm({ id: null, name: "", description: "", maxCopies: "" })}>Limpar</button><button type="button" className="secondary" disabled={loading} onClick={loadCollections}>Atualizar</button></div>
-							</form>
-							{collections.length === 0 ?
-								<p>Nenhuma coleção cadastrada.</p> :
-								<div className="token-list">{collections.map((collection) =>
-									<article className="token-item" key={collection.id}>
-										<div className="token-details">
-											<h3>{collection.name}</h3>
-											<p>{collection.description || "Sem descrição"}</p>
-											<small>ID: {collection.id}</small>
-											<small>Cópias: {collection.maxCopies}</small>
-										</div>
-										<div className="token-actions">
-											<button
-												type="button"
-												disabled={loading}
-												onClick={() => setCollectionForm({
-													id: collection.id,
-													name: collection.name || "",
-													description: collection.description || "",
-													maxCopies: collection.maxCopies || 1
-												})}
-											>
-												Editar
-											</button>
-											<button
-												type="button"
-												className="danger"
-												disabled={loading}
-												onClick={() => deleteCollection(collection.id)}
-											>
-												Excluir
-											</button>
-										</div>
-									</article>)}
-								</div>}
-						</Card>
+						
 
-						<Card title="Mint">
-							<form onSubmit={mintToken}>
-								<input
-									placeholder="Token ID"
-									value={mint.token_id}
-									onChange={(e) => setMint({ ...mint, token_id: e.target.value })}
-									required
-								/>
-								<input
-									placeholder="Owner ID"
-									value={mint.owner_id}
-									onChange={(e) => setMint({ ...mint, owner_id: e.target.value })}
-								/>
-								<input
-									placeholder="Título"
-									value={mint.title}
-									onChange={(e) => setMint({ ...mint, title: e.target.value })}
-									required
-								/>
-								<input
-									placeholder="Descrição"
-									value={mint.description}
-									onChange={(e) =>
-										setMint({ ...mint, description: e.target.value })
-									}
-									required
-								/>
-								<input
-									placeholder="URL da mídia"
-									value={mint.media}
-									onChange={(e) => setMint({ ...mint, media: e.target.value })}
-								/>
-								<input
-									placeholder="Preço em NEAR"
-									value={mint.priceNear}
-									onChange={(e) => setMint({ ...mint, priceNear: e.target.value })}
-								/>
-								<label>
-									<span>Imagens do NFT (uma por linha)</span>
-									<textarea
-										rows={4}
-										placeholder="https://...\nhttps://..."
-										value={mint.illustrations.join("\n")}
-										onChange={(e) =>
-											setMint({
-												...mint,
-												illustrations: normalizeIllustrations(e.target.value),
-											})
-										}
-									/>
-								</label>
-
-								<div>
-									<label>Royalties</label>
-
-									{royalties.map((royalty, index) => (
-										<div
-											key={index}
-											style={{
-												display: "flex",
-												gap: "8px",
-												alignItems: "center",
-												marginBottom: "8px",
-											}}
-										>
-											<input
-												type="text"
-												placeholder="Account ID"
-												value={royalty.accountId}
-												onChange={(e) =>
-													updateRoyalty(index, "accountId", e.target.value)
-												}
-											/>
-
-											<input
-												type="number"
-												min="0"
-												max="100"
-												step="0.01"
-												placeholder="Percentual"
-												value={royalty.basisPoints}
-												onChange={(e) =>
-													updateRoyalty(index, "basisPoints", e.target.value)
-												}
-											/>
-
-											<span>%</span>
-										</div>
-									))}
-
-									<button
-										type="button"
-										onClick={addRoyalty}
-									>
-										+ Concedente
-									</button>
-								</div>
-								<label>
-									<span>Coleção </span>
-									<select
-										value={selectedCollectionId}
-										onChange={(e) => {
-											const collectionId = e.target.value;
-											setSelectedCollectionId(collectionId);
-											setMint((current) => ({
-												...current,
-												collectionId: collectionId ? Number(collectionId) : null,
-												copies: collectionId ? Number(collections.find((col) => String(col.id) === collectionId)?.maxCopies) : null,
-											}));
-										}}
-									>
-										<option value="">Sem coleção</option>
-										{collections.map((collection) =>
-											<option
-												key={Number(collection.id)}
-												value={collection.id}
-												disabled={(collection.tokens?.length ?? 0) >= collection.maxCopies}
-											>
-												{console.log('mint: ', mint)}
-												{console.log('collection.maxCopies: ', collection.maxCopies)}
-												{collection.name}  {(collection.tokens?.length ?? 0) >= collection.maxCopies && " (Coleção cheia)"}
-											</option>
-										)}
-									</select>
-								</label>
-								<div>
-									<label>Cópias nesta coleção: </label>
-									{(() => {
-										const collection = collections.find(
-											(collection) => String(collection.id) === String(selectedCollectionId)
-										);
-
-										return collection && (
-											<span>
-												{collection.tokens?.length ?? 0} / {collection.maxCopies}
-											</span>
-										);
-									})()}
-								</div>
-								<button type="submit" disabled={loading}>{loading ? "Realizando mint..." : "Mint NFT"}</button>
-							</form>
-						</Card>
-
-						<Card title="NFTs do proprietário">
+						<Card title="NFTs do proprietário" style={{ color: "white", backgroundColor: "#000" }}>
 							<button onClick={refreshTokens} disabled={loading}>Atualizar</button>
 							<div className="token-list">{(tokens || []).map((item) => <article className="token-item" key={item.token_id}><div className="token-details"><h3>{item.metadata?.title || `Token ${item.token_id}`}</h3><p>Token ID: {item.token_id}</p><p>Proprietário: {item.owner_id}</p><details><summary>Metadados completos</summary><pre>{JSON.stringify(item.metadata, null, 2)}</pre></details></div></article>)}</div>
 						</Card>
 
-						<Card title="Consultar NFT">
+						<Card title="Consultar NFT" style={{ color: "white", backgroundColor: "#000" }}>
 							<input
 								placeholder="Token ID"
 								value={tokenId}
@@ -1018,7 +1686,7 @@ export default function StudioApp() {
 							{token && <div><p><strong>Título:</strong> {token.metadata?.title || "—"}</p><p><strong>Proprietário:</strong> {token.owner_id || "—"}</p><details><summary>Metadados completos</summary><pre>{JSON.stringify(token, null, 2)}</pre></details></div>}
 						</Card>
 
-						<Card title="Transferência">
+						<Card title="Transferência" style={{ color: "white", backgroundColor: "#000" }}>
 							<input
 								placeholder="Token ID"
 								value={tokenId}
@@ -1032,14 +1700,14 @@ export default function StudioApp() {
 							<button onClick={transfer} disabled={loading}>Transferir NFT</button>
 						</Card>
 
-						<Card title="Burn">
+						<Card title="Burn" style={{ color: "white", backgroundColor: "#000" }}>
 							<p>O contrato restringe o burn ao proprietário atual do NFT.</p>
 							<button className="danger" onClick={burn} disabled={loading}>
 								burn
 							</button>
 						</Card>
 
-						<Card title="Listar Ativo à Venda (nft_list)">
+						<Card title="Listar Ativo à Venda (nft_list)" style={{ color: "white", backgroundColor: "#000" }}>
 							<p>Lista um ativo NFT existente para venda no marketplace (método <code>nft_list</code> com 1 yoctoNEAR de depósito).</p>
 							<input
 								placeholder="Token ID"
@@ -1059,12 +1727,12 @@ export default function StudioApp() {
 							</button>
 						</Card>
 
-						<Card title="Methods Explorer">
+						<Card title="Methods Explorer" style={{ color: "white", backgroundColor: "#000" }}>
 							<p>{methods.length} métodos expostos/documentados no projeto.</p>
 							<pre>{methods.join("\n")}</pre>
 						</Card>
 
-						<Card title="Operation Log">
+						<Card title="Operation Log" style={{ color: "white", backgroundColor: "#000" }}>
 							<div className="actions">
 								<button onClick={() => setLogs(getLogs())} disabled={loading}>Atualizar</button>
 								<button onClick={exportLogs} disabled={loading}>Exportar JSON</button>
