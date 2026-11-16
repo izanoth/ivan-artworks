@@ -36,6 +36,8 @@ export default function MarketplaceBody() {
 
 	const [accountId, setAccountId] = useState("");
 	const [privateKey, setPrivateKey] = useState("");
+	const [seedPhrase, setSeedPhrase] = useState("");
+	const [authMethod, setAuthMethod] = useState("privateKey");
 
 	const [sessionInfo, setSessionInfo] = useState(() => nearController.getSessionInfo());
 
@@ -79,10 +81,11 @@ export default function MarketplaceBody() {
 
 	const openCheckout = (token) => {
 		setSelected(token);
-		console.log('selected: ', token.illustrations);
 		setMessage("");
 		setTx(null);
 		setPrivateKey("");
+		setSeedPhrase("");
+		setAuthMethod("privateKey");
 		setSessionInfo(nearController.getSessionInfo());
 	};
 
@@ -99,10 +102,14 @@ export default function MarketplaceBody() {
 				network: selected.network,
 				accountId,
 				privateKey,
+				seedPhrase,
+				authMethod,
 			});
 
 			setSessionInfo(info);
 			setPrivateKey("");
+			setSeedPhrase("");
+			setAuthMethod("privateKey");
 			setMessage("");
 		} catch (error) {
 			setMessage(error.message || "Não foi possível abrir a sessão.");
@@ -175,6 +182,8 @@ export default function MarketplaceBody() {
 		setSessionInfo(null);
 		setSelected(null);
 		setPrivateKey("");
+		setSeedPhrase("");
+		setAuthMethod("privateKey");
 		setAccountId("");
 		setMessage("");
 		setTx(null);
@@ -184,6 +193,8 @@ export default function MarketplaceBody() {
 		nearController.closeSession();
 		setSessionInfo(null);
 		setPrivateKey("");
+		setSeedPhrase("");
+		setAuthMethod("privateKey");
 		setMessage("Sessão encerrada.");
 	};
 
@@ -334,6 +345,10 @@ export default function MarketplaceBody() {
 					setAccountId={setAccountId}
 					privateKey={privateKey}
 					setPrivateKey={setPrivateKey}
+					seedPhrase={seedPhrase}
+					setSeedPhrase={setSeedPhrase}
+					authMethod={authMethod}
+					setAuthMethod={setAuthMethod}
 					message={message}
 					authenticating={authenticating}
 					onSubmit={authenticate}

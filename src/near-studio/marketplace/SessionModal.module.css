@@ -151,7 +151,9 @@
   font-weight: 600;
 }
 
-.sessionForm input {
+.sessionForm input,
+.sessionForm select,
+.sessionForm textarea {
   box-sizing: border-box;
   width: 100%;
   min-height: 44px;
@@ -165,11 +167,21 @@
   outline: none;
 }
 
-.sessionForm input::placeholder {
+.sessionForm textarea {
+  min-height: 92px;
+  resize: vertical;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.sessionForm input::placeholder,
+.sessionForm textarea::placeholder {
   color: #475569;
 }
 
-.sessionForm input:focus {
+.sessionForm input:focus,
+.sessionForm select:focus,
+.sessionForm textarea:focus {
   border-color: #7dd3fc;
   box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.1);
 }

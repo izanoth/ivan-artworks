@@ -7,6 +7,10 @@ export default function SessionModal({
   setAccountId,
   privateKey,
   setPrivateKey,
+  seedPhrase,
+  setSeedPhrase,
+  authMethod,
+  setAuthMethod,
   message,
   authenticating,
   onSubmit,
@@ -82,18 +86,51 @@ export default function SessionModal({
           </label>
 
           <label>
-            <span>Private Key</span>
-
-            <input
-              type="password"
-              value={privateKey}
-              onChange={(event) => setPrivateKey(event.target.value)}
-              placeholder="ed25519:…"
-              autoComplete="off"
-              spellCheck="false"
-              required
-            />
+            <span>Método de autenticação</span>
+            <select
+              className={styles.fieldSelect}
+              value={authMethod || "privateKey"}
+              onChange={(event) => {
+                const nextMethod = event.target.value;
+                setAuthMethod?.(nextMethod);
+                if (nextMethod !== "privateKey") setPrivateKey("");
+                if (nextMethod !== "seedPhrase") setSeedPhrase("");
+              }}
+            >
+              <option value="privateKey">Chave privada</option>
+              <option value="seedPhrase">Seed phrase</option>
+            </select>
           </label>
+
+          {authMethod === "seedPhrase" ? (
+            <label>
+              <span>Seed phrase</span>
+              <textarea
+                className={styles.fieldTextArea}
+                value={seedPhrase || ""}
+                onChange={(event) => setSeedPhrase(event.target.value)}
+                placeholder="word1 word2 word3 ..."
+                autoComplete="off"
+                spellCheck="false"
+                rows={3}
+                required
+              />
+            </label>
+          ) : (
+            <label>
+              <span>Private Key</span>
+
+              <input
+                type="password"
+                value={privateKey}
+                onChange={(event) => setPrivateKey(event.target.value)}
+                placeholder="ed25519:…"
+                autoComplete="off"
+                spellCheck="false"
+                required
+              />
+            </label>
+          )}
 
           {message && (
             <p className={`${styles.checkoutMessage} ${styles.checkoutMessageError}`} role="alert">

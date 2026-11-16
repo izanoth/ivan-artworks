@@ -5,6 +5,7 @@ if (typeof globalThis.Buffer === "undefined") {
 }
 
 import { connect, KeyPair, keyStores } from "near-api-js";
+import { resolveSessionSecretKey } from "./sessionAuth.mjs";
 import { logOperation } from "./logger";
 
 const NETWORKS = {
@@ -73,14 +74,25 @@ export function getSessionInfo() {
 	};
 }
 
-export async function openSession({ network, accountId, privateKey }) {
+export async function openSession({
+	network,
+	accountId,
+	privateKey,
+	seedPhrase,
+	authMethod = "privateKey",
+}) {
 	const started = performance.now();
 	const normalizedAccountId = String(accountId || "").trim();
-	const normalizedPrivateKey = String(privateKey || "").trim();
+	const resolvedPrivateKey = resolveSessionSecretKey({
+		authMethod,
+		privateKey,
+		seedPhrase,
+	});
+	const normalizedPrivateKey = String(resolvedPrivateKey || "").trim();
 
 	if (!normalizedAccountId) throw new Error("Informe o Account ID.");
 	if (!normalizedPrivateKey)
-		throw new Error("Informe a chave privada para assinar as operações.");
+		throw new Error("Informe a chave privada ou a seed phrase para assinar as operações.");
 	networkConfig(network);
 
 	let keyPair;

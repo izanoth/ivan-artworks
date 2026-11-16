@@ -83,22 +83,63 @@ export default function SessionModal({
           </label>
 
           <label className={styles.field}>
-            <span>Chave privada de assinatura</span>
-            <input
+            <span>Método de autenticação</span>
+            <select
               className={styles.fieldInput}
-              type="password"
-              autoComplete="off"
-              placeholder="ed25519:..."
-              value={sessionForm.privateKey}
-              onChange={(event) =>
+              value={sessionForm.authMethod || "privateKey"}
+              onChange={(event) => {
+                const nextAuthMethod = event.target.value;
                 setSessionForm({
                   ...sessionForm,
-                  privateKey: event.target.value,
-                })
-              }
-              required
-            />
+                  authMethod: nextAuthMethod,
+                  privateKey: "",
+                  seedPhrase: "",
+                });
+              }}
+            >
+              <option value="privateKey">Chave privada</option>
+              <option value="seedPhrase">Seed phrase</option>
+            </select>
           </label>
+
+          {sessionForm.authMethod === "seedPhrase" ? (
+            <label className={styles.field}>
+              <span>Seed phrase</span>
+              <textarea
+                className={styles.fieldInput}
+                rows={3}
+                autoComplete="off"
+                spellCheck={false}
+                placeholder="word1 word2 word3 ..."
+                value={sessionForm.seedPhrase || ""}
+                onChange={(event) =>
+                  setSessionForm({
+                    ...sessionForm,
+                    seedPhrase: event.target.value,
+                  })
+                }
+                required
+              />
+            </label>
+          ) : (
+            <label className={styles.field}>
+              <span>Chave privada de assinatura</span>
+              <input
+                className={styles.fieldInput}
+                type="password"
+                autoComplete="off"
+                placeholder="ed25519:..."
+                value={sessionForm.privateKey || ""}
+                onChange={(event) =>
+                  setSessionForm({
+                    ...sessionForm,
+                    privateKey: event.target.value,
+                  })
+                }
+                required
+              />
+            </label>
+          )}
 
           <p className={styles.securityNote}>
             A aplicação consulta a access key diretamente via RPC para confirmar que a

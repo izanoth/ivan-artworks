@@ -108,33 +108,112 @@ button.secondary {
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
-.modal-header {
+.header {
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
 	align-items: flex-start;
 }
 
-.close-button {
-	width: auto;
-	margin: 0;
+.headerContent {
+	flex: 1;
 }
 
-.modal label {
+.headerContent h2 {
+	margin: 0 0 6px;
+	font-size: 1.4rem;
+	color: #0f172a;
+}
+
+.headerContent p {
+	margin: 0;
+	color: #475569;
+	font-size: 0.82rem;
+	line-height: 1.5;
+}
+
+.form {
+	display: grid;
+	gap: 14px;
+	margin-top: 18px;
+}
+
+.field {
 	display: block;
-	margin: 14px 0;
+	margin: 0;
 	font-weight: 600;
 }
 
-.modal input,
-.modal select {
+.field span {
 	display: block;
-	width: 100%;
-	margin-top: 6px;
+	margin-bottom: 8px;
+	color: #334155;
+	font-size: 0.75rem;
 }
 
-.modal input[type="password"] {
+.fieldInput {
+	display: block;
+	width: 100%;
+	margin-top: 0;
+	padding: 0.7rem 0.8rem;
+	border: 1px solid #cbd5e1;
+	border-radius: 10px;
+	background: #fff;
+	color: #0f172a;
+	font: inherit;
+	box-sizing: border-box;
+}
+
+.fieldInput:focus {
+	outline: none;
+	border-color: #38bdf8;
+	box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+}
+
+textarea.fieldInput {
+	min-height: 90px;
+	resize: vertical;
+}
+
+.fieldInput[type="password"] {
 	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.secondaryButton,
+.submitButton {
+	appearance: none;
+	border: 1px solid #cbd5e1;
+	border-radius: 10px;
+	background: white;
+	color: #0f172a;
+	cursor: pointer;
+	font: inherit;
+	font-weight: 600;
+	transition: 150ms ease;
+}
+
+.secondaryButton:hover,
+.submitButton:hover {
+	filter: brightness(0.98);
+}
+
+.closeButton {
+	width: auto;
+	margin: 0;
+	padding: 0.6rem 0.85rem;
+}
+
+.submitButton {
+	width: 100%;
+	padding: 0.8rem 1rem;
+	background: linear-gradient(135deg, #0ea5e9, #2563eb);
+	border-color: transparent;
+	color: white;
+}
+
+.submitButton:disabled {
+	cursor: wait;
+	opacity: 0.7;
 }
 
 .security-note {
