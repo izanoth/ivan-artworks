@@ -52,6 +52,8 @@ export default function NftDetail({ initialToken }) {
 	const [selected, setSelected] = useState(null);
 	const [accountId, setAccountId] = useState("");
 	const [privateKey, setPrivateKey] = useState("");
+	const [seedPhrase, setSeedPhrase] = useState("");
+	const [authMethod, setAuthMethod] = useState("privateKey");
 	const [sessionInfo, setSessionInfo] = useState(() => nearController.getSessionInfo());
 	const [authenticating, setAuthenticating] = useState(false);
 	const [buying, setBuying] = useState(false);
@@ -80,6 +82,8 @@ export default function NftDetail({ initialToken }) {
 		setMessage("");
 		setTx(null);
 		setPrivateKey("");
+		setSeedPhrase("");
+		setAuthMethod("privateKey");
 		setSessionInfo(nearController.getSessionInfo());
 	};
 
@@ -93,9 +97,13 @@ export default function NftDetail({ initialToken }) {
 				network: selected.network,
 				accountId,
 				privateKey,
+				seedPhrase,
+				authMethod,
 			});
 			setSessionInfo(info);
 			setPrivateKey("");
+			setSeedPhrase("");
+			setAuthMethod("privateKey");
 			setMessage("");
 		} catch (error) {
 			setMessage(error.message || "Não foi possível abrir a sessão.");
@@ -163,6 +171,8 @@ export default function NftDetail({ initialToken }) {
 		setSessionInfo(null);
 		setSelected(null);
 		setPrivateKey("");
+		setSeedPhrase("");
+		setAuthMethod("privateKey");
 		setAccountId("");
 		setMessage("");
 		setTx(null);
@@ -172,6 +182,8 @@ export default function NftDetail({ initialToken }) {
 		nearController.closeSession();
 		setSessionInfo(null);
 		setPrivateKey("");
+		setSeedPhrase("");
+		setAuthMethod("privateKey");
 		setMessage("Sessão encerrada.");
 	};
 
@@ -305,6 +317,10 @@ export default function NftDetail({ initialToken }) {
 					setAccountId={setAccountId}
 					privateKey={privateKey}
 					setPrivateKey={setPrivateKey}
+					seedPhrase={seedPhrase}
+					setSeedPhrase={setSeedPhrase}
+					authMethod={authMethod}
+					setAuthMethod={setAuthMethod}
 					message={message}
 					authenticating={authenticating}
 					onSubmit={authenticate}

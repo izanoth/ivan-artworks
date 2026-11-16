@@ -12,6 +12,7 @@ remote-artworks.sql
 .env.remote
 .env.backup
 .env*
+.env.vercel
 
 .gemini
 

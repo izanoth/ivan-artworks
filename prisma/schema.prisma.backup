@@ -1,10 +1,3 @@
-#datasource db {
- # provider  = "postgresql"
- # url       = env("POSTGRES_PRISMA_URL")
-  #directUrl = env("POSTGRES_URL_NON_POOLING")
-#}
-
-
 generator client {
   provider = "prisma-client-js"
   seed     = "node ./prisma/seed.ts"
@@ -12,7 +5,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  url       = env("POSTGRES_PRISMA_URL")
 }
 
 model Guest {
@@ -77,21 +70,124 @@ model Comment {
 
 
 
+model NftCollection {
+  id          Int        @id @default(autoincrement())
+  network     String
+  contractId  String
+  name        String
+  description String?
+  maxCopies   Int        @default(1)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  tokens      NftToken[]
+
+  @@unique([network, contractId, name])
+  @@index([network, contractId])
+}
+
 model NftToken {
-  id              Int      @id @default(autoincrement())
-  network          String
+  id              Int           @id @default(autoincrement())
+  network         String
   contractId      String
   tokenId         String
-  priceYocto       String
-  visible         Boolean  @default(false)
-  title            String?
-  description      String?
-  media            String?
+  priceYocto      String
+  saleHistory     String?
+  visible         Boolean?
+  title           String?
+  description     String?
+  memo            String?
+  media           String?
   ownerId         String?
+  holders         String[]
+  royalties       String?
   metadataJson    String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  status          String?
+  illustrations   String[]
+  copies          Int?
+  mintTxHash      String?
+  buyTxHash       String?
+  collectionId    Int?
+  collection      NftCollection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   @@unique([network, contractId, tokenId])
   @@index([network, contractId, visible])
+  @@index([collectionId])
 }
+
+model Page {
+  id        String    @id @default(cuid())
+  name      String    @unique // e.g., "whoami", "contact", "marketplace"
+  slug      String    @unique // URL path, e.g., "/whoami"
+  isActive  Boolean   @default(true)
+  order     Int       @default(0)
+  type      String    @default("main") // "main", "secondary", "footer"
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  contents  Content[]
+  footerItems FooterItem[]
+}
+
+model Content {
+  id        String    @id @default(cuid())
+  pageId    String
+  page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  locale    String    @default("en") // "en", "pt"
+  body      String    @db.Text
+  version   Int       @default(1)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
+  @@unique([pageId, locale, version])
+  @@index([pageId, locale, version])
+}
+
+model FooterItem {
+  id        String    @id @default(cuid())
+  pageId    String? // Optional, if a footer item is specific to a page
+  page      Page?     @relation(fields: [pageId], references: [id])
+  text      String
+  link      String?
+  iconClass String? // e.g., "bi bi-github"
+  order     Int       @default(0)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+}
+
+model Album {
+  id          String    @id @default(cuid())
+  title       String    @unique
+  year        Int
+  genre       String
+  composer    String
+  coverImage  String
+  tracks      Track[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("albums")
+}
+
+model Track {
+  id          String    @id @default(cuid())
+  albumId     String    @map("album_id")
+  album       Album     @relation(fields: [albumId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  title       String
+  src         String?
+  software    String[]
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("tracks")
+}
+
+
+
+

@@ -71,15 +71,22 @@ model Comment {
 
 
 model NftCollection {
-  id          Int        @id @default(autoincrement())
-  network     String
-  contractId  String
-  name        String
-  description String?
-  maxCopies   Int        @default(1)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  tokens      NftToken[]
+  id             Int        @id @default(autoincrement())
+  network        String
+  contractId     String
+  name           String
+  title          String?
+  description    String?
+  media          String?
+  mediaHash      String?
+  copies         Int?
+  maxCopies      Int        @default(1)
+  extra          String?
+  reference      String?
+  referenceHash  String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  tokens         NftToken[]
 
   @@unique([network, contractId, name])
   @@index([network, contractId])

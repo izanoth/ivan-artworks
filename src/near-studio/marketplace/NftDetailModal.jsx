@@ -299,7 +299,7 @@ export default function NftDetailModal({ token, onClose, onPurchased }) {
 								)}
 								{currentToken.royalties !== "{}" && (
 									<div>
-										<span style={{ display: "block", color: "#7dd3fc", fontWeight: 600, marginBottom: "4px" }}>
+										<span style={{ display: "block", color: "#7dd3fc", fontWeight: 600, marginBottom: "12px" }}>
 											Royalties
 										</span>
 
@@ -489,11 +489,22 @@ export default function NftDetailModal({ token, onClose, onPurchased }) {
 
 								{currentToken.metadataJson && (
 									<details style={{ background: "rgba(15, 23, 42, 0.85)", border: "1px solid rgba(148, 163, 184, 0.2)", borderRadius: "8px", padding: "10px 12px" }}>
-										<summary style={{ cursor: "pointer", fontSize: "0.83rem", fontWeight: 600, color: "#7dd3fc" }}>
-											Metadados Brutos (metadataJson)
+										<summary style={{ textAlign: 'left', cursor: "pointer", fontSize: "0.83rem", fontWeight: 600, color: "#7dd3fc" }}>
+											Metadados Brutos
 										</summary>
-										<pre style={{ margin: "8px 0 0 0", padding: "8px", background: "rgba(2, 6, 23, 0.85)", borderRadius: "6px", fontSize: "0.75rem", color: "#cbd5e1", overflowX: "auto", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-											{currentToken.metadataJson}
+										<pre style={{ textAlign: 'left', background: "rgba(2, 6, 23, 0.85)", borderRadius: "6px", fontSize: "0.75rem", color: "#cbd5e1", overflowX: "auto", whiteSpace: "pre-wrap", wordBreak: "break-word", padding: '24px'  }} className="whitespace-pre-wrap break-all font-mono text-sm">
+											{(() => {
+												try {
+													const parsed =
+														typeof currentToken.metadataJson === "string"
+															? JSON.parse(currentToken.metadataJson)
+															: currentToken.metadataJson;
+
+													return JSON.stringify(parsed, null, 2);
+												} catch {
+													return currentToken.metadataJson;
+												}
+											})()}
 										</pre>
 									</details>
 								)}
@@ -503,7 +514,8 @@ export default function NftDetailModal({ token, onClose, onPurchased }) {
 						{/* Botão de Compra / Aviso de Indisponibilidade */}
 						{currentToken.status === "for_sale" ? (
 							<button
-								className={styles.primaryButton}
+								className={styles.primaryButton ``}
+								
 								type="button"
 								onClick={openCheckout}
 								style={{
@@ -516,10 +528,10 @@ export default function NftDetailModal({ token, onClose, onPurchased }) {
 									borderRadius: "10px",
 									fontWeight: 600,
 									fontSize: "0.95rem",
-									cursor: "pointer",
+									cursor: "pointer",									
 								}}
 							>
-								Comprar NFT Agora · {displayPrice} Ⓝ
+								Comprar NFT · {displayPrice} Ⓝ
 							</button>
 						) : (
 							<div
