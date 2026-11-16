@@ -21,9 +21,10 @@ export async function POST(req: Request) {
     // Admin via env
     const adminUser = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
+    console.log('admPass: ', adminPassword);
 
 	console.log('admPass: ', adminPassword);
-    if (username === 'ivanzanoth@gmail.com' && password === adminPassword) {
+    if (username === 'admin' && password === adminPassword) {
       const token = await signToken({ username, role: 'admin' });
       const res = new NextResponse(JSON.stringify({ success: true, role: 'admin' }), {
         status: 200,
