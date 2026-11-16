@@ -5,7 +5,7 @@ prisma/seed.ts
 **/prisma/seed*
 prisma
 archieve/
-**remote-artworks.sql*
+remote-artworks.sql
 .*~
 .zanoth-e-magazine-firebase-adminsdk-fbsvc-3e06e8cbb3.json
 .env

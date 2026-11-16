@@ -15,6 +15,7 @@ import { utils } from "near-api-js";
 import { yoctoToNear } from "@/near-studio/services/near";
 import SessionModal from "./components/SessionModal";
 import './styles.css';
+//import { e } from "near-api-js/lib/enums-BOxGXwY_";
 
 const CONTRACT_ID = getContractId() || "(não configurado)";
 const NETWORK = getNetwork();
@@ -23,7 +24,7 @@ const API_URL = "";
 function Card({ title, children, style }) {
 	return (
 		<section className="card" style={style}>
-		<h1 style={{ fontSize: "22px", fontWeight: "500", paddingBottom: "20px"}}>{title}</h1>
+			<h1 style={{ fontSize: "22px", fontWeight: "500", paddingBottom: "20px" }}>{title}</h1>
 			{children}
 		</section>
 	);
@@ -482,8 +483,8 @@ export default function StudioApp() {
 			if (!token_metadata || typeof token_metadata !== "object") {
 				throw new Error("Os metadados do NFT original são inválidos.");
 			}
-			if (!Array.isArray(token_metadata.illustrations)) {
-				token_metadata.illustrations = normalizedIllustrations;
+			if (!Array.isArray(mint.illustrations)) {
+				mint.illustrations = normalizedIllustrations;
 			}
 
 			const perpetual_royalties = tokenRecord
@@ -533,6 +534,7 @@ export default function StudioApp() {
 							? Number(selectedCollectionId)
 							: null,
 					visible: true,
+					memo: tokenRecord.memo ? mint.memo : null,
 					status: "for_sale",
 					illustrations: normalizedIllustrations,
 					ownerId: owner,
@@ -741,7 +743,7 @@ export default function StudioApp() {
 
 				{page === "studio" ? (
 					<div className="grid">
-						
+
 						<Card title="Índices e estatísticas">
 							<div className="stats-grid">
 								<div className="stat-box">
@@ -1265,8 +1267,7 @@ export default function StudioApp() {
 													copies: collection.copies || collection.maxCopies || 1,
 													extra: collection.extra || "",
 													reference: collection.reference || "",
-													referenceHash: collection.referenceHash || "",
-													illustrations: collection.media ? [collection.media] : current.illustrations,
+													referenceHash: collection.referenceHash || ""
 												}));
 											} else {
 												setMint((current) => ({
@@ -1517,6 +1518,53 @@ export default function StudioApp() {
 									</div>
 								</div>
 
+								<div
+									style={{
+										background: "rgba(15, 23, 42, 0.95)",
+										border: "1px solid rgba(125, 211, 252, 0.32)",
+										borderRadius: "12px",
+										padding: "20px",
+										marginTop: "16px",
+										width: "100%",
+										boxSizing: "border-box",
+									}}
+								>
+									<div style={{ marginBottom: "14px" }}>
+										<label
+											style={{
+												display: "block",
+												fontWeight: 600,
+												fontSize: "0.95rem",
+												color: "#f8fafc",
+												marginBottom: "4px",
+											}}
+										>
+											Memo
+											<textarea
+												value={mint.memo}
+												onChange={(e) => setMint({ ...mint, memo: e.target.value })}
+												rows={2}
+												placeholder="Descreva o memo para a obra..."
+												style={{
+													width: "100%",
+													height: "300px",
+													minWidth: 0,
+													padding: "10px 12px",
+													fontSize: "0.92rem",
+													backgroundColor: "rgba(2, 6, 23, 0.8)",
+													border: "1px solid rgba(148, 163, 184, 0.35)",
+													borderRadius: "8px",
+													color: "#f1f5f9",
+													outline: "none",
+													resize: "vertical",
+													fontFamily: "inherit",
+													boxSizing: "border-box",
+												}}
+											/>
+										</label>
+									</div>
+								</div>
+
 
 								<div style={{ marginTop: "12px" }}>
 									<label style={{ marginTop: "12px", display: "block", fontWeight: "650", color: "#e2e8f0" }}>Royalties</label>
@@ -1669,7 +1717,7 @@ export default function StudioApp() {
 							)}
 						</Card>
 
-						
+
 
 						<Card title="NFTs do proprietário" style={{ color: "white", backgroundColor: "#000" }}>
 							<button onClick={refreshTokens} disabled={loading}>Atualizar</button>
