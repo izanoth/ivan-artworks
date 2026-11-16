@@ -32,6 +32,7 @@
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.2",
     "near-api-js": "^6.0.0",
+    "near-seed-phrase": "^0.2.1",
     "next": "^14",
     "next-auth": "^4.24.7",
     "prettier": "^3.5.3",
